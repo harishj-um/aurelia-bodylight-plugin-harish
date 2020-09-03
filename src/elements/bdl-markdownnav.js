@@ -43,6 +43,8 @@ export class BdlMarkdownnav {
   fetchMDSrc() {
     let url = (this.src.startsWith('http')) ? this.src : this.base + this.src;
     console.log('fetchmd src:',this.src);
+    //src not empty - then fetch src
+    if (this.src.length>0)
     this.client.fetch(url)
       .then(response => response.text())
       .then(data => {
@@ -51,7 +53,7 @@ export class BdlMarkdownnav {
         //convert from md to html
         this.links = [];
         this.html = this.mdtoc.render(this.text);
-        console.log('markdownnow fetchmd src links:', this.links);
+        //console.log('markdownnow fetchmd src links:', this.links);
         this.update();
       });
   }

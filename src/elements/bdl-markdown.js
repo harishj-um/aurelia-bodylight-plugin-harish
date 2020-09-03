@@ -3,6 +3,7 @@ import {I18N} from 'aurelia-i18n';
 import {bindable, inject} from 'aurelia-framework';
 import {HttpClient} from 'aurelia-fetch-client';
 import {BdlMarkdownaurelia} from './bdl-markdownaurelia';
+import {EventAggregator} from 'aurelia-event-aggregator';
 //import Mathjax from "mathjax";
 
 /**
@@ -10,13 +11,13 @@ import {BdlMarkdownaurelia} from './bdl-markdownaurelia';
  * Inherits MD rendering from markdownaurelia component
  */
 
-@inject(I18N, HttpClient)
+@inject(I18N, HttpClient,EventAggregator)
 export class BdlMarkdown extends BdlMarkdownaurelia {
   @bindable src;
   @bindable watchhash;
   @bindable base ='';
-  constructor(i18n, httpclient) {
-    super(i18n, httpclient);
+  constructor(i18n, httpclient,ea) {
+    super(i18n, httpclient,ea);
   }
 
   update() {

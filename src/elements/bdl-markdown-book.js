@@ -7,12 +7,14 @@ export class BdlMarkdownBook extends WatchHashCore {
   @bindable base='';
   @bindable params;
   constructor() {
+    console.log('calling super')
     super();
     this.params = 'showmenu,2;base,3';
   }
 
   bind() {
     //this.value=this.params;//'index,0;summary,1;shownav,2';
+    console.log('bdlmarkdownbook index:',this.index,'summary:',this.summary)
     this.shownav = true;
     this.showmenu = true;
     super.bind();

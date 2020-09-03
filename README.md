@@ -98,7 +98,7 @@ npm i gitlab:your_github_username/plugin1
 npm i https:/github.com/your_github_username/plugin1.git
 ```
 
-Then load the plugin in app's `main.js` like this.
+Then load the plugin in app's `webcomponents.js` like this.
 ```js
 aurelia.use.plugin('plugin1');
 // for webpack user, use PLATFORM.moduleName wrapper
