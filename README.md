@@ -1,5 +1,12 @@
 # `plugin1`
 
+## release notes
+* aurelia-templating throws 'behaviorInstruction' is undefined - need to patch from `\patch` directory
+* bdl-markdown-book index and summary attributes are not reflected
+
+
+## introduction
+
 This project is bootstrapped by [aurelia-cli](https://github.com/aurelia/cli).
 
 This Aurelia plugin project has a built-in dev app (with CLI built-in bundler and RequireJS) to simplify development.

@@ -15,13 +15,15 @@ import {EventAggregator} from 'aurelia-event-aggregator';
 export class BdlMarkdown extends BdlMarkdownaurelia {
   @bindable src;
   @bindable watchhash;
-  @bindable base ='';
+  @bindable base='';
+  @bindable fromid;
+
   constructor(i18n, httpclient,ea) {
     super(i18n, httpclient,ea);
   }
 
   update() {
-    //console.log('markdown2 update called by OOP polymorphism mydiv, html', this.mydiv,this.html);
+    console.log('markdown2 update called by OOP polymorphism mydiv, html', this.mydiv,this.html);
     this.mydiv.innerHTML = this.html;
     super.update();
   }

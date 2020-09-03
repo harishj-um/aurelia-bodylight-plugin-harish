@@ -53,7 +53,7 @@ export class BdlMarkdownnav {
         //convert from md to html
         this.links = [];
         this.html = this.mdtoc.render(this.text);
-        //console.log('markdownnow fetchmd src links:', this.links);
+        console.log('markdownnow fetchmd src links:', this.html);
         this.update();
       });
   }

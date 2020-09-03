@@ -1,6 +1,5 @@
 import Markdownit from 'markdown-it';
 import Markdownitfootnote from 'markdown-it-footnote'; //footnote in MD
-//import mk from '@traptitech/markdown-it-katex'; //math in md, iktakahiro version seems to be most updated - works with latest katex
 import mk from '@iktakahiro/markdown-it-katex'; //math in md, iktakahiro version seems to be most updated - works with latest katex
 import hljs from 'highlight.js'; //highlights in MD source blocks
 //npm install markdown-it-toc-done-right markdown-it-anchor

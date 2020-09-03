@@ -6,6 +6,7 @@ export class BdlMarkdownBook extends WatchHashCore {
   @bindable index;
   @bindable base='';
   @bindable params;
+
   constructor() {
     console.log('calling super')
     super();

@@ -8,6 +8,7 @@ export class BdlMarkdownBookAu extends BdlMarkdownBook {
   @bindable params;
 
   constructor() {
+    console.log('bdlmarkdownbookau calling super')
     super();
   }
 
