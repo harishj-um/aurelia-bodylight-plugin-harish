@@ -21,6 +21,7 @@ export class BdlMarkdownaurelia {
   @bindable watchhash;
   @bindable base='';
   @bindable fromid;
+  notinitread=true;
 
   constructor(i18n, httpclient, ea) {
     //this.i18n = i18n;
@@ -35,8 +36,13 @@ export class BdlMarkdownaurelia {
     }
   }
 
+  bind(){
+    console.log('markdownaurelia bind() src', this.src);
+    if (this.notinitread && this.src && this.src.length>0 && this.md) this.readmd();
+  }
+
   attached() {
-    //console.log('makdownit attached hljs:', hljs);
+    console.log('bdlmarkdownaurelia attached() src:', this.src);
     // eslint-disable-next-line new-cap
     //optionally, register customevent handler for 'contentupdate' when fromid is defined
     if (this.fromid) {document.getElementById(this.fromid).addEventListener('contentupdate', this.handleContentChange);}
@@ -67,7 +73,7 @@ export class BdlMarkdownaurelia {
       } else {
       console.log('english version');
       }
-    this.readmd();
+    if (this.src && this.src.length>0) this.readmd();
     console.log('bdlmarkdownaurelia eventaggregator2:', this.ea);
     //there seems some bug in ea dependency injection - checking subscribe as function or inner ea object
     if (typeof this.ea.subscribe === 'function')
@@ -77,16 +83,18 @@ export class BdlMarkdownaurelia {
   }
 
   changesrc(...args) { //first is src, second is base
-    console.log('mardownaurelia.changesrc()');
+    console.log('mardownaurelia.changesrc called(), args:',args);
     if (args[1]) this.base = args[1];
-    this.src = args[0];
+    if (args[0] && args[0].length>0) this.src = args[0];
     this.readmd();
   }
 
   readmd() {
     //fetch md source from src attribute
     //relative url - set with base
+    console.log('bdlmarkdownaurelia readmemd(), src:',this.src);
     if (! this.src) return;
+    this.notinitread = false;
     let url = (this.src.startsWith('http')) ? this.src : this.base + this.src;
     this.client.fetch(url)
       .then(response => response.text())

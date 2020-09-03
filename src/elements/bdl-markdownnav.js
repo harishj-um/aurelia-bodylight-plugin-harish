@@ -9,6 +9,7 @@ export class BdlMarkdownnav {
   @bindable src;
   @bindable navstyle;
   @bindable base='';
+  notinitread=true;
 
   constructor(i18n, httpclient) {
     this.i18n = i18n;
@@ -19,7 +20,13 @@ export class BdlMarkdownnav {
     this.currentlink = 'N/A';
   }
 
+  bind(){
+    console.log('bdlmarkdownnav src:', this.src);
+    if (this.notinitread && this.src && this.src.length>0 && this.mdtoc) this.fetchMDSrc();
+  }
+
   attached() {
+    console.log('bdlmakrdownnav src:', this.src);
     window.markdownnav = this;
     let iterator = MarkdownItForInline;
     this.mdtoc = Markdownit({html: true})
@@ -42,20 +49,22 @@ export class BdlMarkdownnav {
 
   fetchMDSrc() {
     let url = (this.src.startsWith('http')) ? this.src : this.base + this.src;
-    console.log('fetchmd src:',this.src);
+    console.log('fetchmd src:', this.src);
     //src not empty - then fetch src
-    if (this.src.length>0)
-    this.client.fetch(url)
-      .then(response => response.text())
-      .then(data => {
-        //console.log('fetched md:', data)
-        this.text = data;
-        //convert from md to html
-        this.links = [];
-        this.html = this.mdtoc.render(this.text);
-        console.log('markdownnow fetchmd src links:', this.html);
-        this.update();
-      });
+    if (this.src && this.src.length>0) {
+      this.notinitread = false;
+      this.client.fetch(url)
+        .then(response => response.text())
+        .then(data => {
+          //console.log('fetched md:', data)
+          this.text = data;
+          //convert from md to html
+          this.links = [];
+          this.html = this.mdtoc.render(this.text);
+          console.log('markdownnow fetchmd src links:', this.html);
+          this.update();
+        });
+    }
   }
 
   update() {
@@ -65,7 +74,7 @@ export class BdlMarkdownnav {
   changesrc(...args) {
     console.log('markdownnav.changesrc() args:', args);
     if (args[1]) this.base = args[1];
-    this.src = args[0];
+    if (args[0] && args[0].length>0) this.src = args[0];
     this.fetchMDSrc();
   }
 

@@ -22,6 +22,16 @@ export class BdlMarkdown extends BdlMarkdownaurelia {
     super(i18n, httpclient,ea);
   }
 
+  bind(){
+    console.log('bdlmarkdown bind() src:', this.src);
+    super.bind();
+  }
+
+  attached(){
+    super.attached();
+    console.log('bdlmarkdown attached() src:', this.src);
+  }
+
   update() {
     console.log('markdown2 update called by OOP polymorphism mydiv, html', this.mydiv,this.html);
     this.mydiv.innerHTML = this.html;
@@ -29,6 +39,7 @@ export class BdlMarkdown extends BdlMarkdownaurelia {
   }
 
   changesrc(...args) {
+    console.log('bdlmarkdown changesrc:', args);
     super.changesrc(...args);
   }
 }

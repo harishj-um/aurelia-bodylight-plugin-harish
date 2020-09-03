@@ -11,10 +11,13 @@ export class WatchhashCustomAttribute extends WatchHashCore {
   constructor(element) {
     super();
     this.element = element;
-    if ( typeof(element.au.controller) === 'object' && typeof(element.au.controller.viewModel) === 'object') {
-      this.elementVM = element.au.controller.viewModel;
-      //check whether elementVM has changesrc function - to be called in event listener
-      this.isReadMDCustomElement = (typeof this.elementVM.changesrc === 'function');
+    this.isReadMDCustomElement = false;
+    if (element && element.au) {
+      if (typeof (element.au.controller) === 'object' && typeof (element.au.controller.viewModel) === 'object') {
+        this.elementVM = element.au.controller.viewModel;
+        //check whether elementVM has changesrc function - to be called in event listener
+        this.isReadMDCustomElement = (typeof this.elementVM.changesrc === 'function');
+      }
     }
   }
 

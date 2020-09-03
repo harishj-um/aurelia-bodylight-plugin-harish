@@ -8,8 +8,8 @@ export class BdlMarkdownBook extends WatchHashCore {
   @bindable params;
 
   constructor() {
-    console.log('calling super')
     super();
+    console.log('calling super')
     this.params = 'showmenu,2;base,3';
   }
 
@@ -33,7 +33,7 @@ export class BdlMarkdownBook extends WatchHashCore {
     if (name === 'index') this.index = index;*/
     //if (name === 'shownav') this.shownav = (index !== 'false');
     //if (name === 'base') this.base = index;
-    console.log('bdlmarkdownbook changesrc', args);
+    console.log('bdlmarkdownbook changesrc called, args:', args);
     //TODO - hack - first arg is showmenu
     if (args[0]) this.showmenu = (args[0] !== 'false');
     //console.log('bdlmarkdownbook changesrc shownav', this.shownav);
