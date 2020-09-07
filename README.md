@@ -1,9 +1,16 @@
-# `plugin1`
+# `aurelia-bodylight-plugin`
 
-## release notes
+### release notes 0.2
+* aurelia templating left as is
+* all elements renamed without bdl- prefix,
+* aurelia-web-components patched with 'mandatory prefix' option
+### release notes 0.1
 * aurelia-templating throws 'behaviorInstruction' is undefined - need to patch from `\patch` directory
 * bdl-markdown-book index and summary attributes are not reflected
 
+## Installation
+
+npm i https://github.com/creative-connections/aurelia-bodylight-plugin
 
 ## introduction
 
