@@ -1,7 +1,7 @@
 import {StageComponent} from 'aurelia-testing';
 import {bootstrap} from 'aurelia-bootstrapper';
 
-describe('bdl-range element', () => {
+describe('range element', () => {
   let component;
 
   afterEach(() => {
@@ -14,8 +14,8 @@ describe('bdl-range element', () => {
   it('creates 2 inputs, first range, second number', done => {
 
     component = StageComponent
-      .withResources('elements/bdl-range.html')
-      .inView('<bdl-range></bdl-range>');
+      .withResources('elements/range.html')
+      .inView('<range></range>');
 
 
     component.create(bootstrap).then(() => {

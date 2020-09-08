@@ -73,9 +73,6 @@
     "output": "scripts"
   },
   "build": {
-    "copyFiles": {
-        "node_modules/font-awesome/fonts/*": "fonts/"
-      },
     "targets": [
       {
         "port": 9000,
@@ -114,9 +111,9 @@
       }
     ],
     "copyFiles": {
-      "node_modules/font-awesome/fonts/*": "font-awesome/fonts"
+      "node_modules/@iktakahiro/markdown-it-katex/node_modules/katex/dist/fonts/*": "fonts/",
+      "node_modules/font-awesome/fonts/*": "font-awesome/fonts/"
     },
-
     "loader": {
       "type": "require",
       "configTarget": "bodylight.bundle.js",

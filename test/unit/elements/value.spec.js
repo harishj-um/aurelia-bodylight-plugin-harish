@@ -1,7 +1,7 @@
 import {StageComponent} from 'aurelia-testing';
 import {bootstrap} from 'aurelia-bootstrapper';
 
-describe('bdl-value element', () => {
+describe('value element', () => {
   let component;
 
   afterEach(() => {
@@ -14,8 +14,8 @@ describe('bdl-value element', () => {
   it('creates 1 span with value', done => {
 
     component = StageComponent
-      .withResources('elements/bdl-value')
-      .inView('<div><bdl-fmi id="id1"></bdl-fmi><bdl-value fromid="id1"></bdl-value></div>');
+      .withResources('elements/value')
+      .inView('<div><fmi id="id1"></fmi><value fromid="id1"></value></div>');
 
     component.create(bootstrap).then(() => {
       const view = component.element;

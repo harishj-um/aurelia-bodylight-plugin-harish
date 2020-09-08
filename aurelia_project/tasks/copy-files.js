@@ -11,7 +11,23 @@ export default function copyFiles(done) {
 
   const instruction = getNormalizedInstruction();
   const files = Object.keys(instruction);
+  //console.log('copyfiles files:',files);
+  //console.log('instructions:',instruction)
+  //tomas add multiple source and dest
+  /*let a;
+  files.forEach(item => {
+    console.log('copyfiles item:',item);
+    a = gulp.src(item, {since: gulp.lastRun(copyFiles)})
+        .pipe(gulp.dest(x => {
+          const filePath = prepareFilePath(x.path);
+          const key = files.find(f => minimatch(filePath, f));
+          console.log('dest item, key instruction[key]',item, key,instruction[key]);
+          return instruction[key];
+        }));
+  })
+  return a;
 
+   */
   return gulp.src(files, {since: gulp.lastRun(copyFiles)})
     .pipe(gulp.dest(x => {
       const filePath = prepareFilePath(x.path);
