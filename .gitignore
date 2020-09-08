@@ -31,7 +31,10 @@ Thumbs.db
 node_modules
 
 # Compiled files
-/scripts
 /dev-app/environment.js
 /dist
 /test/coverage-jest
+
+#/scripts
+#/fonts
+#/font-awesome
