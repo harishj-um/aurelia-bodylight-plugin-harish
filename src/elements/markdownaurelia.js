@@ -38,6 +38,7 @@ export class Markdownaurelia {
 
   bind(){
     console.log('markdownaurelia bind() src', this.src);
+    if (this.base && this.base.length > 0) window.bdlBaseHref = this.base; // define bdlbasehref only if not empty string
     if (this.notinitread && this.src && this.src.length>0 && this.md) this.readmd();
   }
 
@@ -45,8 +46,6 @@ export class Markdownaurelia {
     console.log('bdlmarkdownaurelia attached() src:', this.src);
     // eslint-disable-next-line new-cap
     //optionally, register customevent handler for 'contentupdate' when fromid is defined
-    if (this.fromid) {document.getElementById(this.fromid).addEventListener('contentupdate', this.handleContentChange);}
-    if (this.base && this.base.length > 0) window.bdlBaseHref = this.base; // define bdlbasehref only if not empty string
     this.md = Markdownit({
       html: true, //enable html tags - this enables also custom elements of components/webcomponents
       linkify: true,
@@ -73,13 +72,14 @@ export class Markdownaurelia {
       } else {
       console.log('english version');
       }
-    if (this.src && this.src.length>0) this.readmd();
-    console.log('bdlmarkdownaurelia eventaggregator2:', this.ea);
+    if (this.notinitread && this.src && this.src.length>0 && this.md) this.readmd();
+    //console.log('bdlmarkdownaurelia eventaggregator2:', this.ea);
     //there seems some bug in ea dependency injection - checking subscribe as function or inner ea object
-    if (typeof this.ea.subscribe === 'function')
+    //if (typeof this.ea.subscribe === 'function')
     this.ea.subscribe(ContentUpdate, msg => this.updateContent(msg.content));
-    else if (typeof this.ea.ea === 'object')
-      this.ea.ea.subscribe(ContentUpdate, msg => this.updateContent(msg.content));
+    //else if (typeof this.ea.ea === 'object')
+//      this.ea.ea.subscribe(ContentUpdate, msg => this.updateContent(msg.content));
+    if (this.fromid) {document.getElementById(this.fromid).addEventListener('contentupdate', this.handleContentChange);}
   }
 
   changesrc(...args) { //first is src, second is base
@@ -118,6 +118,7 @@ export class Markdownaurelia {
   }
 
   updateContent(content) {
+    console.log('markdownaurelia updatecontent:',content)
     this.text = content;
     this.html = this.md.render(this.text);
     this.update();

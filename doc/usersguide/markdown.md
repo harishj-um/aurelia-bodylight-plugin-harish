@@ -3,6 +3,7 @@
 `<bdl-markdownnav src=""></bdl-markdownnav>"` renders navigation menu based on MD list. MD should contain only list.
 All links should
 
+
 ### BdlMarkdown
 `<bdl-markdown src="[filename.md]" watchhash="true|false"></bdl-markdown>` renders markdown - which may contain all the above webcomponents.
 * `watchhash` if specified, then parameter in URL after hash is scanned and taken loaded instead `src`. The changes in hash are listened and document is replaced on change.
@@ -47,3 +48,12 @@ $$a^2 + b^2 = c^2$$
 `<bdl-markdown-app>` renders horizontal navigation menu on top
   * `index` - index MD to be shown as content
   * `summary` - navigation MD - navigation sidebar is rendered per list in it
+
+## demo markdown input
+```
+<bdl-markdown-input id="id7"></bdl-markdown-input>
+<bdl-markdown fromid="id7"></bdl-markdown>
+```
+
+<bdl-markdown-input id="id7"></bdl-markdown-input>
+<bdl-markdown fromid="id7"></bdl-markdown>

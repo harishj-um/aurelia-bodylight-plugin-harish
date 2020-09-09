@@ -10,6 +10,8 @@ export function configure(config) {
       PLATFORM.moduleName('./elements/value'),
       PLATFORM.moduleName('./elements/beakercontrols.html'),
       PLATFORM.moduleName('./elements/markdown'),
+    PLATFORM.moduleName('./elements/markdownaurelia'),
+      PLATFORM.moduleName('./elements/markdown-input'),
       PLATFORM.moduleName('./elements/markdownnav'),
       //.globalResources(PLATFORM.moduleName('components/composite/markdownaurelia')) //do not register mdaurelia is for internal au use with dynamic html
       PLATFORM.moduleName('./elements/simplegif'),
