@@ -21,8 +21,7 @@ export class Markdownaurelia {
   @bindable watchhash;
   @bindable base='';
   @bindable fromid;
-  notinitread=true;
-
+  previoussrc='';
   constructor(i18n, httpclient, ea) {
     //this.i18n = i18n;
     this.client = httpclient;
@@ -39,8 +38,15 @@ export class Markdownaurelia {
   bind(){
     console.log('markdownaurelia bind() src', this.src);
     if (this.base && this.base.length > 0) window.bdlBaseHref = this.base; // define bdlbasehref only if not empty string
-    if (this.notinitread && this.src && this.src.length>0 && this.md) this.readmd();
+    if (this.src && this.src.length>0 && this.md) this.readmd();
   }
+
+  srcChanged(){
+    console.log('markdownaurelia srcChanged() src', this.src);
+    if (this.src && this.src.length>0 && this.md) this.readmd();
+  }
+
+
 
   attached() {
     console.log('bdlmarkdownaurelia attached() src:', this.src);
@@ -72,7 +78,7 @@ export class Markdownaurelia {
       } else {
       console.log('english version');
       }
-    if (this.notinitread && this.src && this.src.length>0 && this.md) this.readmd();
+    if (this.src && this.src.length>0 && this.md) this.readmd();
     //console.log('bdlmarkdownaurelia eventaggregator2:', this.ea);
     //there seems some bug in ea dependency injection - checking subscribe as function or inner ea object
     //if (typeof this.ea.subscribe === 'function')
@@ -93,8 +99,8 @@ export class Markdownaurelia {
     //fetch md source from src attribute
     //relative url - set with base
     console.log('bdlmarkdownaurelia readmemd(), src:',this.src);
-    if (! this.src) return;
-    this.notinitread = false;
+    if (! this.src || (this.previoussrc === this.src)) return;
+    this.previoussrc=this.src;
     let url = (this.src.startsWith('http')) ? this.src : this.base + this.src;
     this.client.fetch(url)
       .then(response => response.text())
