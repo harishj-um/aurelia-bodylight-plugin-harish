@@ -186,11 +186,17 @@ export class Chartjs {
    */
   attached() {
     //listening to custom event fmidata and fmireset
-    document.getElementById(this.fromid).addEventListener('fmidata', this.handleValueChange);
-    document.getElementById(this.fromid).addEventListener('fmireset', this.handleReset);
-    //this.chartcanvas; - reference to the DOM canvas
-    if (this.sectionid) {document.getElementById(this.sectionid).addEventListener('addsection', this.handleAddSection);}
+    const fromel = document.getElementById(this.fromid);
+    if (fromel) {
+      fromel.addEventListener('fmidata', this.handleValueChange);
+      fromel.getElementById(this.fromid).addEventListener('fmireset', this.handleReset);
+    } else {console.log('chartjs WARNING, null fromid element')}
 
+    if (this.sectionid) {
+      const sectionel = document.getElementById(this.sectionid);
+      if (sectionel) sectionel.addEventListener('addsection', this.handleAddSection);
+      else console.log('chartjs WARNING, null sectionid element')
+    }
 
     //for verticalline option - register controller for BdlChartjs
     if (this.verticalline) {
