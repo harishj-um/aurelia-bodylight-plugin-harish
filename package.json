@@ -22,6 +22,7 @@
     "aurelia-testing": "^1.0.0",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^26.3.0",
+    "canvas": "^2.6.1",
     "connect": "^3.7.0",
     "connect-history-api-fallback": "^1.6.0",
     "connect-injector": "^0.4.4",
@@ -67,7 +68,7 @@
   },
   "main": "dist/commonjs/index.js",
   "module": "dist/native-modules/index.js",
-  "private": true,
+  "private": false,
   "files": [
     "dist",
     "src"
@@ -112,6 +113,7 @@
     "aurelia-web-components": "^1.0.0-beta.3"
   },
   "dependencies": {
+    "@createjs/easeljs": "^2.0.0-beta.4",
     "@iktakahiro/markdown-it-katex": "^4.0.0",
     "aurelia-bootstrapper": "^2.3.2",
     "aurelia-dynamic-html": "^0.3.1",

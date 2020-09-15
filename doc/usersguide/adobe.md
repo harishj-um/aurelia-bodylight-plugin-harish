@@ -5,7 +5,7 @@
     width="800"
     height="600"
     name="ZelezoCelek"
-    fromid="id4" ></bdl-animatedheart> 
+    fromid="id4" ></bdl-animate-adobe> 
 ```
 
 Controls animation exported from Adobe Animate using CreateJS library. 
@@ -21,4 +21,4 @@ Example:
     width="800"
     height="600"
     name="ZelezoCelek"
-    fromid="id4" ></bdl-animatedheart>
+    fromid="id4" ></bdl-animate-adobe>

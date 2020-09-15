@@ -1,11 +1,16 @@
 import {bindable} from "aurelia-framework";
+import createjs from 'createjs/builds/createjs-2015.11.26.combined';
 
 export class AnimateAdobe {
     @bindable src;
     @bindable width=800;
     @bindable height=600;
     @bindable name;//="ZelezoCelek"
-    constructor(){}
+    @bindable cid="3CC81150E735AE4485D4B0DF526EB8B4";
+
+    constructor(){
+        console.log('animate-adobe constructor()');
+    }
     attached(){
         //this.adobecanvas = document.getElementById("canvas");
         //this.anim_container = document.getElementById("animation_container");
@@ -34,7 +39,8 @@ export class AnimateAdobe {
     }
 
     initAdobe(){
-        let comp=AdobeAn.getComposition("3CC81150E735AE4485D4B0DF526EB8B4");
+        console.log('initAdobe() createjs:',createjs);
+        let comp=createjs.getComposition(this.cid);
         //let lib=comp.getLibrary();
 
         //You can use the variable "stage" after it is created in token create_stage.
@@ -50,38 +56,10 @@ export class AnimateAdobe {
             createjs.Ticker.addEventListener("tick", thatanim.stage);
         }
         //Code to support hidpi screens and responsive scaling.
-        AdobeAn.makeResponsive(false,'both',false,1,[this.adobecanvas,this.anim_container,this.dom_overlay_container]);
-        AdobeAn.compositionLoaded(lib.properties.id);
+        createjs.makeResponsive(false,'both',false,1,[this.adobecanvas,this.anim_container,this.dom_overlay_container]);
+        createjs.compositionLoaded(lib.properties.id);
         fnStartAnimation();
 
     }
 
-    /*
-    var canvas, stage, exportRoot, anim_container, dom_overlay_container, fnStartAnimation;
-    function init() {
-        canvas = document.getElementById("canvas");
-        anim_container = document.getElementById("animation_container");
-        dom_overlay_container = document.getElementById("dom_overlay_container");
-        var comp=AdobeAn.getComposition("3CC81150E735AE4485D4B0DF526EB8B4");
-        var lib=comp.getLibrary();
-        handleComplete({},comp);
-    }
-    function handleComplete(evt,comp) {
-        //This function is always called, irrespective of the content. You can use the variable "stage" after it is created in token create_stage.
-        var lib=comp.getLibrary();
-        var ss=comp.getSpriteSheet();
-        exportRoot = new lib.ZelezoCelek();
-        stage = new lib.Stage(canvas);
-        //Registers the "tick" event listener.
-        fnStartAnimation = function() {
-            stage.addChild(exportRoot);
-            createjs.Ticker.setFPS(lib.properties.fps);
-            createjs.Ticker.addEventListener("tick", stage);
-        }
-        //Code to support hidpi screens and responsive scaling.
-        AdobeAn.makeResponsive(false,'both',false,1,[canvas,anim_container,dom_overlay_container]);
-        AdobeAn.compositionLoaded(lib.properties.id);
-        fnStartAnimation();
-    }
-     */
 }
