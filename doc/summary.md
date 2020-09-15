@@ -8,6 +8,7 @@
       * [FMI - simulation <br /> of Modelica model](#doc/usersguide/fmi.md)
       * [Receptacle](#doc/usersguide/receptacle.md)
       * [Animate](#doc/usersguide/animate.md)
+      * [Animate Adobe](#doc/usersguide/adobe.md)
       * [Audio](#doc/usersguide/audio.md)
       * [Beaker](#doc/usersguide/beaker.md)
       * [Capillary](#doc/usersguide/capillary.md)

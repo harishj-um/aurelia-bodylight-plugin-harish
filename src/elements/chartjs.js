@@ -40,7 +40,7 @@ export class Chartjs {
       this.chart.update();
     };
     this.handleReset = e => {
-      console.log('handlereset');
+      //console.log('handlereset');
       this.resetdata();
       this.chart.update();
     };
@@ -102,7 +102,7 @@ export class Chartjs {
     for (let i = 0; i < this.refvalues; i++) {
       if (!this.mydata[i]) {
         //this.mydata.push(0);
-        console.log('chartjs no data');
+        //console.log('chartjs no data');
       }
       this.colors.push(this.selectColor(i));
     }
@@ -189,7 +189,7 @@ export class Chartjs {
     const fromel = document.getElementById(this.fromid);
     if (fromel) {
       fromel.addEventListener('fmidata', this.handleValueChange);
-      fromel.getElementById(this.fromid).addEventListener('fmireset', this.handleReset);
+      fromel.addEventListener('fmireset', this.handleReset);
     } else {console.log('chartjs WARNING, null fromid element')}
 
     if (this.sectionid) {
