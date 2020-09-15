@@ -6,7 +6,22 @@ export const waitForTimeout = (number = 50) => new Promise(r => setTimeout(r, ti
 describe('chartjs element', () => {
   let component;
 
-
+  beforeEach(() => {
+    const createElement = document.createElement.bind(document);
+    document.createElement = (tagName) => {
+	if (tagName === 'canvas') {
+        return {
+        CanvasRenderingContext2D:() => ({}),
+	    getContext: () => ({}),
+	    getContext2d: () => ({}),
+	    measureText: () => ({})
+        };
+	}
+	return createElement(tagName);
+    };
+    
+  });
+                                                                                            
   afterEach(() => {
     if (component) {
       component.dispose();

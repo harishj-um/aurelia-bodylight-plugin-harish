@@ -1,18 +1,25 @@
-# `aurelia-bodylight-plugin`
+# Bodylight Web components and Aurelia plugin
+[![Build Status](https://travis-ci.com/creative-connections/aurelia-bodylight-plugin.svg?branch=master)](https://travis-ci.com/creative-connections/aurelia-bodylight-plugin)
 
 ### release notes 0.2
 * aurelia templating left as is
-* all elements renamed without bdl- prefix,
-* aurelia-web-components patched with 'mandatory prefix' option
+* all elements renamed, do not have bdl- prefix or Bdl* in name,
+* aurelia-web-components patched with 'forcePrefix' option to have consistent prefix for all web components
 ### release notes 0.1
 * aurelia-templating throws 'behaviorInstruction' is undefined - need to patch from `\patch` directory
 * bdl-markdown-book index and summary attributes are not reflected
 
 ## Installation
 
+In Aurelia projects:
 npm i https://github.com/creative-connections/aurelia-bodylight-plugin
 
-## introduction
+In Common projects:
+include bodylight.bundle.js inside
+
+## 
+
+## Development
 
 This project is bootstrapped by [aurelia-cli](https://github.com/aurelia/cli).
 
