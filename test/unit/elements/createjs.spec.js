@@ -1,4 +1,4 @@
-import createjs from 'createjs/builds/createjs-2015.11.26.combined';
+import * as createjs from 'createjs-module';
 
 describe("CreateJS", () => {
     let canvas = document.createElement("canvas"), stage;
@@ -12,7 +12,7 @@ describe("CreateJS", () => {
 
     test("draw something on Stage", () => {
         const before = canvas.toDataURL();
-        const shape = new window.createjs.Shape();
+        const shape = new createjs.Shape();
         shape.graphics
             .setStrokeStyle(1)
             .beginStroke("#000")
