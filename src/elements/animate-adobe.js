@@ -1,26 +1,28 @@
 import {bindable} from "aurelia-framework";
-import createjs from 'createjs/builds/createjs-2015.11.26.combined';
+import * as createjs from 'createjs-module';
 
 export class AnimateAdobe {
     @bindable src;
     @bindable width=800;
     @bindable height=600;
     @bindable name;//="ZelezoCelek"
-    @bindable cid="3CC81150E735AE4485D4B0DF526EB8B4";
+    @bindable cid;//="3CC81150E735AE4485D4B0DF526EB8B4";
 
     constructor(){
-        console.log('animate-adobe constructor()');
+//        console.log('animate-adobe constructor()');
     }
     attached(){
         //this.adobecanvas = document.getElementById("canvas");
         //this.anim_container = document.getElementById("animation_container");
         //this.dom_overlay_container = document.getElementById("dom_overlay_container");
-        console.log('animate-adobe attached()');
-        this.getSript(this.src, this.initAdobe());
+  //      console.log('animate-adobe attached() window.ani.adobecanvas,window.ani.anim_container,window.ani.dom_overlay_container',this.adobecanvas,this.anim_container,this.dom_overlay_container);
+        if (!window.createjs) window.createjs = createjs;
+        window.ani= this;
+        this.getScript(this.src, this.initAdobe);
     }
     //get script element and registers 'onload' callback to be called when the script is loaded
     getScript(source, callback) {
-        console.log('fmi getscript()');
+        //console.log('animateadobe getscript()');
         let script = document.createElement('script');
         let prior = document.getElementsByTagName('script')[0];
         script.async = 1;
@@ -35,31 +37,35 @@ export class AnimateAdobe {
         };
 
         script.src = window.bdlBaseHref ? window.bdlBaseHref + source : source;
+        //console.log('adding custom animate script');
         prior.parentNode.insertBefore(script, prior);
     }
 
     initAdobe(){
-        console.log('initAdobe() createjs:',createjs);
-        let comp=createjs.getComposition(this.cid);
+        //console.log('initAdobe() this, window.ani.cid:',this,window.ani.cid);
+        if (!window.ani.cid) {
+            window.ani.cid = Object.keys(window.AdobeAn.compositions)[0]; //get the first composition
+        }
+        let comp=window.AdobeAn.getComposition(window.ani.cid);
         //let lib=comp.getLibrary();
 
         //You can use the variable "stage" after it is created in token create_stage.
-        let lib=comp.getLibrary();
-        let ss=comp.getSpriteSheet();
-        this.exportRoot = new lib[this.name]();
-        this.stage = new lib.Stage(canvas);
+        window.ani.lib=comp.getLibrary();
+        window.ani.ss=comp.getSpriteSheet();
+        window.ani.exportRoot = new window.ani.lib[window.ani.name]();
+        window.stage = new window.ani.lib.Stage(window.ani.adobecanvas);
         //Registers the "tick" event listener.
-        let thatanim = this;
         let fnStartAnimation = function() {
-            thatanim.stage.addChild(thatanim.exportRoot);
-            createjs.Ticker.setFPS(lib.properties.fps);
-            createjs.Ticker.addEventListener("tick", thatanim.stage);
+            window.stage.addChild(window.ani.exportRoot);
+            //by default ticker uses setTimeout API
+            window.createjs.Ticker.timingMode = window.createjs.Ticker.RAF_SYNCHED; //force to use requestAnimationFrame API
+            window.createjs.Ticker.framerate = window.ani.lib.properties.fps;
+            window.createjs.Ticker.addEventListener("tick", window.stage);
         }
         //Code to support hidpi screens and responsive scaling.
-        createjs.makeResponsive(false,'both',false,1,[this.adobecanvas,this.anim_container,this.dom_overlay_container]);
-        createjs.compositionLoaded(lib.properties.id);
+        window.AdobeAn.makeResponsive(false,'both',false,1,[window.ani.adobecanvas,window.ani.anim_container,window.ani.dom_overlay_container]);
+        window.AdobeAn.compositionLoaded(window.ani.lib.properties.id);
         fnStartAnimation();
-
     }
 
 }

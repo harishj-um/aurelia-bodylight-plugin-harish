@@ -1,5 +1,6 @@
 import {StageComponent} from 'aurelia-testing';
 import {bootstrap} from 'aurelia-bootstrapper';
+import * as createjs from 'createjs-module';
 
 describe('animate-adobe element', () => {
     let component;
@@ -49,12 +50,12 @@ describe('animate-adobe element', () => {
             done();
         });
     });
-    
+
     it('creates animate-adobe with createjs', done => {
 
         component = StageComponent
             .withResources('elements/animate-adobe')
-            .inView('<animate-adobe></animate-adobe>');
+            .inView('<div><script></script><animate-adobe></animate-adobe></div>');
         /*            .withResources('elements/chartjs')
                     .inView('<chartjs \n' +
                         '  id="id9" \n' +
@@ -79,10 +80,13 @@ describe('animate-adobe element', () => {
         component.create(bootstrap).then(() => {
             //await waitForTimeout(50);
             const view = component.element;
+            //console.log('component',component)
+            //console.log('component.element',component.element)
             const canvas = view.getElementsByTagName('canvas');
             expect(canvas.length).toBe(1); //1 canvas
             const divs = view.getElementsByTagName('div');
-            expect(divs.length).toBe(2); //2 chartjs monitor1
+            expect(divs.length).toBe(2); //1 anim container, 1 dom_overlay
+
             done();
         }).catch(e => {
             fail(e);
