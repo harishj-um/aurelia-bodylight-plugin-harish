@@ -25,10 +25,10 @@ export class AnimateAdobe {
     }
 
     detached(){
-        console.log('animate-adobe detached()');
+        //console.log('animate-adobe detached()');
         //stop animation
         window.createjs.Ticker.removeEventListener("tick", window.stage);
-        window.stage.removeChildAt(0);
+        if (window.stage) window.stage.removeChildAt(0);
         //remove script
         this.removeScript(this.src);
         //destroy objects
