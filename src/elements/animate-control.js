@@ -1,6 +1,8 @@
 import {bindable} from 'aurelia-framework';
 
-
+/**
+ * controls animation
+ */
 export class AnimateControl {
   @bindable id; //unique id of this component
   @bindable fromid; //id of fmi - to listen if segmentcond is specified

@@ -105,7 +105,7 @@ export class Markdownaurelia {
     this.client.fetch(url)
       .then(response => response.text())
       .then(data => {
-        console.log('markdownaurelia fetched md:', data)
+        //console.log('markdownaurelia fetched md:', data)
         this.text = data;
         //convert from md to html
         this.html = this.md.render(this.text);

@@ -7,9 +7,18 @@ export class AnimateAdobe {
     @bindable height=600;
     @bindable name;//="ZelezoCelek"
     @bindable cid;//="3CC81150E735AE4485D4B0DF526EB8B4";
+    @bindable fromid;
 
     constructor(){
 //        console.log('animate-adobe constructor()');
+    }
+
+    bind() {
+        if (this.fromid) {
+            document.getElementById(this.fromid).addEventListener('animatestart', this.startAllAnimation);
+            //document.getElementById(this.fromid).addEventListener('animatedata', this.handleStep);
+            document.getElementById(this.fromid).addEventListener('animatestop', this.stopAllAnimation);
+        }
     }
     attached(){
         //this.adobecanvas = document.getElementById("canvas");
@@ -27,14 +36,14 @@ export class AnimateAdobe {
     detached(){
         //console.log('animate-adobe detached()');
         //stop animation
-        window.createjs.Ticker.removeEventListener("tick", window.stage);
-        if (window.stage) window.stage.removeChildAt(0);
+        window.createjs.Ticker.removeEventListener("tick", window.ani.stage);
+        if (window.ani.stage) window.ani.stage.removeChildAt(0);
         //remove script
         this.removeScript(this.src);
         //destroy objects
         //window.createjs=null;
         window.AdobeAn=null;
-        window.stage=null;
+        window.ani.stage=null;
     }
 
     removeScript(source){
@@ -81,14 +90,15 @@ export class AnimateAdobe {
         window.ani.ss=window.ani.comp.getSpriteSheet();
         window.ani.exportRoot = new window.ani.lib[window.ani.name]();
         //set stage to be bind into ref='adobecanvas' DOM element of this component
-        window.stage = new window.ani.lib.Stage(window.ani.adobecanvas);
+        window.ani.stage = new window.ani.lib.Stage(window.ani.adobecanvas);
+        window.stage = window.ani.stage;
         //Registers the "tick" event listener.
         let fnStartAnimation = function() {
-            window.stage.addChild(window.ani.exportRoot);
+            window.ani.stage.addChild(window.ani.exportRoot);
             //by default ticker uses setTimeout API, force to use requestAnimationFrame API
             window.createjs.Ticker.timingMode = window.createjs.Ticker.RAF_SYNCHED;
             window.createjs.Ticker.framerate = window.ani.lib.properties.fps;
-            window.createjs.Ticker.addEventListener("tick", window.stage);
+            window.createjs.Ticker.addEventListener("tick", window.ani.stage);
 
         }
         //Code to support hidpi screens and responsive scaling.
@@ -130,13 +140,20 @@ export class AnimateAdobe {
     }
 
     stopAllAnimation(){
-        if (this.stage) {
-            this.stage.setAutoPlay(false);
+        if (window.ani.stage) {
+            window.ani.stage.stop();
         }
     }
     startAllAnimation(){
+        if (window.ani.stage) {
+            window.ani.stage.play();
+        }
+    }
+
+    stepAllAnimation(){
         if (this.stage) {
-            this.stage.setAutoPlay(true);
+            window.ani.stage.play();
+            setTimeout(()=>{this.stage.stop()},20);
         }
     }
 

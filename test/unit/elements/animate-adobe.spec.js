@@ -16,27 +16,6 @@ describe('animate-adobe element', () => {
         component = StageComponent
             .withResources('elements/animate-adobe2')
             .inView('<animate-adobe2></animate-adobe2>');
-/*            .withResources('elements/chartjs')
-            .inView('<chartjs \n' +
-                '  id="id9" \n' +
-                '  width="300" \n' +
-                '  height="500" \n' +
-                '  fromid="id4" \n' +
-                '  type="doughnut" \n' +
-                '  labels="Intrathoracic Arteries,ExtraThoracic Arteries, Pulmonary Arteries, Intrathoracic Veins, Extrathoracic veins, Pulmonary Veins"\n' +
-                '  initialdata="0,4,2,3" \n' +
-                '  refindex="2" \n' +
-                '  refvalues="6"></chartjs>');
-*/
-        /*.withResources('elements/animate-adobe')
-        .inView('<animate-adobe \n' +
-            '    src="doc/ZelezoCelek.js" \n' +
-            '    width="800"\n' +
-            '    height="600"\n' +
-            '    name="ZelezoCelek"\n' +
-            '    fromid="id4" ></animate-adobe>');*/
-
-
         component.create(bootstrap).then(() => {
             //await waitForTimeout(50);
             const view = component.element;
@@ -56,26 +35,6 @@ describe('animate-adobe element', () => {
         component = StageComponent
             .withResources('elements/animate-adobe')
             .inView('<div><script></script><animate-adobe></animate-adobe></div>');
-        /*            .withResources('elements/chartjs')
-                    .inView('<chartjs \n' +
-                        '  id="id9" \n' +
-                        '  width="300" \n' +
-                        '  height="500" \n' +
-                        '  fromid="id4" \n' +
-                        '  type="doughnut" \n' +
-                        '  labels="Intrathoracic Arteries,ExtraThoracic Arteries, Pulmonary Arteries, Intrathoracic Veins, Extrathoracic veins, Pulmonary Veins"\n' +
-                        '  initialdata="0,4,2,3" \n' +
-                        '  refindex="2" \n' +
-                        '  refvalues="6"></chartjs>');
-        */
-        /*.withResources('elements/animate-adobe')
-        .inView('<animate-adobe \n' +
-            '    src="doc/ZelezoCelek.js" \n' +
-            '    width="800"\n' +
-            '    height="600"\n' +
-            '    name="ZelezoCelek"\n' +
-            '    fromid="id4" ></animate-adobe>');*/
-
 
         component.create(bootstrap).then(() => {
             //await waitForTimeout(50);
@@ -93,4 +52,24 @@ describe('animate-adobe element', () => {
             done();
         });
     });
+    it('creates animate-adobe-control with 2 buttons', done => {
+
+        component = StageComponent
+            .withResources('elements/animate-adobe-control')
+            .inView('<animate-adobe-control></animate-adobe-control>');
+
+        component.create(bootstrap).then(() => {
+            //await waitForTimeout(50);
+            const view = component.element;
+            const buttons = view.getElementsByTagName('button');
+            expect(buttons.length).toBe(2);
+            expect(buttons[0].title).toBe("Start/Stop simulation");
+            expect(buttons[1].title).toBe("Do simulation step");
+            done();
+        }).catch(e => {
+            fail(e);
+            done();
+        });
+    });
+
 });
