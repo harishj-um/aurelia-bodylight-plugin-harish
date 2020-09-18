@@ -24,6 +24,7 @@ export function configure(config) {
         PLATFORM.moduleName('./elements/animate-control'),
         PLATFORM.moduleName('./elements/animate-adobe'),
         PLATFORM.moduleName('./elements/animate-adobe-control'),
+        PLATFORM.moduleName('./elements/bind2a'),
         PLATFORM.moduleName('./elements/quiz'),
         PLATFORM.moduleName('./elements/audio-on-increase'),
         PLATFORM.moduleName('./elements/audio-on-decrease'),

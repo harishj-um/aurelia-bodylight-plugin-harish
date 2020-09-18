@@ -28,7 +28,7 @@ Sends custom events `animatestart` and `animatestop`. The target elements should
 Example:
 
 <bdl-animate-adobe-control id="id4"></bdl-animate-adobe-control>
-
+    
 <bdl-animate-adobe 
     src="doc/ZelezoCelek.js" 
     width="800"
