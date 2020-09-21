@@ -1,7 +1,7 @@
 {
   "name": "aurelia-bodylight-plugin",
   "description": "Aurelia plugin with Bodylight Web Simulator components.",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "repository": {
     "type": "git",
     "url": "https://github.com/creative-connections/aurelia-bodylight-plugin"
