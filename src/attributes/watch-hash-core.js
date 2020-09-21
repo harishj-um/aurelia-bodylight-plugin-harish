@@ -6,7 +6,7 @@ export class WatchHashCore {
     console.log('WatchhashCore');
     //event listener function needs to be declared this way - they have access to 'this'
     this.handleHashChange = e => {
-      console.log('WatchHashCore HandleHashChange e:',e);
+      console.log('WatchHashCore HandleHashChange e:', e);
       let params = parseHashParamString(window.location.hash);
       let args = [];
       let index;
@@ -23,7 +23,7 @@ export class WatchHashCore {
     };
   }
 
-//params atribute is used to define param name and optional index e.g. summary,1;index,2;base,3
+  //params atribute is used to define param name and optional index e.g. summary,1;index,2;base,3
   bind() {
     this.paramname = [];
     this.paramindex = [];

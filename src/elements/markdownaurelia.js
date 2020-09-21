@@ -51,6 +51,7 @@ export class Markdownaurelia {
     console.log('bdlmarkdownaurelia attached() src:', this.src);
     // eslint-disable-next-line new-cap
     //optionally, register customevent handler for 'contentupdate' when fromid is defined
+    // eslint-disable-next-line new-cap
     this.md = Markdownit({
       html: true, //enable html tags - this enables also custom elements of components/webcomponents
       linkify: true,
