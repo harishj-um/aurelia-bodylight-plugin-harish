@@ -55,7 +55,7 @@ export class ChartjsTime extends Chartjs {
     super.bind();
     this.chlabels = this.labels.split(','); //labels for each dataset
     //this.colors = [];
-    let datasets = []; let timelabels = [];
+    let datasets = [];
     let mydata1 = this.initialdata.split(';');
     for (let i = 0; i < (this.refvalues + 1); i++) { //mydata[0] == timelabels in x axis, mydata[1..n] ar in y axis
       let mydata2 = (mydata1[i]) ? mydata1[i].split(',') : [];

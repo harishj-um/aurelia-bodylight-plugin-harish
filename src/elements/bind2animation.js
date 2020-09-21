@@ -9,25 +9,25 @@ export class Bind2animation {
     fmin;fmax; //min and max values from FMU model simulation
     k1;k2;k3; //internal koefficients
 
-    constructor(_findex,_aname,_amin,_amax,_fmin,_fmax) {
-        this.findex = _findex;
-        this.aname = _aname; //can be obtained by Object.keys(window.ani.lib).filter(name => name.endsWith('Celek'))
-        this.amin = _amin;
-        this.amax = _amax;
-        this.fmin = _fmin;
-        this.fmax = _fmax;
-        this.k1 = (1 / (this.fmax - this.fmin));
-        this.k2 = (this.fmin / (this.fmax - this.fmin));
-        this.k3 = (this.amax - this.amin);
+    constructor(_findex, _aname, _amin, _amax, _fmin, _fmax) {
+      this.findex = _findex;
+      this.aname = _aname; //can be obtained by Object.keys(window.ani.lib).filter(name => name.endsWith('Celek'))
+      this.amin = _amin;
+      this.amax = _amax;
+      this.fmin = _fmin;
+      this.fmax = _fmax;
+      this.k1 = (1 / (this.fmax - this.fmin));
+      this.k2 = (this.fmin / (this.fmax - this.fmin));
+      this.k3 = (this.amax - this.amin);
     }
 
-/** convertf2a converts value to animation value between min-max
+    /** convertf2a converts value to animation value between min-max
     * uses linear approximation,
     * values beyond limits are converted to min or max
  **/
-    convertf2a(x){
-        if (x < this.fmin) return this.amin;
-        if (x < this.fmax) return this.amin+(x*this.k1-this.k2)*this.k3;
-        return this.amax;
+    convertf2a(x) {
+      if (x < this.fmin) return this.amin;
+      if (x < this.fmax) return this.amin + (x * this.k1 - this.k2) * this.k3;
+      return this.amax;
     }
 }

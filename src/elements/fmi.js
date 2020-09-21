@@ -96,8 +96,8 @@ export class Fmi {
     }
 
     if (typeof this.showcontrols === 'string') {
-       this.showcontrols = this.showcontrols === 'true';
-     }
+      this.showcontrols = this.showcontrols === 'true';
+    }
   }
 
   //get script element and registers 'onload' callback to be called when the script is loaded
@@ -263,7 +263,6 @@ export class Fmi {
   startevent(e) {
     //console.log('fmi startevent', e);
     if (!this.animationstarted) this.startSimulation();
-
   }
 
   stopevent(e) {

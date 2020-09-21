@@ -9,20 +9,20 @@ export class MarkdownBook extends WatchHashCore {
 
   constructor() {
     super();
-    console.log('calling super')
+    console.log('calling super');
     this.params = 'showmenu,2;base,3';
   }
 
   bind() {
     //this.value=this.params;//'index,0;summary,1;shownav,2';
-    console.log('bdlmarkdownbook index:',this.index,'summary:',this.summary)
+    console.log('bdlmarkdownbook index:', this.index, 'summary:', this.summary);
     this.shownav = true;
     this.showmenu = true;
     super.bind();
-    this.previoustitle="previous chapter";
-    this.previoustitleshort="prev ...";
-    this.nexttitle="next chapter";
-    this.nexttitleshort="next ...";
+    this.previoustitle = 'previous chapter';
+    this.previoustitleshort = 'prev ...';
+    this.nexttitle = 'next chapter';
+    this.nexttitleshort = 'next ...';
   }
   /*attached() {
     this.disablenav = !((this.summary) && ((this.summary.length > 0) && (this.summary !== 'false')));

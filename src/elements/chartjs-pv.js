@@ -1,4 +1,4 @@
-import {ChartjsXy} from "./chartjs-xy";
+import {ChartjsXy} from './chartjs-xy';
 import {bindable, useView} from 'aurelia-templating';
 //import {PLATFORM} from 'aurelia-pal';
 //@useView(PLATFORM.moduleName('./bdl-chartjs.html'))
@@ -9,7 +9,7 @@ export class ChartjsPv extends ChartjsXy {
   @bindable refindex;
   @bindable refvalues;
 
-  constructor(){
+  constructor() {
     super();
     this.handleValueChange = e => {
       //e.detail do not reallocate - using same buffer, thus slicing to append to data array
@@ -28,10 +28,8 @@ export class ChartjsPv extends ChartjsXy {
       //console.log('chartjs-xy handlevaluechange datasets, e.detail.data',this.chart.data.datasets, e.detail.data);
       this.chart.update();
     };
-
   }
-  bind(){
+  bind() {
     super.bind();
   }
-
 }

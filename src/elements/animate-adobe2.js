@@ -1,1 +1,1 @@
-export class AnimateAdobe2{}
+export class AnimateAdobe2 { }

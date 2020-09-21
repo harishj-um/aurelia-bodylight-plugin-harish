@@ -1,5 +1,5 @@
 import {bindable} from 'aurelia-templating';
-import {TriggerOnIncrease} from "./trigger-on-increase";
+import {TriggerOnIncrease} from './trigger-on-increase';
 
 //@customElement
 export class TriggerOnDecreaseCustomElement extends TriggerOnIncrease {

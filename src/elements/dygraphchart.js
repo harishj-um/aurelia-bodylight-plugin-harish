@@ -16,7 +16,6 @@ export class Dygraphchart {
 
     //create lambda function which is added as listener later
     this.handleValueChange = e => {
-
       let datapoint = [e.detail.time];
       //e.detail do not reallocate - using same buffer, thus slicing to append to data array
       let edata = e.detail.data.slice();

@@ -28,24 +28,23 @@ export class Markdownaurelia {
     this.html = '';
     this.ea = ea;
     this.i18n = i18n;
-    console.log('bdlmarkdownaurelia eventaggregator:',ea);
+    console.log('bdlmarkdownaurelia eventaggregator:', ea);
     //option function to be called when customevent retrieved
     this.handleContentChange = e => {
       this.updateContent(e.detail.content);
-    }
+    };
   }
 
-  bind(){
+  bind() {
     console.log('markdownaurelia bind() src', this.src);
     if (this.base && this.base.length > 0) window.bdlBaseHref = this.base; // define bdlbasehref only if not empty string
-    if (this.src && this.src.length>0 && this.md) this.readmd();
+    if (this.src && this.src.length > 0 && this.md) this.readmd();
   }
 
-  srcChanged(){
+  srcChanged() {
     console.log('markdownaurelia srcChanged() src', this.src);
-    if (this.src && this.src.length>0 && this.md) this.readmd();
+    if (this.src && this.src.length > 0 && this.md) this.readmd();
   }
-
 
 
   attached() {
@@ -75,32 +74,32 @@ export class Markdownaurelia {
 
     if (this.i18n.getLocale() === 'cs') {
       console.log('czech version');
-      } else {
+    } else {
       console.log('english version');
-      }
-    if (this.src && this.src.length>0 && this.md) this.readmd();
+    }
+    if (this.src && this.src.length > 0 && this.md) this.readmd();
     //console.log('bdlmarkdownaurelia eventaggregator2:', this.ea);
     //there seems some bug in ea dependency injection - checking subscribe as function or inner ea object
     //if (typeof this.ea.subscribe === 'function')
     this.ea.subscribe(ContentUpdate, msg => this.updateContent(msg.content));
     //else if (typeof this.ea.ea === 'object')
-//      this.ea.ea.subscribe(ContentUpdate, msg => this.updateContent(msg.content));
+    //      this.ea.ea.subscribe(ContentUpdate, msg => this.updateContent(msg.content));
     if (this.fromid) {document.getElementById(this.fromid).addEventListener('contentupdate', this.handleContentChange);}
   }
 
   changesrc(...args) { //first is src, second is base
-    console.log('mardownaurelia.changesrc called(), args:',args);
+    console.log('mardownaurelia.changesrc called(), args:', args);
     if (args[1]) this.base = args[1];
-    if (args[0] && args[0].length>0) this.src = args[0];
+    if (args[0] && args[0].length > 0) this.src = args[0];
     this.readmd();
   }
 
   readmd() {
     //fetch md source from src attribute
     //relative url - set with base
-    console.log('bdlmarkdownaurelia readmemd(), src:',this.src);
+    console.log('bdlmarkdownaurelia readmemd(), src:', this.src);
     if (! this.src || (this.previoussrc === this.src)) return;
-    this.previoussrc=this.src;
+    this.previoussrc = this.src;
     let url = (this.src.startsWith('http')) ? this.src : this.base + this.src;
     this.client.fetch(url)
       .then(response => response.text())
@@ -124,7 +123,7 @@ export class Markdownaurelia {
   }
 
   updateContent(content) {
-    console.log('markdownaurelia updatecontent:',content)
+    console.log('markdownaurelia updatecontent:', content);
     this.text = content;
     this.html = this.md.render(this.text);
     this.update();

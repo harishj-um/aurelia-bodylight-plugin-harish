@@ -61,7 +61,7 @@ export class AnimateAdobe {
       let src = window.bdlBaseHref ? window.bdlBaseHref + source : source;
       let tags = document.getElementsByTagName('script');
       for (let i = tags.length; i >= 0; i--) { //search backwards within nodelist for matching elements to remove
-        if (tags[i] && tags[i].getAttribute('src') != null && tags[i].getAttribute('src').indexOf(src) != -1) {tags[i].parentNode.removeChild(tags[i]);} //remove element by calling parentNode.removeChild()
+        if (tags[i] && tags[i].getAttribute('src') !== null && tags[i].getAttribute('src').indexOf(src) !== -1) {tags[i].parentNode.removeChild(tags[i]);} //remove element by calling parentNode.removeChild()
       }
     }
 

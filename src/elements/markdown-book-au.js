@@ -1,5 +1,5 @@
-import {MarkdownBook} from "./markdown-book";
-import {bindable} from "aurelia-framework";
+import {MarkdownBook} from './markdown-book';
+import {bindable} from 'aurelia-framework';
 
 export class MarkdownBookAu extends MarkdownBook {
   @bindable summary;
@@ -8,8 +8,7 @@ export class MarkdownBookAu extends MarkdownBook {
   @bindable params;
 
   constructor() {
-    console.log('bdlmarkdownbookau calling super')
+    console.log('bdlmarkdownbookau calling super');
     super();
   }
-
 }

@@ -11,29 +11,29 @@ import {EventAggregator} from 'aurelia-event-aggregator';
  * Inherits MD rendering from markdownaurelia component
  */
 
-@inject(I18N, HttpClient,EventAggregator)
+@inject(I18N, HttpClient, EventAggregator)
 export class Markdown extends Markdownaurelia {
   @bindable src;
   @bindable watchhash;
   @bindable base='';
   @bindable fromid;
 
-  constructor(i18n, httpclient,ea) {
-    super(i18n, httpclient,ea);
+  constructor(i18n, httpclient, ea) {
+    super(i18n, httpclient, ea);
   }
 
-  bind(){
+  bind() {
     console.log('bdlmarkdown bind() src:', this.src);
     super.bind();
   }
 
-  attached(){
+  attached() {
     super.attached();
     console.log('bdlmarkdown attached() src:', this.src);
   }
 
   update() {
-    console.log('markdown2 update called by OOP polymorphism mydiv, html', this.mydiv,this.html);
+    console.log('markdown2 update called by OOP polymorphism mydiv, html', this.mydiv, this.html);
     this.mydiv.innerHTML = this.html;
     super.update();
   }

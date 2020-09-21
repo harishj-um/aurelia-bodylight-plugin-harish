@@ -112,13 +112,13 @@ export class AnimateControl {
         //console.log('performAnimation()');
         that.step();
         //decide whether and how to schedule next animation frame
-        if (that.playsegments && that.stopframe > 0 && that.frame > that.stopframe) that.stopsegment(that,performAnimation); else that.scheduleAnimation(that, performAnimation);
+        if (that.playsegments && that.stopframe > 0 && that.frame > that.stopframe) that.stopsegment(that, performAnimation); else that.scheduleAnimation(that, performAnimation);
       };
       this.request = requestAnimationFrame(performAnimation);
     }
   }
 
-  stopsegment(that,performAnimation) {
+  stopsegment(that, performAnimation) {
     that.animationstarted = false;
     that.currentsegment++;
     //if last segment reninit frame from begining
