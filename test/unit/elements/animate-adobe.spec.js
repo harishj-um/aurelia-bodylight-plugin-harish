@@ -3,73 +3,52 @@ import {bootstrap} from 'aurelia-bootstrapper';
 import * as createjs from 'createjs-module';
 
 describe('animate-adobe element', () => {
-    let component;
-    afterEach(() => {
-        if (component) {
-            component.dispose();
-            component = null;
-        }
+  let component;
+  afterEach(() => {
+    if (component) {
+      component.dispose();
+      component = null;
+    }
+  });
+
+
+  it('creates animate-adobe with createjs', done => {
+    component = StageComponent
+      .withResources('elements/animate-adobe')
+      .inView('<div><script></script><animate-adobe></animate-adobe></div>');
+
+    component.create(bootstrap).then(() => {
+      //await waitForTimeout(50);
+      const view = component.element;
+      //console.log('component',component)
+      //console.log('component.element',component.element)
+      const canvas = view.getElementsByTagName('canvas');
+      expect(canvas.length).toBe(1); //1 canvas
+      const divs = view.getElementsByTagName('div');
+      expect(divs.length).toBe(2); //1 anim container, 1 dom_overlay
+
+      done();
+    }).catch(e => {
+      fail(e);
+      done();
     });
+  });
+  it('creates animate-adobe-control with 2 buttons', done => {
+    component = StageComponent
+      .withResources('elements/animate-adobe-control')
+      .inView('<animate-adobe-control></animate-adobe-control>');
 
-    it('creates animate-adobe2 ', done => {
-
-        component = StageComponent
-            .withResources('elements/animate-adobe2')
-            .inView('<animate-adobe2></animate-adobe2>');
-        component.create(bootstrap).then(() => {
-            //await waitForTimeout(50);
-            const view = component.element;
-            const canvas = view.getElementsByTagName('canvas');
-            expect(canvas.length).toBe(1); //1 canvas
-            const divs = view.getElementsByTagName('div');
-            expect(divs.length).toBe(2); //2 chartjs monitor1
-            done();
-        }).catch(e => {
-            fail(e);
-            done();
-        });
+    component.create(bootstrap).then(() => {
+      //await waitForTimeout(50);
+      const view = component.element;
+      const buttons = view.getElementsByTagName('button');
+      expect(buttons.length).toBe(2);
+      expect(buttons[0].title).toBe('Start/Stop simulation');
+      expect(buttons[1].title).toBe('Do simulation step');
+      done();
+    }).catch(e => {
+      fail(e);
+      done();
     });
-
-    it('creates animate-adobe with createjs', done => {
-
-        component = StageComponent
-            .withResources('elements/animate-adobe')
-            .inView('<div><script></script><animate-adobe></animate-adobe></div>');
-
-        component.create(bootstrap).then(() => {
-            //await waitForTimeout(50);
-            const view = component.element;
-            //console.log('component',component)
-            //console.log('component.element',component.element)
-            const canvas = view.getElementsByTagName('canvas');
-            expect(canvas.length).toBe(1); //1 canvas
-            const divs = view.getElementsByTagName('div');
-            expect(divs.length).toBe(2); //1 anim container, 1 dom_overlay
-
-            done();
-        }).catch(e => {
-            fail(e);
-            done();
-        });
-    });
-    it('creates animate-adobe-control with 2 buttons', done => {
-
-        component = StageComponent
-            .withResources('elements/animate-adobe-control')
-            .inView('<animate-adobe-control></animate-adobe-control>');
-
-        component.create(bootstrap).then(() => {
-            //await waitForTimeout(50);
-            const view = component.element;
-            const buttons = view.getElementsByTagName('button');
-            expect(buttons.length).toBe(2);
-            expect(buttons[0].title).toBe("Start/Stop simulation");
-            expect(buttons[1].title).toBe("Do simulation step");
-            done();
-        }).catch(e => {
-            fail(e);
-            done();
-        });
-    });
-
+  });
 });

@@ -5,6 +5,13 @@
 [project-stage-badge: Development]: https://img.shields.io/badge/Project%20Stage-Development-yellowgreen.svg
 [project-stage-page]: https://blog.pother.ca/project-stages/
 
+## release notes 0.4
+* removed unused packages
+* created npm package aurelia-bodylight-plugin - can be installed using 
+```
+npm -i aurelia-bodylight-plugin
+```
+
 ## release notes 0.2
 * aurelia templating left as is
 * all elements renamed, do not have bdl- prefix or Bdl* in name,
