@@ -172,7 +172,7 @@ export class Chartjs {
     }
 
     if (typeof this.maxdata === 'string') {
-      this.maxdata = parseInt(this.maxdata);
+      this.maxdata = parseInt(this.maxdata, 10);
     }
 
     //if sections are requested - define chartjs plugin to draw it in background
@@ -190,12 +190,12 @@ export class Chartjs {
     if (fromel) {
       fromel.addEventListener('fmidata', this.handleValueChange);
       fromel.addEventListener('fmireset', this.handleReset);
-    } else {console.log('chartjs WARNING, null fromid element')}
+    } else {console.log('chartjs WARNING, null fromid element');}
 
     if (this.sectionid) {
       const sectionel = document.getElementById(this.sectionid);
       if (sectionel) sectionel.addEventListener('addsection', this.handleAddSection);
-      else console.log('chartjs WARNING, null sectionid element')
+      else console.log('chartjs WARNING, null sectionid element');
     }
 
     //for verticalline option - register controller for BdlChartjs
