@@ -1,10 +1,10 @@
 {
   "name": "aurelia-bodylight-plugin",
-  "description": "Aurelia plugin with Bodylight Web Simulator components.",
-  "version": "0.0.1",
+  "description": "Bodylight plugin for Aurelia framework",
+  "version": "0.0.2",
   "repository": {
     "type": "git",
-    "url": "git://github.com/creative-connections/aurelia-bodylight-plugin.git"
+    "url": "git+https://github.com/creative-connections/aurelia-bodylight-plugin.git"
   },
   "license": "MIT",
   "devDependencies": {
@@ -138,9 +138,6 @@
     "markdown-it-footnote": "^3.0.2",
     "markdown-it-for-inline": "^0.1.1"
   },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
-  },
   "bugs": {
     "url": "https://github.com/creative-connections/aurelia-bodylight-plugin/issues"
   },
@@ -152,7 +149,8 @@
   "keywords": [
     "aurelia",
     "bodylight",
-    "fmu"
+    "fmu",
+    "webcomponents"
   ],
-  "author": "TomasKulhanek"
+  "author": "Tomas Kulhanek"
 }
