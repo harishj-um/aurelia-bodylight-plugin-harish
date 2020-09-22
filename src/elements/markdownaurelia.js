@@ -62,6 +62,7 @@ export class Markdownaurelia {
             return '<pre class="hljs"><code>' +
               hljs.highlight(lang, str, true).value +
               '</code></pre>';
+            // eslint-disable-next-line no-empty
           } catch (__) {}
         }
 

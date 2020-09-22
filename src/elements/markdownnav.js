@@ -20,9 +20,9 @@ export class Markdownnav {
     this.currentlink = 'N/A';
   }
 
-  bind(){
+  bind() {
     console.log('bdlmarkdownnav src:', this.src);
-    if (this.notinitread && this.src && this.src.length>0 && this.mdtoc) this.fetchMDSrc();
+    if (this.notinitread && this.src && this.src.length > 0 && this.mdtoc) this.fetchMDSrc();
   }
 
   attached() {
@@ -51,7 +51,7 @@ export class Markdownnav {
     let url = (this.src.startsWith('http')) ? this.src : this.base + this.src;
     console.log('fetchmd src:', this.src);
     //src not empty - then fetch src
-    if (this.src && this.src.length>0) {
+    if (this.src && this.src.length > 0) {
       this.notinitread = false;
       this.client.fetch(url)
         .then(response => response.text())
@@ -74,8 +74,7 @@ export class Markdownnav {
   changesrc(...args) {
     console.log('markdownnav.changesrc() args:', args);
     if (args[1]) this.base = args[1];
-    if (args[0] && args[0].length>0) this.src = args[0];
+    if (args[0] && args[0].length > 0) this.src = args[0];
     this.fetchMDSrc();
   }
-
 }
