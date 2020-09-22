@@ -13,7 +13,6 @@ export function configure(config) {
     PLATFORM.moduleName('./elements/markdownaurelia'),
     PLATFORM.moduleName('./elements/markdown-input'),
     PLATFORM.moduleName('./elements/markdownnav'),
-    //.globalResources(PLATFORM.moduleName('components/composite/markdownaurelia')) //do not register mdaurelia is for internal au use with dynamic html
     PLATFORM.moduleName('./elements/simplegif'),
     PLATFORM.moduleName('./elements/ecg'),
     PLATFORM.moduleName('./elements/chartjs'),
@@ -32,7 +31,6 @@ export function configure(config) {
     PLATFORM.moduleName('./elements/markdown-book'),
     PLATFORM.moduleName('./elements/markdown-book-au'),
     PLATFORM.moduleName('./elements/markdown-app.html'),
-    //.globalResources(BdlAudioOnDecreaseCustomElement)
     PLATFORM.moduleName('./elements/fmi')
   ]);
 }
