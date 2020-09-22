@@ -19,8 +19,8 @@ export class Bind2previous {
    }*/
     this.handleValueChange = e => {
       //console.log('handleValueChange, e,fromid,toid', e);
-      if (this.toattribute) { document.getElementById(this.toid)[this.toattribute] = e.target.value;}
-      else { document.getElementById(this.toid).value = e.target.value;}
+      if (this.toattribute) document.getElementById(this.toid)[this.toattribute] = e.target.value;
+      else document.getElementById(this.toid).value = e.target.value;
     };
   }
 
