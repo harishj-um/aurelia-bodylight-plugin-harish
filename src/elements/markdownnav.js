@@ -29,6 +29,7 @@ export class Markdownnav {
     console.log('bdlmakrdownnav src:', this.src);
     window.markdownnav = this;
     let iterator = MarkdownItForInline;
+    // eslint-disable-next-line new-cap
     this.mdtoc = Markdownit({html: true})
       .use(iterator, 'url', 'link_open', function(tokens, idx) {
         let aIndex = tokens[idx].attrIndex('href');
