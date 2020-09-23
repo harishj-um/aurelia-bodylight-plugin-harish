@@ -48,7 +48,7 @@ index.html
 ...
 <body aurelia-app="webcomponents">
     <bdl-markdown-book index="doc/index.md" summary="doc/summary.md">
-      <img src="doc/loading.gif"/>
+      <img src="docs/loading.gif"/>
     </bdl-markdown-book>
 </body>
 ```
