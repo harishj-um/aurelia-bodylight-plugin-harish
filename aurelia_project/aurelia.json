@@ -111,8 +111,8 @@
       }
     ],
     "copyFiles": {
-      "node_modules/@iktakahiro/markdown-it-katex/node_modules/katex/dist/fonts/*": "fonts/",
-      "node_modules/font-awesome/fonts/*": "font-awesome/fonts/"
+      "node_modules/@iktakahiro/markdown-it-katex/node_modules/katex/dist/fonts/*": "docs/fonts/",
+      "node_modules/font-awesome/fonts/*": "docs/font-awesome/fonts/"
     },
     "loader": {
       "type": "require",
