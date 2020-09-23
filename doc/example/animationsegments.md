@@ -14,5 +14,5 @@ segments="3;5;14;17;29"
 segmentlabels="4b plnění atriální systola;1 systola komor - isovolumická kontrakce;2 systola komor - ejekce;3 isovolumická relaxace;4a plnění"></bdl-animate-control>
 
 animace:
-<bdl-animate-gif fromid="id4" src="doc/heart.gif"></bdl-animate-gif>
+<bdl-animate-gif fromid="id4" src="heart.gif"></bdl-animate-gif>
 

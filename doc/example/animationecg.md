@@ -17,7 +17,7 @@ segmentlabels="4b plnění atriální systola;1 systola komor - isovolumická ko
 </div
 <div class="w3-half">
 animace:
-<bdl-animate-gif fromid="id4" src="doc/heart.gif"></bdl-animate-gif>
+<bdl-animate-gif fromid="id4" src="heart.gif"></bdl-animate-gif>
 
 ekg:
 <bdl-ecg 

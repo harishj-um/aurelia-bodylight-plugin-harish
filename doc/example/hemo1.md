@@ -8,7 +8,7 @@ V druhé fázi srdeční sval kontrahuje a vypuzuje krev, tato fáze se nazývá
 Poté se cyklus periodicky opakuje.
 
 Animace srdce:
-<bdl-animate-sync-gif src="doc/heart.gif" fromid="id4"
+<bdl-animate-sync-gif src="heart.gif" fromid="id4"
 thresholdvalue="1e+7" refindex="8" ></bdl-animatedheart>
 
 Zvuk monitoru:

@@ -5,7 +5,7 @@ This objects uses createJS library in order to control animation
 
 ```xml
 <bdl-animate-adobe 
-    src="doc/ZelezoCelek.js" 
+    src="ZelezoCelek.js" 
     width="800"
     height="600"
     name="ZelezoCelek"
@@ -50,7 +50,7 @@ Example:
 <bdl-animate-adobe-control id="id4"></bdl-animate-adobe-control>
     
 <bdl-animate-adobe 
-    src="doc/ZelezoCelek.js" 
+    src="ZelezoCelek.js" 
     width="800"
     height="600"
     name="ZelezoCelek"

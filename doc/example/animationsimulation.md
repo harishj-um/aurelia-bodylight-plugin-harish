@@ -26,7 +26,7 @@
 <bdl-chartjs-time   id="id13" fromid="id4"  labels="Pressure in Aorta,Pressure in Left Ventricle, Left Ventricle Volume" refindex="1"  refvalues="3" verticalline="true"></bdl-chartjs-time>
 </div>
 <div class="w3-col s12 l3">
- <bdl-animate-gif fromid="id5" src="doc/heart.gif"></bdl-animate-gif>
+ <bdl-animate-gif fromid="id5" src="heart.gif"></bdl-animate-gif>
 </div>
 <div class="w3-col s12 l6">
  <bdl-ecg 

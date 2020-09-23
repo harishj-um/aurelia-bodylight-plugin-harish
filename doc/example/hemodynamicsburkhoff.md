@@ -24,7 +24,7 @@ Tlačítky můžete pustit a zastavit simulaci, krokovat simulaci a resetovat si
 Animace 
 
 <bdl-animate-adobe 
-    src="doc/Faze_srdce.js" 
+    src="Faze_srdce.js" 
     width="335"
     height="480"
     name="Faze_srdce"

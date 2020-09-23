@@ -1,313 +1,126 @@
-# Bodylight Web components and Aurelia plugin
+# Aurelia plugin with Bodylight web components 
 [![Build Status](https://travis-ci.com/creative-connections/aurelia-bodylight-plugin.svg?branch=master)](https://travis-ci.com/creative-connections/aurelia-bodylight-plugin)
  [![Project stage: Development][project-stage-badge: Development]][project-stage-page]
 
 [project-stage-badge: Development]: https://img.shields.io/badge/Project%20Stage-Development-yellowgreen.svg
 [project-stage-page]: https://blog.pother.ca/project-stages/
 
-## release notes 0.4
+Bodylight web components are custom-elements enhancing HTML in order to build interactive web simulators. It contains an FMU component
+able to execute `Modelica` (not only) model simulation exported to `FMU` using FMI standard. It contains Adobe-Animate and Gif-Animate component
+able to control animation exported from Adobe-Animate or animated GIF and bind them to model simulation. It contains Chart-JS component in order 
+to visualise model variables in different chart types.
+
+This plugin is part of broader tools to enable in-browser simulation using modern web technologies: Web Assembly, HTML, Javascript (ECMAScript6).
+
+# Usage
+
+This plugin is distributed in 2 different way: 1) as standard web components or 2) as aurelia components.
+* **1. Standard web components** - follow this section to create web simulator using HTML or Markdown. 
+* **2. Aurelia web components** - follow this section to build more complex interactive application.   
+
+## 1. Standard web components
+
+1) Use `bodylight.bundle.js` from : 
+    * download `bodylight.bundle.js` locally and refer it from your `<script>`:
+    ```html
+        <script type="module" src="bodylight.bundle.js"></script>
+    ```  
+    * OR refer bundle directly from CDN:
+    ```html
+      <script type="module" src="https://cdn.jsdelivr.net/gh/creative-connections/Bodylight.js-Components/dist/bodylight.bundle.js"></script>
+    ```
+   
+2) Set `div` or `body` where web components by adding `aurelia-app="webcomponents"` attribute, all webcomponents are prefixed by `bdl-` prefix:
+```html
+index.html
+...
+<body aurelia-app="webcomponents">
+  <bdl-range id="id1" min="40" max="180" default="60" title="Heart rate"></bdl-range>
+  <bdl-fmi ...></bdl-fmi>
+  <bdl-chartjs ...></bdl-chartjs>
+</body>
+```
+
+3) (optional) you may use any of `bdl-markdown-*` components to refer MD documents where you may use Bodylight webcomponents as well.
+E.g. `doc/index.md` contains main content and `summary.md` contains sidebar with links to other docs.
+```html
+index.html
+...
+<body aurelia-app="webcomponents">
+    <bdl-markdown-book index="doc/index.md" summary="doc/summary.md">
+      <img src="doc/loading.gif"/>
+    </bdl-markdown-book>
+</body>
+```
+```markdown
+doc/index.md
+
+# Introduction
+Markdown syntax is interpretted. Syntax highlighting is enabled for source code. KATEX plugin is enabled to allow
+basic equation e.g. $$e = m c^2$$
+
+## bodylight web components
+Use bodylight web components directly:
+  <bdl-range id="id1" min="40" max="180" default="60" title="Heart rate"></bdl-range>
+  <bdl-fmi ...></bdl-fmi>
+  <bdl-chartjs ...></bdl-chartjs>
+```
+
+```markdown
+summary.md
+| EN | [CZ](#doc/index.cs.md&summary=doc/summary.cs.md) |   
+  * [First Page](#doc/index.md)
+  * [Second Page](#doc/index2.md)
+    * [Sub page of second page](#doc/index22.md)
+```
+
+## 2. Aurelia web components
+
+We recommend to use [aurelia](https://aurelia.io) framework to build web application with Bodylight Web components.
+Follow Aurelia doc's how to prepare your project and  install `aurelia-bodylight-plugin` by `npm` command-line:
+```bash
+npm i aurelia-bodylight-plugin
+```
+
+In your `main.js` file enable the plugin by `aurelia.use.plugin(PLATFORM.moduleName('aurelia-bodylight-plugin'))`, so it may look like:
+```javascript
+//main.js
+import {PLATFORM} from 'aurelia-pal';
+
+export function configure(aurelia) {
+  aurelia.use
+    .standardConfiguration()
+    .plugin(PLATFORM.moduleName('aurelia-bodylight-plugin'))
+
+  aurelia.start().then(() => {
+    aurelia.setRoot(PLATFORM.moduleName('app'));
+  });
+}
+```
+Bodylight web components are available in any template, use them without `bdl-` prefix:
+```html
+<template>
+  <range id="id1" min="40" max="180" default="60" title="Heart rate"></range>
+  <fmi ...></fmi>
+  <chartjs ...></chartjs>
+...
+</template>
+```
+## Reference manual
+For further doc refer `doc/` 
+
+## Release history
+### release notes 0.3
 * removed unused packages
 * created npm package aurelia-bodylight-plugin - can be installed using 
 ```
 npm -i aurelia-bodylight-plugin
 ```
-
-## release notes 0.2
+### release notes 0.2
 * aurelia templating left as is
 * all elements renamed, do not have bdl- prefix or Bdl* in name,
 * aurelia-web-components patched with 'forcePrefix' option to have consistent prefix for all web components
-## release notes 0.1
+### release notes 0.1
 * aurelia-templating throws 'behaviorInstruction' is undefined - need to patch from `\patch` directory
 * bdl-markdown-book index and summary attributes are not reflected
 
-# Introduction
-
-This repository contains reusable components for composing interactive web simulators 
-  * based on `Modelica` models, 
-    * exported to FMU
-    * FMU converted by [Bodylight FMU Compiler](https://github.com/creative-connections/Bodylight.js-FMU-Compiler) into JS code.
-  * supporting basic HTML inputs and outputs
-  * supporting dygraphs, chart.js charts outputs
-  * enhanced markdown rendering with these components
-  * ...
-  
-It can be used either 
-* EITHER as standard web components - defining custom-elements above standard HTML elements with `bdl-` prefix.
-* OR as plugin for aurelia framework defining custom-elements (without prefix). 
-  
-## Bodylight web components in HTML
- 
-You will need 
-  * bundle `bodylight.bundle.js` to add Bodylight Web Component support into any web application or web page. 
-    * download from `scripts\` folder 
-    * OR refer CDN
-`https://cdn.jsdelivr.net/gh/creative-connections/aurelia-bodylight-plugin/scripts/bodylight.bundle.js`.
-  * specific `modelfmi.js` generated by Bodylight Compiler from your specific Modelica model FMU.
-  
-Bodylight Web Components follows [Web Components standards](https://www.webcomponents.org/) and it's part `custom-element` supported by all major web browsers.
-
-These custom elements are all prefixed with `bdl-`.
-
-The following HTML snippet loads first the `bodylight.bundle.js` script alongside 
-Then custom-elements with prefix `<bdl-` can be used alongside other standard HTML.
-`<bdl-fmi>` renders as control buttons (play,pause,step) to start stop simulation in FMI.
-In the background, variables of model are bind as output to dygraph chart in `<bdl-dygraphchart>`
-and as input from `<bdl-range>`. 
-
-```html
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Bodylight web component</title>
-     <script type="module" src="bodylight.bundle.js"></script>
-     <script type="module" src="modelfmi.js"></script>
-  </head>
-<body aurelia-app="webcomponents">
-<!-- put HTML as well as web components inside -->
-<bdl-range id="id1" min="40" max="180" step="1" default="60"></bdl-range>
-
-<bdl-fmi id="id4" 
-    fminame="MeursHemodynamics_Model_vanMeursHemodynamicsModel" 
-    tolerance="0.001" 
-    starttime="0" 
-    guid="{1cd90fb1-006b-4957-b1f2-012702efe021}" 
-    valuereferences="637534215,637534232" 
-    inputs="id1,16777216" 
-    otherinputs="id3"></bdl-fmi>
-
-<bdl-dygraphchart 
-    width="600" height="300" fromid="id4" inputs="time,aorta pressure,ventricle pressure"></bdl-dygraphchart>
-
-</body>
-</html>
-```
-
-## Bodylight Web Components in BdlMarkdown
-
-Bodylight web components contain special markdown components to read external MD file with components: 
-
-The file `home.html`:
-```html
-...
-<bdl-markdown src="home.md"></bdl-markdown>
-...
-```
-
-The file `home.md`:
-```markdown
-# Changing Heart Rate
-heart rate can be set here:
-<bdl-range id="id1" min="40" max="180" step="1" default="60"></bdl-range>
-```
-
-## Bodylight webcomponents in Moodle
-
-1. edit moodle page in HTML - use HTML source, click <i class="fa fa-level-down"></i> and then siwtch code - click <i class="fa fa-code"></i>
-2. add the bodylight script
-   ```html
-   <script type="module" src="https://bodylight.physiome.cz/Bodylight.js-Components/bodylight.bundle.js"></script>
-   <div aurelia-app="webcomponents"><br>
-   ```
-3. add bodylight component, note that markdown component needs base to be specified
-so relative links are rendered correctly inside Moodle. 
-For resources in github repo use `cdn.jsdelivr.net/gh/` which is returning correct MIME Type.
-   ```html
-   <bdl-markdown 
-      src="https://cdn.jsdelivr.net/gh/creative-connections/Bodylight-Scenarios@master/hemodynamics/index.cs.md" 
-      base="https://cdn.jsdelivr.net/gh/creative-connections/Bodylight-Scenarios@master/">
-   bdl-markdown not supported
-   </bdl-markdown>
-   ```
-   This allows FMI scripts and MD content to be loaded correctly. 
-
-## Bodylight webcomponents in Adobe Captivate
-
-Bodylight Web Components cannot be inserted directly into Adobe Captivate, however, content created in HTML or MD and hosted in some domain can be added
-using direct URL as `Web Object`. You may use the `showmenu=false` URL parameter, e.g.: https://bodylight.physiome.cz/Bodylight-Scenarios/#hemodynamics/hemo2.cs.md&showmenu=false
-
-[^1]: Web Components: https://developer.mozilla.org/en-US/docs/Web/Web_Components
-
-For further details, see User's guide at `doc/usersguide.md` or at [bodylight.physiome.cz/Bodylight.js-Components/](https://bodylight.physiome.cz/Bodylight.js-Components/#index=doc/usersguide.md) 
-
-
-## Installation
-
-In Aurelia projects:
-npm i https://github.com/creative-connections/aurelia-bodylight-plugin
-
-In Common projects:
-include bodylight.bundle.js inside
-
-## 
-
-## Development
-
-This project is bootstrapped by [aurelia-cli](https://github.com/aurelia/cli).
-
-This Aurelia plugin project has a built-in dev app (with CLI built-in bundler and RequireJS) to simplify development.
-
-1. The local `src/` folder, is the source code for the plugin.
-2. The local `dev-app/` folder, is the code for the dev app, just like a normal app bootstrapped by aurelia-cli.
-3. You can use normal `au run` and `au test` in development just like developing an app.
-4. You can use aurelia-testing to test your plugin, just like developing an app.
-5. To ensure compatibility to other apps, always use `PLATFORM.moduleName()` wrapper in files inside `src/`. You don't need to use the wrapper in `dev-app/` folder as CLI built-in bundler supports module name without the wrapper.
-
-Note aurelia-cli doesn't provide a plugin skeleton with Webpack setup (not yet), but this plugin can be consumed by any app using Webpack, or CLI built-in bundler, or jspm.
-
-## How to write an Aurelia plugin
-
-For a full length tutorial, visit [Aurelia plugin guide](https://aurelia.io/docs/plugins/write-new-plugin).
-
-Here is some basics. You can create new custom element, custom attribute, value converter or binding behavior manually, or use command `au generate` to help.
-```shell
-au generate element some-name
-au generate attribute some-name
-au generate value-converter some-name
-au generate binding-behavior some-name
-```
-
-By default, the cli generates command generates files in following folders:
-```
-src/elements
-src/attributes
-src/value-converters
-src/binding-behaviors
-```
-
-Note the folder structure is only to help you organising the files, it's not a requirement of Aurelia. You can manually create new element (or other thing) anywhere in `src/`.
-
-After you added some new file, you need to register it in `src/index.js`. Like this:
-```js
-config.globalResources([
-  // ...
-  PLATFORM.moduleName('./path/to/new-file-without-ext')
-]);
-````
-
-The usage of `PLATFORM.moduleName` wrapper is mandatory. It's needed for your plugin to be consumed by any app using webpack, CLI built-in bundler, or jspm.
-
-## Resource import within the dev app
-
-In dev app, when you need to import something from the inner plugin (for example, importing a class for dependency injection), use special name `"resources"` to reference the inner plugin.
-
-```js
-import {inject} from 'aurelia-framework';
-// "resources" refers the inner plugin src/index.js
-import {MyService} from 'resources';
-
-@inject(MyService)
-export class App {
-  constructor(myService) {
-    this.myService = myService;
-  }
-}
-```
-
-## Manage dependencies
-
-By default, this plugin has no "dependencies" in package.json. Theoretically this plugin depends on at least `aurelia-pal` because `src/index.js` imports it. It could also depends on more core Aurelia package like `aurelia-binding` or `aurelia-templating` if you build advanced components that reference them.
-
-Ideally you need to carefully add those `aurelia-pal` (`aurelia-binding`...) to "dependencies" in package.json. But in practice you don't have to. Because every app that consumes this plugin will have full Aurelia core packages installed.
-
-Furthermore, there are two benefits by leaving those dependencies out of plugin's package.json.
-1. ensure this plugin doesn't bring in a duplicated Aurelia core package to consumers' app. This is mainly for app built with webpack. We had been hit with `aurelia-binding` v1 and v2 conflicts due to 3rd party plugin asks for `aurelia-binding` v1.
-2. reduce the burden for npm/yarn when installing this plugin.
-
-If you are a perfectionist who could not stand leaving out dependencies, I recommend you to add `aurelia-pal` (`aurelia-binding`...) to "peerDependencies" in package.json. So at least it could not cause a duplicated Aurelia core package.
-
-If your plugin depends on other npm package, like `lodash` or `jquery`, **you have to add them to "dependencies" in package.json**.
-
-## Build Plugin
-
-Run `au build-plugin`. This will transpile all files from `src/` folder to `dist/native-modules/` and `dist/commonjs/`.
-
-For example, `src/index.js` will become `dist/native-modules/index.js` and `dist/commonjs/index.js`.
-
-Note all other files in `dev-app/` folder are for the dev app, they would not appear in the published npm package.
-
-## Consume Plugin
-
-By default, the `dist/` folder is not committed to git. (We have `/dist` in `.gitignore`). But that would not prevent you from consuming this plugin through direct git reference.
-
-You can consume this plugin directly by:
-```shell
-npm i github:your_github_username/plugin1
-# or if you use bitbucket
-npm i bitbucket:your_github_username/plugin1
-# or if you use gitlab
-npm i gitlab:your_github_username/plugin1
-# or plain url
-npm i https:/github.com/your_github_username/plugin1.git
-```
-
-Then load the plugin in app's `webcomponents.js` like this.
-```js
-aurelia.use.plugin('plugin1');
-// for webpack user, use PLATFORM.moduleName wrapper
-aurelia.use.plugin(PLATFORM.moduleName('plugin1'));
-```
-
-The missing `dist/` files will be filled up by npm through `"prepare": "npm run build"` (in `"scripts"` section of package.json).
-
-Yarn has a [bug](https://github.com/yarnpkg/yarn/issues/5235) that ignores `"prepare"` script. If you want to use yarn to consume your plugin through direct git reference, remove `/dist` from `.gitignore` and commit all the files. Note you don't need to commit `dist/` files if you only use yarn to consume this plugin through published npm package (`npm i plugin1`).
-
-## Publish npm package
-
-By default, `"private"` field in package.json has been turned on, this prevents you from accidentally publish a private plugin to npm.
-
-To publish the plugin to npm for public consumption:
-
-1. Remove `"private": true,` from package.json.
-2. Pump up project version. This will run through `au test` (in "preversion" in package.json) first.
-```shell
-npm version patch # or minor or major
-```
-3. Push up changes to your git server
-```shell
-git push && git push --tags
-```
-4. Then publish to npm, you need to have your npm account logged in.
-```shell
-npm publish
-```
-
-## Automate changelog, git push, and npm publish
-
-You can enable `npm version patch # or minor or major` to automatically update changelog, push commits and version tag to the git server, and publish to npm.
-
-Here is one simple setup.
-1. `npm i -D standard-changelog`. We use [`standard-changelog`](https://github.com/conventional-changelog/conventional-changelog) as a minimum example to support conventional changelog.
-  * Alternatively you can use high level [standard-version](https://github.com/conventional-changelog/standard-version).
-2. Add two commands to `"scripts"` section of package.json.
-```
-"scripts": {
-  // ...
-  "version": "standard-changelog && git add CHANGELOG.md",
-  "postversion": "git push && git push --tags && npm publish"
-},
-```
-3. you can remove `&& npm publish` if your project is private
-
-For more information, go to https://aurelia.io/docs/cli/cli-bundler
-
-## Run dev app
-
-Run `au run`, then open `http://localhost:9000`
-
-To open browser automatically, do `au run --open`.
-
-To change dev server port, do `au run --port 8888`.
-
-To change dev server host, do `au run --host 127.0.0.1`
-
-To install new npm packages automatically, do `au run --auto-install`
-
-**PS:** You could mix all the flags as well, `au run --host 127.0.0.1 --port 7070 --open`
-
-
-## Unit tests
-
-Run `au test` (or `au jest`).
-
-To run in watch mode, `au test --watch` or `au jest --watch`.

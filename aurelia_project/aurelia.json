@@ -68,17 +68,17 @@
     "port": 9000,
     "host": "localhost",
     "open": false,
-    "index": "index.html",
-    "baseDir": ".",
-    "output": "scripts"
+    "index": "doc/index.html",
+    "baseDir": "doc/",
+    "output": "doc/scripts"
   },
   "build": {
     "targets": [
       {
         "port": 9000,
-        "index": "index.html",
-        "baseDir": ".",
-        "output": "scripts"
+        "index": "doc/index.html",
+        "baseDir": "doc/",
+        "output": "doc/scripts"
       }
     ],
     "options": {

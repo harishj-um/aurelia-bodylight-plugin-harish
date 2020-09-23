@@ -16,12 +16,12 @@ Attributes:
 Example
 ```html
 
-<bdl-audio-on-increase src="doc/monitor-beep.mp3" thresholdvalue="1e+7" fromid="id4" refindex="8">
+<bdl-audio-on-increase src="monitor-beep.mp3" thresholdvalue="1e+7" fromid="id4" refindex="8">
   audio-on-increase not supported
 </bdl-audio-on-increase>
 
 
-<bdl-audio-on-decrease src="doc/monitor-beep.mp3" thresholdvalue="1e+7" fromid="id4" refindex="8">
+<bdl-audio-on-decrease src="monitor-beep.mp3" thresholdvalue="1e+7" fromid="id4" refindex="8">
   audio-on-decrease not supported
 </bdl-audio-on-decrease>
 
@@ -29,3 +29,4 @@ Example
   thresholdvalue="1e+7" fromid="id4" refindex="8" freq="440" volume="0.3">
   sound-on-decrease not supported
 </bdl-audio-on-increase> 
+```

@@ -10,4 +10,4 @@ tlačítka:
 <bdl-animate-control id="id4" speedfactor="50"></bdl-animate-control>
 
 animace:
-<bdl-animate-gif fromid="id4" src="doc/heart.gif"></bdl-animate-gif>
+<bdl-animate-gif fromid="id4" src="heart.gif"></bdl-animate-gif>
