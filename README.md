@@ -107,7 +107,7 @@ Bodylight web components are available in any template, use them without `bdl-` 
 </template>
 ```
 ## Reference manual
-For further doc refer `doc/` 
+For further doc refer `docs/` 
 
 ## Release history
 ### release notes 0.3
