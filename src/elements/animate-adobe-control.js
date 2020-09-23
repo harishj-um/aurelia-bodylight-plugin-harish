@@ -1,8 +1,9 @@
 import {bindable} from 'aurelia-templating';
 export class AnimateAdobeControl {
-    animationstarted = false;
     @bindable id;
+    animationstarted = false;
     frame = 0;
+
     startstop() {
       console.log('animateadobecontrol startstop()', this);
       this.animationstarted = ! this.animationstarted;
@@ -15,6 +16,7 @@ export class AnimateAdobeControl {
     }
 
     step() {
-
+      if (!this.animationstarted) this.startstop();
+      setTimeout(()=>{this.startstop();}, 50);
     }
 }
