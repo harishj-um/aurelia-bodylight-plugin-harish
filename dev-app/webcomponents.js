@@ -1,11 +1,13 @@
 import environment from './environment';
 import { CustomElementRegistry } from 'aurelia-web-components';
+import {PLATFORM} from 'aurelia-pal';
+
 
 export function configure(aurelia) {
   aurelia.use
     .standardConfiguration()
   //all components from src (resources/index) will be registered as web component
-    .feature('resources/index');
+    .feature(PLATFORM.moduleName('resources/index'));
   aurelia.use.developmentLogging(environment.debug ? 'debug' : 'warn');
   if (environment.testing) {
     aurelia.use.plugin('aurelia-testing');

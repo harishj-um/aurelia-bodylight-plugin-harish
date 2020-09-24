@@ -109,7 +109,20 @@ Bodylight web components are available in any template, use them without `bdl-` 
 ## Reference manual
 For further doc refer `docs/` 
 
+# Developer's guide
+
+To Build and test
+* `au build-plugin` - builds plugin - outpu to `dist`
+* `au build` - builds dev-app with documentation - output to `/script`
+* `au test` - execute unit tests
+
+To publish NPM package version [NPM aurelia-bodylight-plugin](https://www.npmjs.com/package/aurelia-bodylight-plugin)
+* `npm login` - logs into NPM - need to be contributor for  
+* `np` - UI for release the new version (will ask for patch,minor or major version) 
+
 ## Release history
+### release notes 1.0.2
+* consolidated docs and tests
 ### release notes 0.3
 * removed unused packages
 * created npm package aurelia-bodylight-plugin - can be installed using 
