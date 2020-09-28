@@ -15,64 +15,12 @@ This plugin is part of broader tools to enable in-browser simulation using moder
 # Usage
 
 This plugin is distributed in 2 different way: 1) as standard web components or 2) as aurelia components.
-* **1. Standard web components** - follow this section to create web simulator using HTML or Markdown. 
-* **2. Aurelia web components** - follow this section to build more complex interactive application.   
+* **1. Standard web components** - follow [Bodylight.js-Components](https://github.com/creative-connections/Bodylight.js-Components) to create web simulator using HTML or Markdown or mor complex application using different framework. 
+* **2. Aurelia web components** - follow this section to build more complex interactive application using bodylight plugin   
 
 ## 1. Standard web components
 
-1) Use `bodylight.bundle.js` from : 
-    * download `bodylight.bundle.js` locally and refer it from your `<script>`:
-    ```html
-        <script type="module" src="bodylight.bundle.js"></script>
-    ```  
-    * OR refer bundle directly from CDN:
-    ```html
-      <script type="module" src="https://cdn.jsdelivr.net/gh/creative-connections/Bodylight.js-Components/dist/bodylight.bundle.js"></script>
-    ```
-   
-2) Set `div` or `body` where web components by adding `aurelia-app="webcomponents"` attribute, all webcomponents are prefixed by `bdl-` prefix:
-```html
-index.html
-...
-<body aurelia-app="webcomponents">
-  <bdl-range id="id1" min="40" max="180" default="60" title="Heart rate"></bdl-range>
-  <bdl-fmi ...></bdl-fmi>
-  <bdl-chartjs ...></bdl-chartjs>
-</body>
-```
-
-3) (optional) you may use any of `bdl-markdown-*` components to refer MD documents where you may use Bodylight webcomponents as well.
-E.g. `doc/index.md` contains main content and `summary.md` contains sidebar with links to other docs.
-```html
-index.html
-...
-<body aurelia-app="webcomponents">
-    <bdl-markdown-book index="doc/index.md" summary="doc/summary.md">
-      <img src="docs/loading.gif"/>
-    </bdl-markdown-book>
-</body>
-```
-```markdown
-doc/index.md
-
-# Introduction
-Markdown syntax is interpretted. Syntax highlighting is enabled for source code. KATEX plugin is enabled to allow
-basic equation e.g. $$e = m c^2$$
-
-## bodylight web components
-Use bodylight web components directly:
-  <bdl-range id="id1" min="40" max="180" default="60" title="Heart rate"></bdl-range>
-  <bdl-fmi ...></bdl-fmi>
-  <bdl-chartjs ...></bdl-chartjs>
-```
-
-```markdown
-summary.md
-| EN | [CZ](#doc/index.cs.md&summary=doc/summary.cs.md) |   
-  * [First Page](#doc/index.md)
-  * [Second Page](#doc/index2.md)
-    * [Sub page of second page](#doc/index22.md)
-```
+follow [Bodylight.js-Components](https://github.com/creative-connections/Bodylight.js-Components) to create web simulator using HTML or Markdown.
 
 ## 2. Aurelia web components
 
