@@ -5,10 +5,13 @@
 [project-stage-badge: Development]: https://img.shields.io/badge/Project%20Stage-Development-yellowgreen.svg
 [project-stage-page]: https://blog.pother.ca/project-stages/
 
-Bodylight web components are custom-elements enhancing HTML in order to build interactive web simulators. It contains an FMU component
-able to execute `Modelica` (not only) model simulation exported to `FMU` using FMI standard. It contains Adobe-Animate and Gif-Animate component
-able to control animation exported from Adobe-Animate or animated GIF and bind them to model simulation. It contains Chart-JS component in order 
-to visualise model variables in different chart types.
+Web Components is a suite of different technologies allowing you to create reusable custom elements — with their functionality encapsulated away from the rest of the code. More info at [1].
+Web components of the Bodylight library are exported as custom elements enhancing web documents with 
+* FMU component able to execute `Modelica` (not only) model simulation exported to `FMU` using FMI standard.
+* Adobe-Animate and Gif-Animate component able to control animation exported from Adobe-Animate or animated GIF and bind them to model simulation.
+* ChartJS and DygraphJS components to visualise model variables in different chart types.
+
+All bodylight web components are registered with a bdl- prefix. Components are defined in source code without the prefix, which may be used to build application internally in an aurelia framework. However, web components way is the preferred standard way.
 
 This plugin is part of broader tools to enable in-browser simulation using modern web technologies: Web Assembly, HTML, Javascript (ECMAScript6).
 
@@ -57,7 +60,7 @@ Bodylight web components are available in any template, use them without `bdl-` 
 ## Reference manual
 For further doc refer `docs/` 
 
-# Developer's guide
+## Developer's guide
 
 To Build and test
 * `au build-plugin` - builds plugin - outpu to `dist`
@@ -66,7 +69,26 @@ To Build and test
 
 To publish NPM package version [NPM aurelia-bodylight-plugin](https://www.npmjs.com/package/aurelia-bodylight-plugin)
 * `npm login` - logs into NPM - need to be contributor for  
-* `np` - UI for release the new version (will ask for patch,minor or major version) 
+* `np` - UI for release the new version (will ask for patch,minor or major version)
+
+### Add new component
+To add a new web component:
+* create a component definition in src/components, either only HTML or HTML and JS
+* register the component as a web component in src/webcomponents.js adding a row
+```javascript
+export function configure(aurelia) {
+  aurelia.use
+  ...
+  //use this routine to register HTML only component as web component
+  .globalResources(PLATFORM.moduleName('components/mycomponent.html'))
+  //use this routine to register component (JS and HTML) as web component
+  .globalResources(PLATFORM.moduleName('components/mycomponent'))
+  ...
+```
+
+* create documentation in `docs`
+* create unit test in `test` 
+* build plugin `au build-plugin` and build dev-app with docs using `au build` and see `docs/index.html` 
 
 ## Release history
 ### release notes 1.0.2
