@@ -5,13 +5,13 @@
 [project-stage-badge: Development]: https://img.shields.io/badge/Project%20Stage-Development-yellowgreen.svg
 [project-stage-page]: https://blog.pother.ca/project-stages/
 
-Web Components is a suite of different technologies allowing you to create reusable custom elements — with their functionality encapsulated away from the rest of the code. More info at [1].
-Web components of the Bodylight library are exported as custom elements enhancing web documents with 
-* FMU component able to execute `Modelica` (not only) model simulation exported to `FMU` using FMI standard.
-* Adobe-Animate and Gif-Animate component able to control animation exported from Adobe-Animate or animated GIF and bind them to model simulation.
+Web components of the Bodylight library is a suite of custom elements enhancing HTML web documents with 
+* FMU component able to be execute in browser. `Modelica` model is exported to `FMU` using FMI standard and [Bodylight FMU Compiler](https://github.com/creative-connections/Bodylight.js-FMU-Compiler) can convert FMU with source codes and solver into WebAssembly script.
+* Adobe-Animate and Gif-Animate component able to control animation exported from Adobe-Animate or animated GIF and bind them to variables of model simulation.
 * ChartJS and DygraphJS components to visualise model variables in different chart types.
+* Following Web components standard at [1].
 
-All bodylight web components are registered with a bdl- prefix. Components are defined in source code without the prefix, which may be used to build application internally in an aurelia framework. However, web components way is the preferred standard way.
+All bodylight web components are registered with a bdl- prefix. Components are defined in source code without the prefix, which may be used to build application internally in an Aurelia framework [2]. However, web components way is framework agnostic standard way.
 
 This plugin is part of broader tools to enable in-browser simulation using modern web technologies: Web Assembly, HTML, Javascript (ECMAScript6).
 
