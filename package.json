@@ -16,12 +16,12 @@
     "@babel/register": "^7.10.5",
     "aurelia-animator-css": "^1.0.4",
     "aurelia-bootstrapper": "^2.3.3",
-    "aurelia-web-components": "git+https://github.com/TomasKulhanek/web-components.git",
     "aurelia-cli": "^2.0.0",
     "aurelia-loader-nodejs": "^1.1.0",
     "aurelia-pal-nodejs": "^2.0.0",
     "aurelia-testing": "^1.0.0",
     "aurelia-tools": "^2.0.0",
+    "aurelia-web-components": "git+https://github.com/TomasKulhanek/web-components.git",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^26.3.0",
     "canvas": "^2.6.1",
@@ -41,6 +41,7 @@
     "gulp-rename": "^2.0.0",
     "gulp-sourcemaps": "^2.6.5",
     "gulp-watch": "^5.0.1",
+    "isomorphic-fetch": "^3.0.0",
     "jest": "^26.4.0",
     "jest-cli": "^26.4.0",
     "jest-transform-stub": "^2.0.0",
@@ -51,8 +52,10 @@
     "requirejs": "^2.3.6",
     "serve-static": "^1.14.1",
     "server-destroy": "^1.0.1",
-    "socket.io": "^2.3.0",
     "text": "github:requirejs/text"
+  },
+  "backupdependencies": {
+    "socket.io": "^2.3.0"
   },
   "browserslist": [
     "defaults"
@@ -117,7 +120,6 @@
   },
   "dependencies": {
     "@createjs/easeljs": "^2.0.0-beta.4",
-    "@liradb2000/markdown-it-katex": "^2.1.0",
     "aurelia-bootstrapper": "^2.3.2",
     "aurelia-dynamic-html": "^0.3.1",
     "aurelia-event-aggregator": "^1.0.3",
@@ -136,7 +138,8 @@
     "libgif": "0.0.3",
     "markdown-it": "^11.0.0",
     "markdown-it-footnote": "^3.0.2",
-    "markdown-it-for-inline": "^0.1.1"
+    "markdown-it-for-inline": "^0.1.1",
+    "markdown-it-katexx": "^3.2.0"
   },
   "bugs": {
     "url": "https://github.com/creative-connections/aurelia-bodylight-plugin/issues"
