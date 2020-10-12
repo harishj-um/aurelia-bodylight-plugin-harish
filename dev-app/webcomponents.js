@@ -12,7 +12,7 @@ export function configure(aurelia) {
     .standardConfiguration()
   //all components from src (resources/index) will be registered as web component
     .feature(PLATFORM.moduleName('resources/index'));
-    //.feature('resources/index');
+  //.feature('resources/index');
   aurelia.use.developmentLogging(environment.debug ? 'debug' : 'warn');
   if (environment.testing) {
     aurelia.use.plugin('aurelia-testing');
