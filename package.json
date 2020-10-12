@@ -52,10 +52,11 @@
     "requirejs": "^2.3.6",
     "serve-static": "^1.14.1",
     "server-destroy": "^1.0.1",
+    "socket.io": "^2.3.0",
     "text": "github:requirejs/text"
   },
   "backupdependencies": {
-    "socket.io": "^2.3.0"
+    "aurelia-web-components": "waiting for official release which will involve PR https://github.com/aurelia/web-components/pull/26"
   },
   "browserslist": [
     "defaults"
