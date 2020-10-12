@@ -1,28 +1,35 @@
-# Bodylight.js-Components v 2.0.beta
+# Bodylight Web Components 
 
-Reusable components for composing interactive web simulators 
-  * supports `Modelica` models, 
-    * exported to FMU
-    * FMU converted by [Bodylight FMU Compiler](https://github.com/creative-connections/Bodylight.js-FMU-Compiler) into JS code.
-  * supports HTML (v5) inputs and outputs
-  * includes chart libraries (dygraphs, chart.js) 
-  * enhanced markdown rendering with these components
-  * integration to HTML, BdlMarkdown WIKI, Moodle, Adobe Captivate, ...
+Bodylight Web Components is a suite of custom elements enhancing HTML with following advanced features: 
+* FMI component - to control simulation of modeul using FMI standard in browser. `Modelica` model can be exported by any Modelica tool into `FMU`. [Bodylight FMU Compiler](https://github.com/creative-connections/Bodylight.js-FMU-Compiler) can be used to export FMU into WebAssembly.
+* Adobe-Animate and Gif-Animate component - to control animation exported from Adobe-Animate or animated GIF and bind them to variables of model simulation.
+* ChartJS and DygraphJS components - to visualise model variables in different chart types.
 
-Compared to version 1.0
-  * v 2.0 source with components can be edited in any text or Web editor, 1.0 source needs Bodylight Composer
+This plugin is part of broader tools to enable in-browser simulation using modern web technologies: Web Assembly, HTML, Javascript (ECMAScript6).
+
+# Usage
+To build web simulator:
+1) You need to export Modelica model into FMU with source codes including source codes for solver (Dymola exports CVODE, OpenModelica 1.14.x exports Euler and 1.16.x is declared to support CVODE export too).
+2) Then you need to convert the FMU into WebAssembly - using [Bodylight FMU Compiler](https://github.com/creative-connections/Bodylight.js-FMU-Compiler) 
+3) the exported ZIP contains JS file - to be reffered from `bdl-fmi` component, and `modelDescription.xml` - standard FMU description with variable references.
+4) optional - export Adobe Animate animation into CreateJS library usable by `bdl-adobe` component.
+5) use the Bodylight components, This plugin is distributed in 2 different way: 
+   * **1. Standard web components**[1] - follow [Bodylight.js-Components](https://github.com/creative-connections/Bodylight.js-Components) to create web simulator using HTML or Markdown - web framework agnostic way.  
+   * **2. Aurelia web components**[2] - follow [aurelia-bodylight-plugin](https://github.com/creative-connections/aurelia-bodylight-plugin) to create more interactive application using `Aurelia` framework.
+
+# Comparison to previous version
+
+Compared to Bodylight.js v1.0
+  * Bodylight.js Composer v1.0 was split into independent subsystems - Components, Editor, Composer, VirtualBody (3D visualization)
+  * Source code of web simulator using Bodylight components v 2.0 can be edited in any text or Web editor, it uses HTML markup or MARKDONW markup, compared to Bodylight v.1.0 which needs Bodylight Composer
   * BJP files from version 1.0 are not usable in v 2.0.beta. 
-  * exported Application.HTML from version 1.0 can be integrated with v2.0.beta
-  * v 2.0.beta do not contain Composer app - direct editing HTML or BdlMarkdown using common tools is recommended
-  * Adobe Animate graphics are not yet supported.
-  * v 2.0.beta contains dygraph.js and chart.js libraries for charts, plotly is not yet supported as in v 1.0
+  * v 2.0.beta contains dygraph.js and chart.js libraries for charts, plotly is not  supported
   * v 1.0 HTML export can be used as iframes within v2.0.beta application
-  * Web applications can be combined with Bodylight v 2.0.beta apps as well as with Bodylight v 1.0 apps,
-    see 3D graphics virtualbody in WEBGL [Bodylight-Virtualbody](https://github.com/creative-connections/Bodylight-VirtualBody)  
+  * see 3D graphics virtualbody in WEBGL [Bodylight-Virtualbody](https://github.com/creative-connections/Bodylight-VirtualBody)  
  
 ## Bodylight.js-Components in HTML
  
-In order to add Bodylight support to HTML do following:
+Example usage of Bodylight components in HTML:
   * add script module `bodylight.bundle.js` into head or other location:
   ```html
   <script type="module" src="bodylight.bundle.js"></script>`
@@ -32,16 +39,7 @@ In order to add Bodylight support to HTML do following:
   <body aurelia=app="webcomponents"> ... </body>
   ```
      
-Bodylight Web Components introduce custom elements which are all prefixed with `bdl-` to prevent ambuiguity and 
-follow [Web Components standards](https://www.webcomponents.org/) supported by all major web browsers.
-
-The bundle `bodylight.bundle.js` contains all definition of custom-elements.
-
-The following example contains additional script `modelfmi.js` (Model exported as FMU and then as JS by Bodylight Compiler).
-Then custom-elements with prefix `<bdl-` can be used alongside other standard HTML.
-`<bdl-fmi>` renders as control buttons (play,pause,step) to start stop simulation in FMI.
-In the background, variables of model are bind as output to dygraph chart in `<bdl-dygraphchart>`
-and as input from `<bdl-range>`. 
+Use custom elements with prefix `bdl-`:
 
 ```html
 <!DOCTYPE html>
@@ -71,6 +69,10 @@ and as input from `<bdl-range>`.
 </body>
 </html>
 ```
+Where
+  * `bdl-range` render a range input
+  * `bdl-fmi` render simulation buttons and controls model simulation using `FMI` interface
+  * `bdl-dygraphchart` renders 2d chart of selected variables 
 
 ## Bodylight.js-Components in BdlMarkdown
 
