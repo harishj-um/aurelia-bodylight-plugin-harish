@@ -83,7 +83,7 @@ export class Chartjs {
       let identity = x => x;
       this.operation = [];
       for (let i = 0; i < convertvalues.length; i++) {
-        if (convertvalues[i].contains(',')) {
+        if (convertvalues[i].includes(',')) {
           //convert values are in form numerator,denominator contains comma ','
           let convertitems = convertvalues[i].split(',');
           if (convertitems[0] === '1' && convertitems[1] === '1') this.operation.push(identity);
@@ -110,7 +110,11 @@ export class Chartjs {
 
     //sets color of each dataset as different as possible
     //and set initial data in chart
-    this.chlabels = this.labels.split(',');
+    //set labels - separated by comma
+    if (this.labels) this.chlabels = this.labels.split(',');
+    //else generate labels as 'variable 1' ...
+    else {this.chlabels = [...Array(this.refvalues)].map((_, i) => `variable ${i}`);}
+
     this.colors = [];
     let mydatastr = this.initialdata.split(',');
     this.mydata = mydatastr.map(x => {return parseFloat(x);});

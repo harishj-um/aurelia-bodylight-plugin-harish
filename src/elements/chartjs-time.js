@@ -53,7 +53,8 @@ export class ChartjsTime extends Chartjs {
    */
   bind() {
     super.bind();
-    this.chlabels = this.labels.split(','); //labels for each dataset
+    //done in super
+    //this.chlabels = this.labels.split(','); //labels for each dataset
     //this.colors = [];
     let datasets = [];
     let mydata1 = this.initialdata.split(';');
