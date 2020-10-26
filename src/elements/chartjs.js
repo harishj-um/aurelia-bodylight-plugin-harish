@@ -83,15 +83,30 @@ export class Chartjs {
       let identity = x => x;
       this.operation = [];
       for (let i = 0; i < convertvalues.length; i++) {
-        let convertitems = convertvalues[i].split(',');
-        if (convertitems[0] === '1' && convertitems[1] === '1') this.operation.push(identity);
-        else {
-          let numerator = parseFloat(convertitems[0]);
-          let denominator = parseFloat(convertitems[1]);
-          this.operation.push( x=> x * numerator / denominator );
+        if (convertvalues[i].contains(',')) {
+          //convert values are in form numerator,denominator contains comma ','
+          let convertitems = convertvalues[i].split(',');
+          if (convertitems[0] === '1' && convertitems[1] === '1') this.operation.push(identity);
+          else {
+            let numerator = parseFloat(convertitems[0]);
+            let denominator = parseFloat(convertitems[1]);
+            this.operation.push(x => x * numerator / denominator);
+          }
+        } else {
+          //convert values are in form of expression, do not contain comma
+          if (convertvalues === '1/x') this.operation.push(x=> 1 / x);
+
+          else {
+            //filter only allowed characters: algebraic, digits, e, dot, modulo, parenthesis and 'x' is allowed
+            let expression = convertvalues[i].replace(/[^-\d/*+.()%xe]/g, '');
+            console.log('chartjs bind(), evaluating expression:' + convertvalues[i] + ' securely filtered to :' + expression);
+            // eslint-disable-next-line no-eval
+            this.operation.push(x => eval(expression));
+          }
         }
       }
     }
+
 
     //sets color of each dataset as different as possible
     //and set initial data in chart

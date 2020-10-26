@@ -27,7 +27,12 @@ Creates a chartjs element controlled by BdlChartjs library.
   refindex="2" 
   refvalues="6"></bdl-chartjs>
 
-If `convertors` are defined - then raw data obtained from fmi - via refvalues are converted as x=x*numerator/denominator;
+`convertors` are separated by semicolon ';' per each variable. 
+ If convertors are defined then raw data obtained from fmi - via refvalues are converted 
+as follows: 
+  * `convertors = "numerator,denominator"`, then `y=x*numerator/denominator`
+  * `convertors = "expression with x"`, then `y=expression with x`
+  
 By default - no convertors - raw data (usually in SI) are presented in chart.
   * `animate` - if `true`, smooth animation (by 500 ms) when data is updated. Default `false`.
   * `sectionid` - if set, then listens the component with this id for 'addsection' event, bind it to `bdl-animatecontrol` component

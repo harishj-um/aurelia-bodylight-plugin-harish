@@ -122,7 +122,6 @@ export class Fmi {
 
   //make inst object globally - in case of globals (non-src) declaration
   initfmi() {
-    //TODO make the instance global and take it when button is pressed and instantiate is callsed()
     let that = {};
     if (window.thisfmi) {
       that.fminame = window.thisfmi.fminame;
