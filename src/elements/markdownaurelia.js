@@ -126,7 +126,7 @@ export class Markdownaurelia {
   }
 
   updateContent(content) {
-    console.log('markdownaurelia updatecontent:', content);
+    //console.log('markdownaurelia updatecontent:', content);
     this.text = content;
     this.html = this.md.render(this.text);
     this.update();
