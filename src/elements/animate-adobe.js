@@ -192,6 +192,8 @@ export class AnimateAdobe {
     stopAllAnimation() {
       if (window.ani.stage) {
         window.ani.stage.stop();
+        //TODO call removeEventListener and refactor adding listener when animation should start
+       // window.createjs.Ticker.removeEventListener('tick', window.ani.stage);
       }
     }
 
@@ -200,6 +202,8 @@ export class AnimateAdobe {
      */
     startAllAnimation() {
       if (window.ani.stage) {
+        //TODO call removeEventListener and refactor adding listener when animation should start
+        //window.createjs.Ticker.addEventListener('tick', window.ani.stage);
         window.ani.stage.play();
       }
     }
