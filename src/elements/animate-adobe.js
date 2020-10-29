@@ -8,6 +8,7 @@ export class AnimateAdobe {
     @bindable name;//="ZelezoCelek"
     @bindable cid;//="3CC81150E735AE4485D4B0DF526EB8B4";
     @bindable fromid;
+    animationstarted = false;
 
     constructor() {
       //        console.log('animate-adobe constructor()');
@@ -27,6 +28,8 @@ export class AnimateAdobe {
         document.getElementById(this.fromid).addEventListener('animatestart', this.startAllAnimation);
         document.getElementById(this.fromid).addEventListener('animatestop', this.stopAllAnimation);
         document.getElementById(this.fromid).addEventListener('fmidata', this.handleValueChange);
+        document.getElementById(this.fromid).addEventListener('fmistart', this.enableAnimation);
+          document.getElementById(this.fromid).addEventListener('fmistop', this.disableAnimation);
       }
     }
     attached() {
@@ -128,7 +131,8 @@ export class AnimateAdobe {
         //by default ticker uses setTimeout API, force to use requestAnimationFrame API
         window.createjs.Ticker.timingMode = window.createjs.Ticker.RAF_SYNCHED;
         window.createjs.Ticker.framerate = window.ani.lib.properties.fps;
-        window.createjs.Ticker.addEventListener('tick', window.ani.stage);
+        //window.createjs.Ticker.addEventListener('tick', window.ani.stage);
+        window.ani.enableAnimation();
       };
       //Code to support hidpi screens and responsive scaling.
       window.AdobeAn.makeResponsive(false, 'both', true, 2, [window.ani.adobecanvas, window.ani.anim_container, window.ani.dom_overlay_container]);
@@ -141,7 +145,7 @@ export class AnimateAdobe {
         window.ani.animobjs = window.ani.objs.filter(name => name.endsWith('_anim'));
         window.ani.textobjs = window.ani.objs.filter(name => name.endsWith('_text'));
         window.ani.playobjs = window.ani.objs.filter(name => name.endsWith('_play'));
-        window.ani.stopAllAnimation();
+        window.ani.disableAnimation();
       }, 1000);
     }
 
@@ -192,9 +196,17 @@ export class AnimateAdobe {
     stopAllAnimation() {
       if (window.ani.stage) {
         window.ani.stage.stop();
-        //TODO call removeEventListener and refactor adding listener when animation should start
-       // window.createjs.Ticker.removeEventListener('tick', window.ani.stage);
       }
+    }
+
+    disableAnimation() {
+      window.ani.animationstarted = false;
+      if (window.ani.stage) {window.createjs.Ticker.removeEventListener('tick', window.ani.stage);}
+    }
+
+    enableAnimation() {
+        if (window.ani.stage) {window.createjs.Ticker.addEventListener('tick', window.ani.stage);}
+        window.ani.animationstarted=true;
     }
 
     /**
@@ -203,7 +215,7 @@ export class AnimateAdobe {
     startAllAnimation() {
       if (window.ani.stage) {
         //TODO call removeEventListener and refactor adding listener when animation should start
-        //window.createjs.Ticker.addEventListener('tick', window.ani.stage);
+        if (!window.ani.animationstarted) window.ani.enableAnimation();//window.createjs.Ticker.addEventListener('tick', window.ani.stage);
         window.ani.stage.play();
       }
     }
