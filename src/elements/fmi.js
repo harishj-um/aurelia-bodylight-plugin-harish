@@ -111,8 +111,8 @@ export class Fmi {
       if (isAbort || !script.readyState || /loaded|complete/.test(script.readyState) ) {
         script.onload = script.onreadystatechange = null;
         script = undefined;
-
-        if (!isAbort && callback) setTimeout(callback, 0);
+        //do callback even if isAbort - scripts might be inserted into DOM by another app
+        if (callback) setTimeout(callback, 0);
       }
     };
 
