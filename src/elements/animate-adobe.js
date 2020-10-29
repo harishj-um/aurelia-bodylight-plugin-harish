@@ -67,14 +67,34 @@ export class AnimateAdobe {
 
     //get script element and registers 'onload' callback to be called when the script is loaded
     getScript(source, callback) {
+      //check whether the script is not already there
+      if (Array.from(document.getElementsByTagName('script')).filter(x=> x.getAttribute('src') === source).length > 0) {
+        console.log('AnimateAdobe.getScript() WARNING, script is already added into DOM:', source);
+        //do callback?
+        if (callback) setTimeout(callback, 0);
+        return;
+      }
       //console.log('animateadobe getscript()');
       let script = document.createElement('script');
       let prior = document.getElementsByTagName('script')[0];
       script.async = 1;
       //set that after onload a callback will be executed
-      script.onerror = script.onload = script.onreadystatechange = function( _, isAbort ) {
+      script.onerror = function() {
+        if (!script.readyState || /loaded|complete/.test(script.readyState) ) {
+          script.onerror = script.onload = script.onreadystatechange = null;
+          script = undefined;
+          // try to insert script by other app for previewing - scripts might be inserted into DOM
+          if (window.editorapi && (typeof window.editorapi.insertScriptById === 'function')) {
+            console.log('inserting script by thirdparty api');
+            window.editorapi.insertScriptById(source);
+          }
+          // do callback after 1s
+          if (callback) setTimeout(callback, 1000);
+        }
+      };
+      script.onload = script.onreadystatechange = function( _, isAbort ) {
         if (isAbort || !script.readyState || /loaded|complete/.test(script.readyState) ) {
-          script.onload = script.onreadystatechange = null;
+          script.onerror = script.onload = script.onreadystatechange = null;
           script = undefined;
 
           if (!isAbort && callback) setTimeout(callback, 0);
