@@ -119,8 +119,7 @@ export class Fmi {
         script.onerror = script.onload = script.onreadystatechange = null;
         script = undefined;
         // try to insert script by other app for previewing - scripts might be inserted into DOM
-        if (window.editorapi && (typeof window.editorapi.insertScriptById === 'function'))
-        {
+        if (window.editorapi && (typeof window.editorapi.insertScriptById === 'function')) {
           console.log('inserting script by thirdparty api');
           window.editorapi.insertScriptById(source);
         }
