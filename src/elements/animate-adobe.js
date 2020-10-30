@@ -1,6 +1,10 @@
 import {bindable} from 'aurelia-framework';
 import * as createjs from 'createjs-module';
 
+/**
+ * Exposes animation exported from Adobe Animate to JS CreateJS
+ *
+ */
 export class AnimateAdobe {
     @bindable src;
     @bindable width=800;
@@ -29,7 +33,7 @@ export class AnimateAdobe {
         document.getElementById(this.fromid).addEventListener('animatestop', this.stopAllAnimation);
         document.getElementById(this.fromid).addEventListener('fmidata', this.handleValueChange);
         document.getElementById(this.fromid).addEventListener('fmistart', this.enableAnimation);
-          document.getElementById(this.fromid).addEventListener('fmistop', this.disableAnimation);
+        document.getElementById(this.fromid).addEventListener('fmistop', this.disableAnimation);
       }
     }
     attached() {
@@ -47,17 +51,21 @@ export class AnimateAdobe {
     }
 
     detached() {
-      //console.log('animate-adobe detached()');
       //stop animation
-      window.createjs.Ticker.removeEventListener('tick', window.ani.stage);
-      if (window.ani.stage) window.ani.stage.removeChildAt(0);
+      this.disableAnimation();
       //remove script
       this.removeScript(this.src);
-      //destroy objects
-      //window.createjs=null;
+      //destroy bindings
       this.bindings = [];
-      window.AdobeAn = null;
-      window.ani.stage = null;
+      //remove listeners
+      let fromel = document.getElementById(this.fromid);
+      if (fromel) {
+        fromel.removeEventListener('animatestart', this.startAllAnimation);
+        fromel.removeEventListener('animatestop', this.stopAllAnimation);
+        fromel.removeEventListener('fmidata', this.handleValueChange);
+        fromel.removeEventListener('fmistart', this.enableAnimation);
+        fromel.removeEventListener('fmistop', this.disableAnimation);
+      }
     }
 
     removeScript(source) {
@@ -205,8 +213,8 @@ export class AnimateAdobe {
     }
 
     enableAnimation() {
-        if (window.ani.stage) {window.createjs.Ticker.addEventListener('tick', window.ani.stage);}
-        window.ani.animationstarted=true;
+      if (window.ani.stage) {window.createjs.Ticker.addEventListener('tick', window.ani.stage);}
+      window.ani.animationstarted = true;
     }
 
     /**
