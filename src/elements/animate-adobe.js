@@ -153,6 +153,9 @@ export class AnimateAdobe {
         window.ani.animobjs = window.ani.objs.filter(name => name.endsWith('_anim'));
         window.ani.textobjs = window.ani.objs.filter(name => name.endsWith('_text'));
         window.ani.playobjs = window.ani.objs.filter(name => name.endsWith('_play'));
+        //stop all animation
+        window.ani.stopAllAnimation();
+        //disable animation ticker
         window.ani.disableAnimation();
       }, 1000);
     }

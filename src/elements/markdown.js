@@ -23,23 +23,23 @@ export class Markdown extends Markdownaurelia {
   }
 
   bind() {
-    console.log('bdlmarkdown bind() src:', this.src);
+    //console.log('bdlmarkdown bind() src:', this.src);
     super.bind();
   }
 
   attached() {
     super.attached();
-    console.log('bdlmarkdown attached() src:', this.src);
+    //console.log('bdlmarkdown attached() src:', this.src);
   }
 
   update() {
-    console.log('markdown2 update called by OOP polymorphism mydiv, html', this.mydiv, this.html);
+    //console.log('markdown2 update called by OOP polymorphism mydiv, html', this.mydiv, this.html);
     this.mydiv.innerHTML = this.html;
     super.update();
   }
 
   changesrc(...args) {
-    console.log('bdlmarkdown changesrc:', args);
+    //console.log('bdlmarkdown changesrc:', args);
     super.changesrc(...args);
   }
 }

@@ -52,7 +52,6 @@
     "requirejs": "^2.3.6",
     "serve-static": "^1.14.1",
     "server-destroy": "^1.0.1",
-    "socket.io": "^2.3.0",
     "text": "github:requirejs/text"
   },
   "backupdependencies": {
@@ -130,7 +129,17 @@
     "aurelia-templating": "^1.10.4",
     "chart.js": "^2.9.3",
     "createjs": "^1.0.1",
+    "d3-array": "^2.8.0",
+    "d3-collection": "^1.0.7",
+    "d3-color": "^2.0.0",
+    "d3-dispatch": "^2.0.0",
+    "d3-path": "^2.0.0",
+    "d3-quadtree": "^2.0.0",
+    "d3-shape": "^2.0.0",
+    "d3-time": "^2.0.0",
+    "d3-timer": "^2.0.0",
     "dygraphs": "^2.1.0",
+    "elementary-circuits-directed-graph": "^1.2.0",
     "file-saver": "^2.0.2",
     "font-awesome": "^4.7.0",
     "gifffer": "^1.5.4",
@@ -140,7 +149,8 @@
     "markdown-it": "^11.0.0",
     "markdown-it-footnote": "^3.0.2",
     "markdown-it-for-inline": "^0.1.1",
-    "markdown-it-katexx": "^3.2.0"
+    "markdown-it-katexx": "^3.2.0",
+    "plotly.js-dist": "^1.57.1"
   },
   "bugs": {
     "url": "https://github.com/creative-connections/aurelia-bodylight-plugin/issues"
@@ -154,7 +164,9 @@
     "aurelia",
     "bodylight",
     "fmu",
-    "webcomponents"
+    "webcomponents",
+    "modelica",
+    "webassembly"
   ],
   "author": "Tomas Kulhanek"
 }

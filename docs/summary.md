@@ -14,6 +14,7 @@
       * [Capillary](#usersguide/capillary.md)
       * [ChartJS](#usersguide/chartjs.md)
       * [Dygraph](#usersguide/dygraph.md)
+      * [Plotly](#usersguide/plotly.md)
       * [ECG](#usersguide/ecg.md)
       * [BdlMarkdown - documents with <br /> bodylight web components](#usersguide/markdown.md)      
     * [Developer's Guide](#developersguide.md)

@@ -21,12 +21,12 @@ export class Markdownnav {
   }
 
   bind() {
-    console.log('bdlmarkdownnav src:', this.src);
+    //console.log('bdlmarkdownnav src:', this.src);
     if (this.notinitread && this.src && this.src.length > 0 && this.mdtoc) this.fetchMDSrc();
   }
 
   attached() {
-    console.log('bdlmakrdownnav src:', this.src);
+    //console.log('bdlmakrdownnav src:', this.src);
     window.markdownnav = this;
     let iterator = MarkdownItForInline;
     // eslint-disable-next-line new-cap
@@ -50,7 +50,7 @@ export class Markdownnav {
 
   fetchMDSrc() {
     let url = (this.src.startsWith('http')) ? this.src : this.base + this.src;
-    console.log('fetchmd src:', this.src);
+    //console.log('fetchmd src:', this.src);
     //src not empty - then fetch src
     if (this.src && this.src.length > 0) {
       this.notinitread = false;
@@ -62,7 +62,7 @@ export class Markdownnav {
           //convert from md to html
           this.links = [];
           this.html = this.mdtoc.render(this.text);
-          console.log('markdownnow fetchmd src links:', this.html);
+          //console.log('markdownnow fetchmd src links:', this.html);
           this.update();
         });
     }
@@ -73,7 +73,7 @@ export class Markdownnav {
   }
 
   changesrc(...args) {
-    console.log('markdownnav.changesrc() args:', args);
+    //console.log('markdownnav.changesrc() args:', args);
     if (args[1]) this.base = args[1];
     if (args[0] && args[0].length > 0) this.src = args[0];
     this.fetchMDSrc();
