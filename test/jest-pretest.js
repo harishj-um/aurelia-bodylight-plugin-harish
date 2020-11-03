@@ -4,3 +4,4 @@ import {globalize} from 'aurelia-pal-nodejs';
 import path from 'path';
 Options.relativeToDir = path.join(__dirname, 'unit');
 globalize();
+window.URL.createObjectURL = function() {};

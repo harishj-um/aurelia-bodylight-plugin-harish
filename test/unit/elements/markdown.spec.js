@@ -1,9 +1,15 @@
-import "isomorphic-fetch";
+import 'isomorphic-fetch';
 import {StageComponent} from 'aurelia-testing';
 import {bootstrap} from 'aurelia-bootstrapper';
+import {Plotly} from '../../../src/elements/plotly';
+
 
 describe('markdown element', () => {
   let component;
+  beforeEach(() => {
+    //fake function to satisfy plotly
+    //window.URL.createObjectURL = function() {return {}};
+  });
 
   afterEach(() => {
     if (component) {
@@ -13,7 +19,6 @@ describe('markdown element', () => {
   });
 
   it('creates div and section with md content', done => {
-
     component = StageComponent
       .withResources('elements/markdownaurelia')
       .inView('<markdownaurelia></markdownaurelia>');

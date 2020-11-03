@@ -50,7 +50,7 @@ describe('chartjs element', () => {
       expect(canvas.length).toBe(1); //1 canvas
       const divs = view.getElementsByTagName('div');
       //console.log('divs length',divs.length)
-      expect(divs.length).toBe(2); //2 chartjs monitor1
+      expect(divs.length).toBe(3); //2 chartjs monitor1
       //console.log('divs[0] class')
       //expect(divs[0].className).toBe('chartjs-size-2); //2 chartjs monitor1
       //const chartjsmonitor = view.getElementsByClassName('chartjs-size-monitor');
