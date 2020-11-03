@@ -88,7 +88,9 @@ export class ChartjsTime extends Chartjs {
   }
 
   resetdata() {
-    super.resetdata();
+    //super.resetdata();
+    for (let j = 0; j < this.refvalues; j++) this.chart.data.datasets[j].data = [];
     this.chart.data.labels = [];
+    this.chart.update();
   }
 }

@@ -19,11 +19,21 @@ Můžete nastavit tepovou frekvenci srdce:
 <bdl-range id="id1" min="40" max="180" step="1" default="60" title=""></bdl-range>
                
 V grafu je vidět tlak v aortě a levé komoře.
-SI:
+<div class="w3-row">
+<div class="w3-third">
+dygraph:
 <bdl-dygraphchart width="300" height="100" fromid="id4" inputs="time,aorta pressure,ventricle pressure" refindex="0" refvalues="2"></bdl-dygraphchart>
-
-mmHg:
+</div>
+<div class="w3-third">
+chartjs mmHg:
 <!--bdl-chartjs-time width="300" height="100" fromid="id4" refindex="0" refvalues="2" convertors="1,133.322368;x*0.0075006183"></bdl-chartjs-time-->
 <bdl-chartjs-time width="300" height="100" fromid="id4" refindex="0" refvalues="2" convertors="1,133.322368;1,133.322368"></bdl-chartjs-time>
+</div>
+<div class="w3-third">
+plotly
+<bdl-plotly fromid="id4" refindex="0" refvalues="2" width="500"></bdl-plotly>
+</div></div>
+
+
 
 

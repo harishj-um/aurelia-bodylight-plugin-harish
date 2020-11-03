@@ -1,7 +1,13 @@
 ## BdlPlotly
 
 ```xml
-<bdl-plotlyjs></bdl-plotlyjs>
+<bdl-plotly
+  fromid="fmiid"
+  refindex="0"
+  refvalues="1"></bdl-plotly>
 ```
 
-<bdl-plotlyjs></bdl-plotlyjs>
+<bdl-plotly
+  fromid="fmiid"
+  refindex="0"
+  refvalues="1"></bdl-plotly>
