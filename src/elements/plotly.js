@@ -96,7 +96,7 @@ export class Plotly {
     } else {console.log('chartjs WARNING, null fromid element');}
   }
 
-  detached(){
+  detached() {
     const fromel = document.getElementById(this.fromid);
     if (fromel) {
       fromel.removeEventListener('fmidata', this.handleValueChange);
