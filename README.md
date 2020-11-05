@@ -5,30 +5,29 @@
 [project-stage-badge: Development]: https://img.shields.io/badge/Project%20Stage-Development-yellowgreen.svg
 [project-stage-page]: https://blog.pother.ca/project-stages/
 
-Web components of the Bodylight library is a suite of custom elements enhancing HTML web documents with 
+Web components of the Bodylight library is a suite of custom elements enhancing HTML.
+It is distributed either as  
+* **1. Aurelia web components** - follow this instruction further, framework dependent distribution. Follow instructions further
+* **2. Standard web components** - framework agnostic distibution with 1 independent JS file. Follow [Bodylight.js-Components](https://github.com/creative-connections/Bodylight.js-Components) to create web simulator using HTML or Markdown or mor complex application using different framework.
+
+Web components contains:
 * FMU component able to be execute in browser. `Modelica` model is exported to `FMU` using FMI standard and [Bodylight FMU Compiler](https://github.com/creative-connections/Bodylight.js-FMU-Compiler) can convert FMU with source codes and solver into WebAssembly script.
 * Adobe-Animate and Gif-Animate component able to control animation exported from Adobe-Animate or animated GIF and bind them to variables of model simulation.
-* ChartJS and DygraphJS components to visualise model variables in different chart types.
-* Following Web components standard at [1].
+* ChartJS, DygraphJS, PlotlyJS components to visualise model variables in different chart types and libraries.
+* Following Web components standard to be broadly compatible with any web application.
 
-All bodylight web components are registered with a bdl- prefix. Components are defined in source code without the prefix, which may be used to build application internally in an Aurelia framework [2]. However, web components way is framework agnostic standard way.
-
-This plugin is part of broader tools to enable in-browser simulation using modern web technologies: Web Assembly, HTML, Javascript (ECMAScript6).
 
 # Usage
-To build web simulator:
+This plugin is part of broader tools to enable in-browser simulation using modern web technologies: Web Assembly, HTML, Javascript (ECMAScript6).
+In order to build web simulator:
 1) You need to export Modelica model into FMU with source codes including source codes for solver (Dymola exports CVODE, OpenModelica 1.14.x exports Euler and 1.16.x is declared to support CVODE export too).
 2) Then you need to convert the FMU into WebAssembly - using [Bodylight FMU Compiler](https://github.com/creative-connections/Bodylight.js-FMU-Compiler) 
 3) the exported ZIP contains JS file - to be reffered from `bdl-fmi` component, and `modelDescription.xml` - standard FMU description with variable references.
 4) optional - export Adobe Animate animation into CreateJS library usable by `bdl-adobe` component.
 5) use the Bodylight components, This plugin is distributed in 2 different way: 1) as standard web components or 2) as aurelia components.
-   * **1. Standard web components** - follow [Bodylight.js-Components](https://github.com/creative-connections/Bodylight.js-Components) to create web simulator using HTML or Markdown or mor complex application using different framework. 
-   * **2. Aurelia web components** - follow this section to build more complex interactive application using bodylight plugin   
-
-
-## 1. Standard web components
-
-follow [Bodylight.js-Components](https://github.com/creative-connections/Bodylight.js-Components) to create web simulator using HTML or Markdown.
+   * **1. Aurelia web components** - we recommend this distribution in order to build more complex interactive application with [Aurelia](https://aurelia.io) framework.   
+   * **2. Standard web components** - we recommend this distribution in order to build web simulator with text, graphics and visualisation in enhanced HTML or Markdown, without need to touch Javscript or other APIs.
+    Follow [Bodylight.js-Components](https://github.com/creative-connections/Bodylight.js-Components)  
 
 ## 2. Aurelia web components
 
@@ -96,6 +95,10 @@ export function configure(aurelia) {
 * build plugin `au build-plugin` and build dev-app with docs using `au build` and see `docs/index.html` 
 
 ## Release history
+### release notes since 2.0.0
+* follow https://github.com/creative-connections/aurelia-bodylight-plugin/releases 
+* follow https://github.com/creative-connections/Bodylight.js-Components/releases
+* compiled JS distributed as `NPM` packages aurelia plugin: `npm i aurelia-bodylight-plugin` standard web components: `npm i bodylight-components` 
 ### release notes 1.0.2
 * consolidated docs and tests
 ### release notes 0.3
