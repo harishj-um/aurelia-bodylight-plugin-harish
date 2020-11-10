@@ -30,6 +30,7 @@ export function configure(config) {
     PLATFORM.moduleName('./elements/audio-on-decrease'),
     PLATFORM.moduleName('./elements/sound-on-increase'),
     PLATFORM.moduleName('./elements/markdown-book'),
+    PLATFORM.moduleName('./elements/markdown-book2'),
     PLATFORM.moduleName('./elements/markdown-book-au'),
     PLATFORM.moduleName('./elements/markdown-app.html'),
     PLATFORM.moduleName('./elements/fmi')

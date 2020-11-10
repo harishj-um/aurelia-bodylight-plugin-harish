@@ -9,7 +9,6 @@ export class MarkdownBook extends WatchHashCore {
 
   constructor() {
     super();
-    console.log('calling super');
     this.params = 'showmenu,2;base,3';
   }
 
