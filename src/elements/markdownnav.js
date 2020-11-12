@@ -3,21 +3,23 @@ import MarkdownItForInline from 'markdown-it-for-inline';
 import {bindable, inject} from 'aurelia-framework';
 import {I18N} from 'aurelia-i18n';
 import {HttpClient} from 'aurelia-fetch-client';
+import {EventAggregator} from 'aurelia-event-aggregator';
 
-@inject(I18N, HttpClient)
+@inject(I18N, HttpClient, EventAggregator)
 export class Markdownnav {
   @bindable src;
   @bindable navstyle;
   @bindable base='';
   notinitread=true;
 
-  constructor(i18n, httpclient) {
+  constructor(i18n, httpclient, ea) {
     this.i18n = i18n;
     this.client = httpclient;
     this.html = '';
     this.navclass = '';
     this.links = [];
     this.currentlink = 'N/A';
+    this.ea = ea;
   }
 
   bind() {
@@ -38,7 +40,8 @@ export class Markdownnav {
           //no href
         } else {
           let link = tokens[idx].attrs[aIndex][1];
-          window.markdownnav.links.push(link);
+          let linktext = tokens[idx].content;
+          window.markdownnav.links.push({url: link, title: linktext});
         }
       });
     this.navclass = (this.navstyle && this.navstyle.length > 0) ? this.navstyle : 'horizontal';
@@ -63,6 +66,7 @@ export class Markdownnav {
           this.links = [];
           this.html = this.mdtoc.render(this.text);
           //console.log('markdownnow fetchmd src links:', this.html);
+          this.ea.publish('navchange', {links: this.links, text: this.text, html: this.html});
           this.update();
         });
     }

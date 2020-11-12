@@ -6,11 +6,13 @@
     <require from="./markdown"></require>
     <require from="./markdown-nav2"></require>
     <require from="../attributes/watchhash"></require>
+    <require from="./watch-url-hash"></require>
     <require from="./w3fonts.css"></require>
 <div class="w3-row">
     <div class="w3-col s12 l2 m3" show.bind="shownav">
         <div class="w3-padding" >
-        <markdown-nav2 navstyle="vertical" base="${base}" src="${summary}" watchhash="summary,1;base,3" html.two-way="content"></markdown-nav2>
+        <watch-url-hash></watch-url-hash>
+        <markdown-nav2 navstyle="vertical" base="${base}" src="${summary}" watchhashchange="summary,1;base,3" html.two-way="content"></markdown-nav2>
         </div>
     </div>
     <div class="w3-rest w3-palatino">

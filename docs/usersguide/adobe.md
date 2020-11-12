@@ -45,15 +45,20 @@ The conversion is made as linear approximation between amin and amax as followin
 
 ```
 
-Example:
-
+Example in grid 1/3 and 2/3:
+<div class="w3-row">
+  <div class="w3-third">
 <bdl-animate-adobe-control id="id4"></bdl-animate-adobe-control>
-    
+  </div>
+  <div class="w3-twothird">
 <bdl-animate-adobe 
     src="ZelezoCelek.js" 
-    width="800"
-    height="600"
+    width="1080"
+    height="1080"
     name="ZelezoCelek"
     fromid="id4" ></bdl-animate-adobe>
+  </div>
+</div>
+    
 
     

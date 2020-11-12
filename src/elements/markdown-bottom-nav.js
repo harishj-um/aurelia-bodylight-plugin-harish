@@ -35,10 +35,10 @@ export class MarkdownBottomNav {
 
     changesrc(...args) {
       console.log('markdown-bottom-nav changesrc args:', args);
-        console.log('markdown-bottom-nav links:',this.links);
+      console.log('markdown-bottom-nav links:', this.links);
     }
     contentChanged(newv, oldv) {
       console.log('markdown-bottom-na contentchanged', oldv, newv);
-        console.log('markdown-bottom-nav links:',window.markdownnav.links);
+      console.log('markdown-bottom-nav links:', window.markdownnav.links);
     }
 }
