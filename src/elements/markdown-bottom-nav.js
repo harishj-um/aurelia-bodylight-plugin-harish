@@ -1,4 +1,4 @@
-import {Markdownnav} from './markdownnav';
+//import {Markdownnav} from './markdownnav';
 import {bindable, inject} from 'aurelia-framework';
 import {I18N} from 'aurelia-i18n';
 import {HttpClient} from 'aurelia-fetch-client';
