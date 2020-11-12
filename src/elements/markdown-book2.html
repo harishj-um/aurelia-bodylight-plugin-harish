@@ -4,11 +4,22 @@
     <require from="./markdown-top-nav"></require>
     <require from="./markdown-bottom-nav"></require>
     <require from="./markdown"></require>
+    <require from="./markdown-nav2"></require>
     <require from="../attributes/watchhash"></require>
     <require from="./w3fonts.css"></require>
-<div class="w3-palatino w3-margin-left w3-margin-right">
-    <markdown-top-nav base="${base}" src="${summary}" watchhash="summary,1;base,3"></markdown-top-nav>
-    <markdown base="${base}" src="${index}" watchhash="index,0;base,3"></markdown>
-    <markdown-bottom-nav base="${base}" src="${summary}" watchhash="summary,1;base,3"></markdown-bottom-nav>
+<div class="w3-row">
+    <div class="w3-col s12 l2 m3" show.bind="shownav">
+        <div class="w3-padding" >
+        <markdown-nav2 navstyle="vertical" base="${base}" src="${summary}" watchhash="summary,1;base,3" html.two-way="content"></markdown-nav2>
+        </div>
+    </div>
+    <div class="w3-rest w3-palatino">
+        <div class="w3-padding" >
+        <markdown-top-nav base="${base}" src="${summary}" nav.two-way="shownav"></markdown-top-nav>
+
+        <markdown class="w3-padding"  base="${base}" src="${index}" watchhash="index,0;base,3"></markdown>
+        <markdown-bottom-nav class="w3-padding"  base="${base}" src="${summary}" watchhash="index,0;base,3" content.bind="content"></markdown-bottom-nav>
+        </div>
+    </div>
 </div>
 </template>

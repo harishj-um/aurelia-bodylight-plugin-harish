@@ -72,10 +72,10 @@ export class Markdownnav {
     this.mynav.innerHTML = this.html;
   }
 
-  changesrc(...args) {
+  /*changesrc(...args) {
     //console.log('markdownnav.changesrc() args:', args);
     if (args[1]) this.base = args[1];
     if (args[0] && args[0].length > 0) this.src = args[0];
     this.fetchMDSrc();
-  }
+  }*/
 }

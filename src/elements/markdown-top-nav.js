@@ -8,6 +8,7 @@ export class MarkdownTopNav extends Markdownnav {
     @bindable src;
     @bindable navstyle;
     @bindable base='';
+    @bindable nav=false;
     notinitread=true;
     previoustitle='Introduction';
     nexttitle='Hemodynamics in Left Ventricle'
@@ -18,4 +19,8 @@ export class MarkdownTopNav extends Markdownnav {
     }
 
     update() {}
+
+    showhidenav() {
+      this.nav = ! this.nav;
+    }
 }
