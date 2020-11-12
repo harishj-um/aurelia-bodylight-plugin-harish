@@ -1,5 +1,5 @@
-import {parseHashParamString} from './utils';
-import {WatchHashCore} from "./watch-hash-core";
+//import {parseHashParamString} from './utils';
+import {WatchHashCore} from './watch-hash-core';
 
 /**
  * Custom Attribute
@@ -14,8 +14,8 @@ export class WatchhashCustomAttribute extends WatchHashCore {
     this.isReadMDCustomElement = false;
     console.log('watchhash check au controller');
     if (element && element.au && element.au.controller) {
-      console.log('watchhash check au controller type:',typeof (element.au.controller));
-      if (typeof (element.au.controller) === 'object') console.log('watchhash check au controller viewmodel:',element.au.controller.viewModel);
+      console.log('watchhash check au controller type:', typeof (element.au.controller));
+      if (typeof (element.au.controller) === 'object') console.log('watchhash check au controller viewmodel:', element.au.controller.viewModel);
 
       if (typeof (element.au.controller) === 'object' && element.au.controller.viewModel && typeof (element.au.controller.viewModel) === 'object') {
         this.elementVM = element.au.controller.viewModel;
