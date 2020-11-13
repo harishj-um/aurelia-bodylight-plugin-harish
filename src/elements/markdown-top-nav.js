@@ -13,9 +13,9 @@ export class MarkdownTopNav {
     @bindable base='';
     @bindable nav=false;
     notinitread=true;
-    previoustitle='Introduction';
-    nexttitle='Hemodynamics in Left Ventricle'
-    navtitle='Hemodynamics in Left Atria';
+    previoustitle='';//Introduction';
+    nexttitle='';//Hemodynamics in Left Ventricle'
+    navtitle='';//Hemodynamics in Left Atria';
     currentlink='';
 
     constructor(ea) {

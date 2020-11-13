@@ -10,8 +10,8 @@ export class MarkdownBottomNav {
     @bindable navstyle;
     @bindable base='';
     notinitread=true;
-    previoustitle='Introduction';
-    nexttitle='Hemodynamics in Left Ventricle'
+    previoustitle='';//Introduction';
+    nexttitle='';//Hemodynamics in Left Ventricle'
     @bindable content;
 
     constructor(i18n, httpclient) {
