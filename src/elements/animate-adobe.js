@@ -29,11 +29,16 @@ export class AnimateAdobe {
      */
     bind() {
       if (this.fromid) {
-        document.getElementById(this.fromid).addEventListener('animatestart', this.startAllAnimation);
-        document.getElementById(this.fromid).addEventListener('animatestop', this.stopAllAnimation);
-        document.getElementById(this.fromid).addEventListener('fmidata', this.handleValueChange);
-        document.getElementById(this.fromid).addEventListener('fmistart', this.enableAnimation);
-        document.getElementById(this.fromid).addEventListener('fmistop', this.disableAnimation);
+        let fromel = document.getElementById(this.fromid);
+        if (fromel) {
+          fromel.addEventListener('animatestart', this.startAllAnimation);
+          fromel.addEventListener('animatestop', this.stopAllAnimation);
+          fromel.addEventListener('fmidata', this.handleValueChange);
+          fromel.addEventListener('fmistart', this.enableAnimation);
+          fromel.addEventListener('fmistop', this.disableAnimation);
+        } else {
+          console.error('adobe-animate component cannot find control element with id:', this.fromid);
+        }
       }
     }
     attached() {
