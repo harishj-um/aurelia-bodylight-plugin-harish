@@ -58,72 +58,50 @@ export class AnimateAdobe {
     }
 
     makeResponsive(isResp, respDim, isScale, scaleType, domContainers) {
-      let lastW; let lastH; let lastS = 1;
-      window.addEventListener('resize', resizeCanvas);
-      resizeCanvas();
-      function resizeCanvas() {
-        let w = window.ani.lib.properties.width; let h = window.ani.lib.properties.height;
-        let iw = window.innerWidth;
-        let ih = window.innerHeight;
-        if (window.ani.adobecanvas && window.ani.adobecanvas.parentElement && window.ani.adobecanvas.parentElement.parentElement && window.ani.adobecanvas.parentElement.parentElement.parentElement) {
-          iw = window.ani.adobecanvas.parentElement.parentElement.parentElement.offsetWidth;
-          ih = window.ani.adobecanvas.parentElement.parentElement.parentElement.offsetHeight;
-        }
-        ih = iw / ( w / h );
-        //let iw = window.innerWidth; let ih = window.innerHeight;
-        let pRatio = window.devicePixelRatio || 1; let xRatio = iw / w; let yRatio = ih / h; let sRatio = 1;
-        if (isResp) {
-          if ((respDim === 'width' && lastW === iw) || (respDim === 'height' && lastH === ih)) {
-            sRatio = lastS;
-          } else if (!isScale) {
-            if (iw < w || ih < h) {sRatio = Math.min(xRatio, yRatio);}
-          } else if (scaleType === 1) {
-            sRatio = Math.min(xRatio, yRatio);
-          } else if (scaleType === 2) {
-            sRatio = Math.max(xRatio, yRatio);
-          }
-        }
-        domContainers[0].width = w * pRatio * sRatio;
-        domContainers[0].height = h * pRatio * sRatio;
-        domContainers.forEach(function(container) {
-          container.style.width = w * sRatio + 'px';
-          container.style.height = h * sRatio + 'px';
-        });
-        window.ani.stage.scaleX = pRatio * sRatio;
-        window.ani.stage.scaleY = pRatio * sRatio;
-        lastW = iw; lastH = ih; lastS = sRatio;
-        window.ani.stage.tickOnUpdate = false;
-        window.ani.stage.update();
-        window.ani.stage.tickOnUpdate = true;
-      }
+      //let lastW; let lastH; let lastS = 1;
+      window.addEventListener('resize', window.ani.resizeCanvas);
+      window.ani.isResp=isResp;
+      window.ani.respDim = respDim;
+      window.ani.isScale = isScale;
+      window.ani.scaleType= scaleType;
+      window.ani.domContainers = domContainers;
+      window.ani.resizeCanvas();
     }
 
     handleResize() {
-      let w = window.innerWidth;
-      //let h = window.innerHeight;
+      let w = window.ani.lib.properties.width; let h = window.ani.lib.properties.height;
+      let iw = window.innerWidth;
+      let ih = window.innerHeight;
       if (window.ani.adobecanvas && window.ani.adobecanvas.parentElement && window.ani.adobecanvas.parentElement.parentElement && window.ani.adobecanvas.parentElement.parentElement.parentElement) {
-        w = window.ani.adobecanvas.parentElement.parentElement.parentElement.offsetWidth;
-        //h = window.ani.adobecanvas.parentElement.parentElement.parentElement.offsetHeight;
+        iw = window.ani.adobecanvas.parentElement.parentElement.parentElement.offsetWidth;
+        ih = window.ani.adobecanvas.parentElement.parentElement.parentElement.offsetHeight;
       }
-      h = w / window.ani.ratio;
-      stage.canvas.width = w;
-      stage.canvas.height = h;
-
-      window.ani.dom_overlay_container.style.width = w + 'px';
-      window.ani.dom_overlay_container.style.height = h + 'px';
-      window.ani.anim_container.style.width = w + 'px';
-      window.ani.anim_container.style.height = h + 'px';
-
-      /*
-      let ratio = window.ani.ratio;
-      let windowRatio = w / h;
-      let scale = w / 100;
-      if (windowRatio > ratio) {
-        scale = h / 100;
-      }*/
-      stage.tickOnUpdate = false;
-      stage.update();
-      stage.tickOnUpdate = true;
+      ih = iw / ( w / h );
+      //let iw = window.innerWidth; let ih = window.innerHeight;
+      let pRatio = window.devicePixelRatio || 1; let xRatio = iw / w; let yRatio = ih / h; let sRatio = 1;
+      if (window.ani.isResp) {
+        if ((window.ani.respDim === 'width' && window.ani.lastW === iw) || (window.ani.respDim === 'height' && window.ani.lastH === ih)) {
+          sRatio = window.ani.lastS;
+        } else if (!window.ani.isScale) {
+          if (iw < w || ih < h) {sRatio = Math.min(xRatio, yRatio);}
+        } else if (window.ani.scaleType === 1) {
+          sRatio = Math.min(xRatio, yRatio);
+        } else if (window.ani.scaleType === 2) {
+          sRatio = Math.max(xRatio, yRatio);
+        }
+      }
+        window.ani.domContainers[0].width = w * pRatio * sRatio;
+        window.ani.domContainers[0].height = h * pRatio * sRatio;
+        window.ani.domContainers.forEach(function(container) {
+        container.style.width = w * sRatio + 'px';
+        container.style.height = h * sRatio + 'px';
+      });
+      window.ani.stage.scaleX = pRatio * sRatio;
+      window.ani.stage.scaleY = pRatio * sRatio;
+      window.ani.lastW = iw; window.ani.lastH = ih; window.ani.lastS = sRatio;
+      window.ani.stage.tickOnUpdate = false;
+      window.ani.stage.update();
+      window.ani.stage.tickOnUpdate = true;
     }
 
     //handleResize(); // First draw
