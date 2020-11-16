@@ -60,10 +60,10 @@ export class AnimateAdobe {
     makeResponsive(isResp, respDim, isScale, scaleType, domContainers) {
       //let lastW; let lastH; let lastS = 1;
       window.addEventListener('resize', window.ani.handleResize);
-      window.ani.isResp=isResp;
+      window.ani.isResp = isResp;
       window.ani.respDim = respDim;
       window.ani.isScale = isScale;
-      window.ani.scaleType= scaleType;
+      window.ani.scaleType = scaleType;
       window.ani.domContainers = domContainers;
       window.ani.handleResize();
     }
@@ -90,9 +90,9 @@ export class AnimateAdobe {
           sRatio = Math.max(xRatio, yRatio);
         }
       }
-        window.ani.domContainers[0].width = w * pRatio * sRatio;
-        window.ani.domContainers[0].height = h * pRatio * sRatio;
-        window.ani.domContainers.forEach(function(container) {
+      window.ani.domContainers[0].width = w * pRatio * sRatio;
+      window.ani.domContainers[0].height = h * pRatio * sRatio;
+      window.ani.domContainers.forEach(function(container) {
         container.style.width = w * sRatio + 'px';
         container.style.height = h * sRatio + 'px';
       });
