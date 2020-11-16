@@ -59,13 +59,13 @@ export class AnimateAdobe {
 
     makeResponsive(isResp, respDim, isScale, scaleType, domContainers) {
       //let lastW; let lastH; let lastS = 1;
-      window.addEventListener('resize', window.ani.resizeCanvas);
+      window.addEventListener('resize', window.ani.handleResize);
       window.ani.isResp=isResp;
       window.ani.respDim = respDim;
       window.ani.isScale = isScale;
       window.ani.scaleType= scaleType;
       window.ani.domContainers = domContainers;
-      window.ani.resizeCanvas();
+      window.ani.handleResize();
     }
 
     handleResize() {
