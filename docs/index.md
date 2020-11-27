@@ -20,12 +20,14 @@ To build web simulator:
 # Comparison to previous version
 
 Compared to Bodylight.js v1.0
-  * Bodylight.js Composer v1.0 was split into independent subsystems - Components, Editor, Composer, VirtualBody (3D visualization)
-  * Source code of web simulator using Bodylight components v 2.0 can be edited in any text or Web editor, it uses HTML markup or MARKDONW markup, compared to Bodylight v.1.0 which needs Bodylight Composer
+  * in order to create web simulator in Bodylight.js 1.0 you need Bodylight.js Composer v1.0
+  * in order to create web simulator in Bodylight.js 2.0 you need any text editor.
+  * features of Bodylight.js Composer v1.0 was split into several independent subsystems and new features were introduced - Components, Editor, Composer, VirtualBody (3D visualization)   
+  * optional [Bodylight-Editor](https://bodylight.physiome.cz/Bodylight-Editor/) can be used to edit the web simulator - it supports live preview for Markdown, Bodylight.js-Components, animation from Adobe Animate
   * BJP files from version 1.0 are not usable in v 2.0.beta. 
-  * v 2.0.beta contains dygraph.js and chart.js libraries for charts, plotly is not  supported
   * v 1.0 HTML export can be used as iframes within v2.0.beta application
-  * see 3D graphics virtualbody in WEBGL [Bodylight-Virtualbody](https://github.com/creative-connections/Bodylight-VirtualBody)  
+  * v 2.0.beta supports graphs using dygraph.js, chart.js and plotly.js libraries for charts
+  * v 2.0 beta supports 3D graphics of virtualbody in WEBGL [Bodylight-Virtualbody](https://github.com/creative-connections/Bodylight-VirtualBody)  
  
 ## Bodylight.js-Components in HTML
  
@@ -160,4 +162,4 @@ function setMyHeartRate(value){
 
 [^3]: Bodylight 1.0 and Bodylight Composer: https://bodylight.physiome.cz/composer/
 
-For further details, see User's guide at `doc/usersguide.md` or at [bodylight.physiome.cz/Bodylight.js-Components/](https://bodylight.physiome.cz/Bodylight.js-Components/#index=doc/usersguide.md) 
+[^4]: Bodylight 2.0 Editor - beta: https://bodylight.physiome.cz/Bodylight-Editor/ 
