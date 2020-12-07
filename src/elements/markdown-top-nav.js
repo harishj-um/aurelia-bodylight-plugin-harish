@@ -52,9 +52,9 @@ export class MarkdownTopNav {
       console.log('markdown-top-nav changesrc args:', args);
       //console.log('markdown-bottom-nav links:', this.links);
       //parse global window.markdownnav.links to get prev and next title
-      //let prevtitle = '';
-      let currentlink = '#' + args[0];
       if (window.markdownnav) {
+        let currentlink = '#' + args[0];
+        let currentlinkindex = window.markdownnav.links.findIndex(x => x.url === currentlink);
         this.navtitle = window.markdownnav.links[currentlinkindex].title;
       }
     }
