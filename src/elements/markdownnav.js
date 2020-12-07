@@ -40,7 +40,8 @@ export class Markdownnav {
           //no href
         } else {
           let link = tokens[idx].attrs[aIndex][1];
-          let linktext = tokens[idx].content;
+          let linktext = tokens[idx + 1].content;
+          console.log('nav token open + 2:', tokens[idx], tokens[idx+1],tokens[idx+2]);
           window.markdownnav.links.push({url: link, title: linktext});
         }
       });

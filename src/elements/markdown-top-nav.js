@@ -30,6 +30,7 @@ export class MarkdownTopNav {
 
     updatenav(navstruct) {
       this.links = navstruct.links;
+      console.log('top nav links:', this.links);
     }
 
     updatetitles(hashstruct) {
@@ -42,5 +43,16 @@ export class MarkdownTopNav {
 
     showhidenav() {
       this.nav = ! this.nav;
+    }
+
+    changesrc(...args) {
+      console.log('markdown-top-nav changesrc args:', args);
+      //console.log('markdown-bottom-nav links:', this.links);
+      //parse global window.markdownnav.links to get prev and next title
+      //let prevtitle = '';
+      let currentlink = '#' + args[0];
+      if (window.markdownnav) {
+        this.navtitle = window.markdownnav.links[currentlinkindex].title;
+      }
     }
 }

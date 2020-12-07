@@ -35,7 +35,17 @@ export class MarkdownBottomNav {
 
     changesrc(...args) {
       console.log('markdown-bottom-nav changesrc args:', args);
-      console.log('markdown-bottom-nav links:', this.links);
+      //console.log('markdown-bottom-nav links:', this.links);
+      //parse global window.markdownnav.links to get prev and next title
+      //let prevtitle = '';
+      let currentlink = '#' + args[0];
+      if (window.markdownnav) {
+        let currentlinkindex = window.markdownnav.links.findIndex(x => x.url === currentlink);
+        this.nexttitle = currentlinkindex > 0 ? window.markdownnav.links[currentlinkindex - 1].title : '';
+        this.nextlink = currentlinkindex > 0 ? window.markdownnav.links[currentlinkindex - 1].url : '';
+        this.previoustitle = currentlinkindex < (window.markdownnav.links.length - 1) ? window.markdownnav.links[currentlinkindex + 1].title : '';
+        this.previouslink = currentlinkindex < (window.markdownnav.links.length - 1) ? window.markdownnav.links[currentlinkindex + 1].url : '';
+      }
     }
     contentChanged(newv, oldv) {
       console.log('markdown-bottom-na contentchanged', oldv, newv);

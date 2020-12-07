@@ -1,7 +1,7 @@
 <template>
     <div class="w3-row">
         <div class="w3-half">
-            <div class="w3-margin-right w3-card-2 w3-row w3-hover-theme-l5" click.delegate="previous()">
+            <div class="w3-margin-right w3-card-2 w3-row w3-hover-theme-l5"><a href="${previouslink}">
                 <div class="w3-col" style="width:30px">
                     <i class="fa fa-arrow-left"></i>
                 </div>
@@ -9,10 +9,11 @@
                     <div class="w3-tiny w3-text-theme">Previous</div>
                     <b>${previoustitle}</b>
                 </div>
+            </a>
             </div>
         </div>
         <div class="w3-half">
-            <div class="w3-margin-left w3-card-2 w3-row w3-hover-theme-l5" click.delegate="next()">
+            <div class="w3-margin-left w3-card-2 w3-row w3-hover-theme-l5"><a href="${nextlink}">
                 <div class="w3-col w3-right" style="width:30px">
                     <i class="fa fa-arrow-right"></i>
                 </div>
@@ -20,6 +21,7 @@
                     <div class="w3-tiny w3-text-theme">Next</div>
                     <b>${nexttitle}</b>
                 </div>
+            </a>
             </div>
         </div>
     </div>
