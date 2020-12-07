@@ -33,7 +33,7 @@ node_modules
 # Compiled files
 /dev-app/environment.js
 /dist
-#/test/coverage-jest
+/test/coverage-jest
 /docs/scripts
 #/scripts
 #/fonts
