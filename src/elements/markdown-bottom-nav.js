@@ -1,7 +1,5 @@
 //import {Markdownnav} from './markdownnav';
 import {bindable, inject} from 'aurelia-framework';
-import {I18N} from 'aurelia-i18n';
-import {HttpClient} from 'aurelia-fetch-client';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {parseHashParamString} from '../attributes/utils';
 //import {WatchHashCore} from "../attributes/watch-hash-core";
