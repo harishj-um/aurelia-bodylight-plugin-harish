@@ -29,8 +29,4 @@
     * [Animation segments<br /> sync with simulation](#example/animationsimulation.md)
     * [Quiz](#example/quiz.md)
     * [Animation with ECG](#example/animationecg.md)
-  * [About](#about.md)
-  <hr/>
-  
-  * [Hemodynamika GH](#index=hemodynamics/index.cs.md&summary=hemodynamics/summary.cs.md&base=https://cdn.jsdelivr.net/gh/creative-connections/Bodylight-Scenarios/)
- 
+  * [About](#about.md) 

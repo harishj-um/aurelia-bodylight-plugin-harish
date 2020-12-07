@@ -2,9 +2,11 @@
 import {bindable, inject} from 'aurelia-framework';
 import {I18N} from 'aurelia-i18n';
 import {HttpClient} from 'aurelia-fetch-client';
+import {EventAggregator} from 'aurelia-event-aggregator';
+import {parseHashParamString} from '../attributes/utils';
 //import {WatchHashCore} from "../attributes/watch-hash-core";
 
-@inject(I18N, HttpClient)
+@inject(EventAggregator)
 export class MarkdownBottomNav {
     @bindable src;
     @bindable navstyle;
@@ -14,8 +16,14 @@ export class MarkdownBottomNav {
     nexttitle='';//Hemodynamics in Left Ventricle'
     @bindable content;
 
-    constructor(i18n, httpclient) {
+    constructor(ea) {
+      this.ea = ea;
       //super(i18n, httpclient);
+    }
+
+    attached() {
+      this.ea.subscribe('navchange', navstruct => this.updatenav(navstruct));
+      this.ea.subscribe('hashchange', hashstruct => this.changesrc(hashstruct));
     }
 
     bind() {
@@ -33,7 +41,13 @@ export class MarkdownBottomNav {
       console.log('markdown bottom nav previous');
     }
 
-    changesrc(...args) {
+    updatenav(navstruct) {
+      this.links = navstruct.links;
+      this.changesrc(parseHashParamString(window.location.hash));
+      console.log('top nav links:', this.links);
+    }
+
+    changesrc(args) {
       console.log('markdown-bottom-nav changesrc args:', args);
       //console.log('markdown-bottom-nav links:', this.links);
       //parse global window.markdownnav.links to get prev and next title

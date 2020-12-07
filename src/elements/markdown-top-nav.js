@@ -3,7 +3,7 @@ import {bindable, inject} from 'aurelia-framework';
 //import {I18N} from 'aurelia-i18n';
 //import {HttpClient} from 'aurelia-fetch-client';
 import {EventAggregator} from 'aurelia-event-aggregator';
-
+import {parseHashParamString} from '../attributes/utils';
 
 //@inject(I18N, HttpClient)
 @inject(EventAggregator)
@@ -30,15 +30,18 @@ export class MarkdownTopNav {
 
     updatenav(navstruct) {
       this.links = navstruct.links;
+      this.updatetitles(parseHashParamString(window.location.hash));
       console.log('top nav links:', this.links);
     }
 
     updatetitles(hashstruct) {
       //this.currentlink
-      if (hashstruct[0]) this.currentlink = hashstruct[0];
-      if (hashstruct.index) this.currentlink = hashstruct.index;
-      let currentitem = this.links.find(item => item.url === this.currentlink);
-      if (currentitem) this.navtitle = currentitem.title;
+      console.log('top nav hash:', hashstruct);
+      if (window.markdownnav) {
+        let currentlink = '#' + hashstruct[0];
+        let currentlinkindex = window.markdownnav.links.findIndex(x => x.url === currentlink);
+        this.navtitle = window.markdownnav.links[currentlinkindex].title;
+      }
     }
 
     showhidenav() {

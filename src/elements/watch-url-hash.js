@@ -30,6 +30,6 @@ export class WatchUrlHash {
   }
 
   attached() {
-
+    window.addEventListener('hashchange', this.handleHashChange);
   }
 }
