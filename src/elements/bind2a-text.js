@@ -4,6 +4,4 @@ export class Bind2aText extends Bind2a {
   constructor() {
     super();
   }
-
-
 }
