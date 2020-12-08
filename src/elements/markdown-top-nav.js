@@ -12,6 +12,7 @@ export class MarkdownTopNav {
     @bindable navstyle;
     @bindable base='';
     @bindable nav=false;
+    @bindable index;
     notinitread=true;
     previoustitle='';//Introduction';
     nexttitle='';//Hemodynamics in Left Ventricle'
@@ -38,9 +39,11 @@ export class MarkdownTopNav {
       //this.currentlink
       console.log('top nav hash:', hashstruct);
       if (window.markdownnav) {
-        let currentlink = '#' + hashstruct[0];
+        let currentlink = '#' + (hashstruct[0].length > 0 ? hashstruct[0] : this.index);
         let currentlinkindex = window.markdownnav.links.findIndex(x => x.url === currentlink);
-        this.navtitle = window.markdownnav.links[currentlinkindex].title;
+        this.navtitle = (currentlinkindex > 0) && (currentlinkindex < window.markdownnav.links.length)
+          ? window.markdownnav.links[currentlinkindex].title
+          : '';
       }
     }
 
@@ -53,9 +56,11 @@ export class MarkdownTopNav {
       //console.log('markdown-bottom-nav links:', this.links);
       //parse global window.markdownnav.links to get prev and next title
       if (window.markdownnav) {
-        let currentlink = '#' + args[0];
+        let currentlink = '#' + (args[0].length > 0 ? args[0] : this.index);
         let currentlinkindex = window.markdownnav.links.findIndex(x => x.url === currentlink);
-        this.navtitle = window.markdownnav.links[currentlinkindex].title;
+        this.navtitle = (currentlinkindex > 0) && (currentlinkindex < window.markdownnav.links.length)
+          ? window.markdownnav.links[currentlinkindex].title
+          : '';
       }
     }
 }

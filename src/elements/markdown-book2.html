@@ -1,4 +1,4 @@
-<template>
+<template bindable="base,summary,index">
     <require from="./w3.css"></require>
     <require from="./w3-theme-amber.css"></require>
     <require from="./markdown-top-nav"></require>
@@ -17,9 +17,9 @@
         </div>
         <div class="w3-rest w3-palatino">
             <div class="w3-padding">
-                <markdown-top-nav base="${base}" src="${summary}" nav.two-way="shownav"></markdown-top-nav>
+                <markdown-top-nav base="${base}" src="${summary}" index="${index}" nav.two-way="shownav"></markdown-top-nav>
                 <markdown class="w3-padding" base="${base}" src="${index}" watchhash="index,0;base,3"></markdown>
-                <markdown-bottom-nav class="w3-padding" base="${base}" src="${summary}"></markdown-bottom-nav>
+                <markdown-bottom-nav class="w3-padding" base="${base}" index="${index}" src="${summary}"></markdown-bottom-nav>
             </div>
         </div>
     </div>

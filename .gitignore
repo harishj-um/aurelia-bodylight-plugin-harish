@@ -34,7 +34,7 @@ node_modules
 /dev-app/environment.js
 /dist
 /test/coverage-jest
-/docs/scripts
 #/scripts
 #/fonts
 #/font-awesome
+/docs/scripts/
