@@ -1,20 +1,11 @@
 ## BdlChartjs BdlChartjs-time BdlChartjs-xy
 
 ### ChartJS
-```xml
-<bdl-chartjs 
-  id="id9" 
-  width="300" 
-  height="500" 
-  fromid="id4" 
-  type="doughnut" 
-  labels="Intrathoracic Arteries,ExtraThoracic Arteries, Pulmonary Arteries, Intrathoracic Veins, Extrathoracic veins, Pulmonary Veins"
-  initialdata="0,4,2,3" 
-  refindex="2" 
-  refvalues="6"
-  animation="true"
-  convertors="numerator1,denominator1;numerator2,denominator2"></bdl-chartjs>
-``` 
+
+<div class="w3-row">
+<div class="w3-quarter">
+
+
 Creates a chartjs element controlled by BdlChartjs library.
 <bdl-chartjs 
   id="id9" 
@@ -26,7 +17,26 @@ Creates a chartjs element controlled by BdlChartjs library.
   initialdata="0,4,2,3" 
   refindex="2" 
   refvalues="6"></bdl-chartjs>
+</div>
+<div class="w3-rest">
 
+```xml
+<bdl-chartjs 
+  id="id9" 
+  width="300" 
+  height="500"
+  responsive="false"  
+  fromid="id4" 
+  type="doughnut" 
+  labels="Intrathoracic Arteries,ExtraThoracic Arteries, Pulmonary Arteries, Intrathoracic Veins, Extrathoracic veins, Pulmonary Veins"
+  initialdata="0,4,2,3" 
+  refindex="2" 
+  refvalues="6"
+  animation="true"
+  convertors="numerator1,denominator1;numerator2,denominator2"></bdl-chartjs>
+``` 
+  * `width,height` initial size of canvas to draw chart
+  * `responsive` by default is `false`, if `true` then chart is rescaled by the current size of the browser window
 `convertors` are separated by semicolon ';' per each variable. 
  If convertors are defined then raw data obtained from fmi - via refvalues are converted 
 as follows: 
@@ -36,10 +46,29 @@ as follows:
 By default - no convertors - raw data (usually in SI) are presented in chart.
   * `animate` - if `true`, smooth animation (by 500 ms) when data is updated. Default `false`.
   * `sectionid` - if set, then listens the component with this id for 'addsection' event, bind it to `bdl-animatecontrol` component
+  </div>
+  </div>
+  
 ### ChartJS time
-`<bdl-chartjs-time></bdl-chartjs-time>` time series in chartjs
+<div class="w3-row">
+  <div class="w3-quarter">
 
+`<bdl-chartjs-time></bdl-chartjs-time>` time series in chartjs.
+
+<bdl-chartjs-time  
+  id="id10" 
+  width="300" 
+  height="500" 
+  fromid="id4" 
+  labels="Pressure in Aorta,Pressure in Left Ventricle, Intrathoracic Artery Volume, Extrathoracic Arteries Volume, Pulmonary Arteries Volume, Intrathoracic Veins Volume"
+  initialdata="0,1,2,3,4;2,2,2,2;3,2,4;1,5,3;2,2,3,2" 
+  refindex="2"   
+  refvalues="6"></bdl-chartjs-time>
+
+  </div>
+  <div class="w3-rest">
 Example:
+
 ```xml
 <bdl-chartjs-time  
   id="id10" 
@@ -52,17 +81,12 @@ Example:
   refvalues="6"></bdl-chartjs-time>
 
 ```
-<bdl-chartjs-time  
-  id="id10" 
-  width="300" 
-  height="500" 
-  fromid="id4" 
-  labels="Pressure in Aorta,Pressure in Left Ventricle, Intrathoracic Artery Volume, Extrathoracic Arteries Volume, Pulmonary Arteries Volume, Intrathoracic Veins Volume"
-  initialdata="0,1,2,3,4;2,2,2,2;3,2,4;1,5,3;2,2,3,2" 
-  refindex="2"   
-  refvalues="6"></bdl-chartjs-time>
+
+  </div>
+</div>
 
 ### BdlChartjs-xy
+
 XY chart from data
 
 ```xml
@@ -75,3 +99,24 @@ refindex="0" refvalues="2"></bdl-chartjs-xy>
 where `initialdata` may contain additional static curves after first values 
 delimite by `;` there might be x values delimited by `,` followed by y values delimited by `,`
 and so on. 
+
+## bdl-chartjs-barplot
+
+barplot chart with minimum/maximum and normal range
+```xml
+<bdl-chartjs-barplot
+  id="id11"
+  fromid="id4"
+  refindex="2"
+  extremelimits="0,1"
+  normallimits="6.9,7.1">
+</bdl-chartjs-barplot>
+```
+<bdl-chartjs-barplot
+  id="id11"
+  fromid="id4"
+  refindex="2"
+  extremelimits="0,1"
+  normallimits="6.9,7.1">
+</bdl-chartjs-barplot>
+

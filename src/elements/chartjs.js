@@ -1,4 +1,5 @@
 import Chart from 'chart.js';
+//import ChartDataLabels from 'chartjs-plugin-datalabels';
 import {bindable} from 'aurelia-framework';
 
 export class Chartjs {
@@ -9,15 +10,17 @@ export class Chartjs {
   @bindable type='doughnut';
   @bindable maxdata=256;
   @bindable initialdata='';
-  @bindable width=600;
-  @bindable height=300;
+  @bindable width=300;
+  @bindable height=200;
   @bindable animate=false;
   @bindable id;
   @bindable ylabel;
   @bindable xlabel;
   @bindable convertors;
   @bindable verticalline=false;
+  @bindable generatelabels=false;
   @bindable sectionid;  //id to listen addsection event
+  @bindable responsive = false; //false - to keep width and height, true - to rescale
   indexsection=0;
   datalabels=false; //may be configured by subclasses
 
@@ -73,6 +76,7 @@ export class Chartjs {
    * process all attributes of <bdl-chart> component and sets appropriate settings of subesquent chartjs
    */
   bind() {
+    console.log('chartjs bind');
     this.refindex = parseInt(this.refindex, 10);
     this.refvalues = parseInt(this.refvalues, 10);
     this.refendindex = this.refindex + this.refvalues;
@@ -107,13 +111,16 @@ export class Chartjs {
       }
     }
 
-
+    //sets boolean value - if verticalline attribute is set
+    if (typeof this.generatelabels === 'string') {
+      this.generatelabels = this.generatelabels === 'true';
+    }
     //sets color of each dataset as different as possible
     //and set initial data in chart
     //set labels - separated by comma
     if (this.labels) this.chlabels = this.labels.split(',');
     //else generate labels as 'variable 1' ...
-    else {this.chlabels = [...Array(this.refvalues)].map((_, i) => `variable ${i}`);}
+    else {this.chlabels = [...Array(this.refvalues)].map((_, i) => this.generatelabels ? `variable ${i}` : '');}
 
     this.colors = [];
     let mydatastr = this.initialdata.split(',');
@@ -139,6 +146,9 @@ export class Chartjs {
     //bind - string value to boolean
     if (typeof this.animate === 'string') {
       this.animate = this.animate === 'true';
+    }
+    if (typeof this.responsive === 'string') {
+      this.responsive = this.responsive === 'true';
     }
     //set animation options
     let animopts1 = {
@@ -172,7 +182,7 @@ export class Chartjs {
 
     //initialize options - used later by chartjs instance
     this.options = {
-      responsive: true,
+      responsive: this.responsive, //true - rescale, false - will keep canvas width and height
       legend: {
         //display: false,
         position: 'top'
@@ -204,6 +214,7 @@ export class Chartjs {
    * this is called when the DOM is attached to view - instantiate the chartjs and sets all necesary binding
    */
   attached() {
+    console.log('chartjs attached');
     //listening to custom event fmidata and fmireset
     const fromel = document.getElementById(this.fromid);
     if (fromel) {
@@ -352,6 +363,7 @@ export class Chartjs {
       options: this.options,
       tooltipEvents: ['mousemove', 'touchstart', 'touchmove', 'click']
     });
+    console.log('chartjs data', this.data);
   }
 
   /**
