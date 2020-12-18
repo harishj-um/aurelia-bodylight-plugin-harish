@@ -116,7 +116,8 @@ barplot chart with minimum/maximum and normal range
   id="id11"
   fromid="id4"
   refindex="2"
-  extremelimits="0,1"
-  normallimits="6.9,7.1">
+  extremelimits="4,8"
+  normallimits="6.9,7.1"
+  initialdata="7">
 </bdl-chartjs-barplot>
 

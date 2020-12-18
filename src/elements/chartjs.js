@@ -76,7 +76,7 @@ export class Chartjs {
    * process all attributes of <bdl-chart> component and sets appropriate settings of subesquent chartjs
    */
   bind() {
-    console.log('chartjs bind');
+    //console.log('chartjs bind');
     this.refindex = parseInt(this.refindex, 10);
     this.refvalues = parseInt(this.refvalues, 10);
     this.refendindex = this.refindex + this.refvalues;
@@ -214,7 +214,7 @@ export class Chartjs {
    * this is called when the DOM is attached to view - instantiate the chartjs and sets all necesary binding
    */
   attached() {
-    console.log('chartjs attached');
+    //console.log('chartjs attached');
     //listening to custom event fmidata and fmireset
     const fromel = document.getElementById(this.fromid);
     if (fromel) {
@@ -363,7 +363,7 @@ export class Chartjs {
       options: this.options,
       tooltipEvents: ['mousemove', 'touchstart', 'touchmove', 'click']
     });
-    console.log('chartjs data', this.data);
+    // console.log('chartjs data', this.data);
   }
 
   /**
