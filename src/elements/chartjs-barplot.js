@@ -1,7 +1,8 @@
 import {Chartjs} from './chartjs';
+// eslint-disable-next-line no-unused-vars
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 //import {BdlChartjs} from './chartjs';
-import {bindable, useView} from 'aurelia-templating';
+import {bindable} from 'aurelia-templating';
 //import {PLATFORM} from 'aurelia-pal';
 //@useView(PLATFORM.moduleName('./bdl-chartjs.html'))
 //@useView('./chartjs.html')
