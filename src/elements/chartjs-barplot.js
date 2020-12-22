@@ -84,7 +84,7 @@ export class ChartjsBarplot extends Chartjs {
         //this.options.parentvm = this;
         this.options.onClick = function(c, i) {
           //note this - refers now to chart, not to webcomponent - shared properties are via options.nominal and options.parentid
-          console.log('chartjs barplot click,', c, i, 'this:', this);
+          //console.log('chartjs barplot click,', c, i, 'this:', this);
           //let scaler = this.chart.scales['y-axis-0'];
           let xscaler = this.chart.scales['x-axis-0'];
           //let y = c.clientY - this.canvas.getBoundingClientRect().top - scaler.top;

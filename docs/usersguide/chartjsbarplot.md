@@ -8,7 +8,9 @@ barplot chart with minimum/maximum and normal range
   refindex="2"
   extremelimits="4,8"
   normallimits="6.9,7.1"
-  initialdata="7.01">
+  initialdata="7.01"
+  convertors="60,1"
+  twoway="true">
 </bdl-chartjs-barplot>
 ```
 <bdl-chartjs-barplot
@@ -17,5 +19,17 @@ barplot chart with minimum/maximum and normal range
   refindex="2"
   extremelimits="4,8"
   normallimits="6.9,7.1"
-  initialdata="7.01">
+  initialdata="7.01"
+  convertors="60,1"
+  twoway="true">
 </bdl-chartjs-barplot>
+
+
+  * `id` unique id - to this component, mandatory if registered for fmi input
+  * `fromid` id refering to fmu component
+  * `refindex` index in fmu outputs array - the value at this position will be visualised in barplot
+  * `extremelimits` minimum and maximum to be shown in chart
+  * `normallimits` physiologically normal limits as ticks in chart should be between extremelimits
+  * `convertors` - same as in chartjs e.g. in form `convertors="numerator,denominator"` or expression of`x` as value e.g.:`convertors="1/x"` 
+  * `twoway` - default false, if true, then click on chart will transform click position to value and dispatch change event with that value, note that fmu component have register to listen events from this component e.g. `<bdl-fmi id="id4" ... inputs="id11,16777312,1,60">`
+   
