@@ -211,7 +211,7 @@ export class Chartjs {
       this.options.section = [];
     }
 
-    this.tooltips = ['mousemove', 'touchstart', 'touchmove', 'click']
+    this.tooltips = ['mousemove', 'touchstart', 'touchmove', 'click'];
   }
 
   /**
