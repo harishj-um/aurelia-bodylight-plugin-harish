@@ -13,6 +13,7 @@
       * [Beaker](#usersguide/beaker.md)
       * [Capillary](#usersguide/capillary.md)
       * [ChartJS](#usersguide/chartjs.md)
+      * [ChartJS Barplot](#usersguide/chartjsbarplot.md)
       * [Dygraph](#usersguide/dygraph.md)
       * [Plotly](#usersguide/plotly.md)
       * [ECG](#usersguide/ecg.md)

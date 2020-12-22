@@ -31,8 +31,8 @@ export class Fmi {
     this.handleValueChange = e => {
       //e.target; //triggered the event
       console.log('handlevaluechange', e, e.target);
-      let targetid = e.target.parentElement.parentElement.id;
-      let targetvalue = e.target.value;
+      let targetid = (e.detail && e.detail.id) ? e.detail.id : e.target.parentElement.parentElement.id;
+      let targetvalue = (e.detail && e.detail.value) ? e.detail.value : e.target.value;
       this.changeinputs.push({id: targetid, value: targetvalue}); //detail will hold the value being changed
       console.log('fmi handle value change', this.changeinputs);
     };
@@ -40,7 +40,7 @@ export class Fmi {
       //e.target; //triggered the event
       //let targetid = e.target.parent().parent().id;
       //let targetvalue = e.target.value;
-      this.changeinputs.push({valuereference: e.detail.valuereference, value: e.detail.value}); //detail will hold the value being changed
+      this.changeinputs.push({valuereference: e.detail.valuereference, value: e.detail.value, fromid: e.detail.id}); //detail will hold the value being changed
       console.log('fmi handle detail change', this.changeinputs);
     };
     this.handleStart = e => {
@@ -75,8 +75,10 @@ export class Fmi {
     }
 
     if (this.otherinputs) {
-      let otherinputtargets = this.otherinputs.split(',;');
-      for (let target of otherinputtargets) document.getElementById(target).addEventListener('fmiinput', this.handleDetailChange);
+      let otherinputtargets = this.otherinputs.split(';');
+      for (let target of otherinputtargets) {
+        document.getElementById(target).addEventListener('fmiinput', this.handleDetailChange);
+      }
     }
 
     //if src is not specified - then expects that fmi scripts is loaded in HTML page prior thus should be available

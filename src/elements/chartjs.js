@@ -1,5 +1,5 @@
 import Chart from 'chart.js';
-//import ChartDataLabels from 'chartjs-plugin-datalabels';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 import {bindable} from 'aurelia-framework';
 
 export class Chartjs {
@@ -80,6 +80,8 @@ export class Chartjs {
     this.refindex = parseInt(this.refindex, 10);
     this.refvalues = parseInt(this.refvalues, 10);
     this.refendindex = this.refindex + this.refvalues;
+    //empty plugins by default
+    this.plugins = [];
 
     //configure convertors - used to convert units received from fmi
     if (this.convertors) {
@@ -208,6 +210,8 @@ export class Chartjs {
     if (this.sectionid) {
       this.options.section = [];
     }
+
+    this.tooltips = ['mousemove', 'touchstart', 'touchmove', 'click']
   }
 
   /**
@@ -227,6 +231,9 @@ export class Chartjs {
       if (sectionel) sectionel.addEventListener('addsection', this.handleAddSection);
       else console.log('chartjs WARNING, null sectionid element');
     }
+
+    //unregister
+    Chart.plugins.unregister(ChartDataLabels);
 
     //for verticalline option - register controller for BdlChartjs
     if (this.verticalline) {
@@ -358,10 +365,11 @@ export class Chartjs {
     let ctx = this.chartcanvas.getContext('2d');
 
     this.chart = new Chart(ctx, {
+      plugins: this.plugins,
       type: this.type,
       data: this.data,
       options: this.options,
-      tooltipEvents: ['mousemove', 'touchstart', 'touchmove', 'click']
+      tooltipEvents: this.tooltips
     });
     // console.log('chartjs data', this.data);
   }
