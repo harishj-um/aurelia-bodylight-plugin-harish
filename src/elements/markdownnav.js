@@ -1,5 +1,6 @@
 import Markdownit from 'markdown-it';
 import MarkdownItForInline from 'markdown-it-for-inline';
+import mk from 'markdown-it-katexx'; //math in md, iktakahiro version seems to be most updated - works with latest katex
 import {bindable, inject} from 'aurelia-framework';
 import {I18N} from 'aurelia-i18n';
 import {HttpClient} from 'aurelia-fetch-client';
@@ -33,6 +34,7 @@ export class Markdownnav {
     let iterator = MarkdownItForInline;
     // eslint-disable-next-line new-cap
     this.mdtoc = Markdownit({html: true})
+      .use(mk, {'throwOnError': true, 'errorColor': ' #cc0000'})
       .use(iterator, 'url', 'link_open', function(tokens, idx) {
         let aIndex = tokens[idx].attrIndex('href');
         if (aIndex < 0) {
