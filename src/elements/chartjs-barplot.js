@@ -48,7 +48,7 @@ export class ChartjsBarplot extends Chartjs {
       //chartjs type horizontal bar
       this.type = 'horizontalBar';
       // no legend and no labels
-      this.chlabels = [];
+      //this.chlabels = [];
       this.options.legend.display = false;
       //sets xaxis limits to extremelimits
       if (!this.options.scales.xAxes) this.options.scales.xAxes = [{}];

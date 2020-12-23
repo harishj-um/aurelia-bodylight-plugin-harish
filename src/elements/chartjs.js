@@ -122,7 +122,15 @@ export class Chartjs {
     //set labels - separated by comma
     if (this.labels) this.chlabels = this.labels.split(',');
     //else generate labels as 'variable 1' ...
-    else {this.chlabels = [...Array(this.refvalues)].map((_, i) => this.generatelabels ? `variable ${i}` : '');}
+    else {
+      //this.chlabels = [...Array(this.refvalues)].map((_, i) => this.generatelabels ? `variable ${i}` : '');
+      //this seems not to be correctly transpilled to ES5, therefore following generator ->
+      this.chlabels = [];
+      for (let i = 0; i < this.refvalues; i++) {
+        let ilabel = this.generatelabels ? ('variable ' + i ) : '';
+        this.chlabels.push(ilabel);
+      }
+    }
 
     this.colors = [];
     let mydatastr = this.initialdata.split(',');
