@@ -1,3 +1,6 @@
+
+//TODO if this.inst is promise then => to other methods - this.inst2 = inst else this.inst2 = this.inst; console.logger - rename to this.inst2...
+
 import {bindable} from 'aurelia-framework';
 
 export class Fmi {
@@ -174,26 +177,31 @@ export class Fmi {
     /* Fills variables into message returned by the FMU, the C way */
     const formatMessage = (message1, other1) => {
       // get a new pointer
-      let ptr = this.inst._malloc(1);
+      let ptr = this.inst2._malloc(1);
       // get the size of the resulting formated message
-      let num = this.inst._snprintf(ptr, 0, message1, other1);
-      this.inst._free(ptr);
+      let num = this.inst2._snprintf(ptr, 0, message1, other1);
+      this.inst2._free(ptr);
       num++; // TODO: Error handling num < 0
-      ptr = this.inst._malloc(num);
-      this.inst._snprintf(ptr, num, message1, other1);
+      ptr = this.inst2._malloc(num);
+      this.inst2._snprintf(ptr, num, message1, other1);
 
       // return pointer to the resulting message string
       return ptr;
     };
 
     // eslint-disable-next-line new-cap
-    console.log('FMU(' + this.inst.UTF8ToString(instanceName) +  ':' + status + ':' + this.inst.UTF8ToString(category) + ') msg: ' + this.inst.UTF8ToString(formatMessage(message, other))
+    console.log('FMU(' + this.inst2.UTF8ToString(instanceName) +  ':' + status + ':' + this.inst2.UTF8ToString(category) + ') msg: ' + this.inst2.UTF8ToString(formatMessage(message, other))
     );
 
-    this.inst._free(formatMessage);
+    this.inst2._free(formatMessage);
   }
 
   initialize() {
+    if (this.inst instanceof Promise) this.inst.then(inst => {this.fmiinst = inst; this.inst2 = inst; this.initialize1();});
+    else {this.inst2 = this.inst; this.initialize1();}
+  }
+
+  initialize1() {
     this.fmiEnterInit(this.fmiinst);
     this.fmiExitInit(this.fmiinst);
   }
@@ -204,7 +212,8 @@ export class Fmi {
     this.mystep = this.stepSize;
     //console callback ptr, per emsripten create int ptr with signature viiiiii
     this.inst = window.fmiinst[this.fminame].inst; //if (window.thisfmi) {this.inst = window.thisfmi.inst;}
-    console.log('instantiate() this.inst', this.inst);
+    console.log('instantiate() this:', this);
+    console.log('instantiate() this.inst:', this.inst);
     //fix bug #2 - inst may be promise for
     //inst may be either instance or Promise
     if (this.inst instanceof Promise) {
@@ -227,7 +236,7 @@ export class Fmi {
     const sCreateCallback = 'createFmi2CallbackFunctions';
     let separator = '_';
     let prefix = this.fminame;
-    //console.log('attached fminame:', that.fminame);
+    console.log('initinstance1, attached fminame:', that.fminame);
     // OpenModelica exported function names
     if (typeof window._fmi2GetVersion === 'function') {
       prefix = '';
@@ -317,7 +326,8 @@ export class Fmi {
     this.animationstarted = true;
     const performAnimation = () => {
       this.request = requestAnimationFrame(performAnimation);
-      this.step();
+      if (this.inst instanceof Promise) {this.inst.then(inst => this.step())}
+      else this.step();
     };
     requestAnimationFrame(performAnimation);
   }
