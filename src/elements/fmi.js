@@ -1,4 +1,3 @@
-
 //TODO if this.inst is promise then => to other methods - this.inst2 = inst else this.inst2 = this.inst; console.logger - rename to this.inst2...
 
 import {bindable} from 'aurelia-framework';
@@ -109,7 +108,7 @@ export class Fmi {
   getScript(source, callback) {
     //check whether the script is not already there
     if (Array.from(document.getElementsByTagName('script')).filter(x=> x.getAttribute('src') === source).length > 0) {
-      console.log('fmi.getScript() WARNING, script is already added into DOM:', source);
+      console.log('fmi.getScript() INFO, script is already added into DOM:', source);
       //do callback?
       if (callback) setTimeout(callback, 0);
       return;
@@ -170,8 +169,9 @@ export class Fmi {
   bind() {}
 
   detached() {}
+
   /**
-   * Implements a rudimentary browser console logger for the FMU.
+   * Implements console logger for the FMU.
    */
   consoleLogger(componentEnvironment, instanceName, status, category, message, other) {
     /* Fills variables into message returned by the FMU, the C way */
@@ -197,6 +197,7 @@ export class Fmi {
   }
 
   initialize() {
+//    this.fmiimpl.initialize();
     if (this.inst instanceof Promise) this.inst.then(inst => {this.fmiinst = inst; this.inst2 = inst; this.initialize1();});
     else {this.inst2 = this.inst; this.initialize1();}
   }
