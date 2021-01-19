@@ -1,5 +1,3 @@
-//TODO if this.inst is promise then => to other methods - this.inst2 = inst else this.inst2 = this.inst; console.logger - rename to this.inst2...
-
 import {bindable} from 'aurelia-framework';
 
 export class Fmi {
@@ -108,7 +106,7 @@ export class Fmi {
   getScript(source, callback) {
     //check whether the script is not already there
     if (Array.from(document.getElementsByTagName('script')).filter(x=> x.getAttribute('src') === source).length > 0) {
-      console.log('fmi.getScript() INFO, script is already added into DOM:', source);
+      console.log('fmi.getScript() WARNING, script is already added into DOM:', source);
       //do callback?
       if (callback) setTimeout(callback, 0);
       return;
@@ -157,73 +155,56 @@ export class Fmi {
     }
 
     //create instance
-    that.inst = window[that.fminame]();
-    console.log('fmi callback that, that.inst', that, that.inst);
-    //or? that.inst = new window[that.fminame];
-    //console.log('instantiate, that.inst', that.inst);
-    //create function methods using emscripten recommended cwrap
-    if (!window.fmiinst) { window.fmiinst = [];}
-    window.fmiinst[that.fminame] = that;
+    let myinst = window[that.fminame]();
+    if (myinst instanceof Promise) {
+      myinst.then(inst => {
+        that.inst = inst;
+        if (!window.fmiinst) { window.fmiinst = [];}
+        window.fmiinst[that.fminame] = that;
+        console.log('fmi callback from Promist that', that, that.inst);
+      });
+    } else {
+      that.inst = myinst;
+      if (!window.fmiinst) { window.fmiinst = [];}
+      window.fmiinst[that.fminame] = that;
+      console.log('fmi callback that, that.inst', that, that.inst);
+    }
   }
-
   bind() {}
 
   detached() {}
-
   /**
-   * Implements console logger for the FMU.
+   * Implements a rudimentary browser console logger for the FMU.
    */
   consoleLogger(componentEnvironment, instanceName, status, category, message, other) {
     /* Fills variables into message returned by the FMU, the C way */
     const formatMessage = (message1, other1) => {
       // get a new pointer
-      let ptr = this.inst2._malloc(1);
+      let ptr = this.inst._malloc(1);
       // get the size of the resulting formated message
-      let num = this.inst2._snprintf(ptr, 0, message1, other1);
-      this.inst2._free(ptr);
+      let num = this.inst._snprintf(ptr, 0, message1, other1);
+      this.inst._free(ptr);
       num++; // TODO: Error handling num < 0
-      ptr = this.inst2._malloc(num);
-      this.inst2._snprintf(ptr, num, message1, other1);
+      ptr = this.inst._malloc(num);
+      this.inst._snprintf(ptr, num, message1, other1);
 
       // return pointer to the resulting message string
       return ptr;
     };
 
     // eslint-disable-next-line new-cap
-    console.log('FMU(' + this.inst2.UTF8ToString(instanceName) +  ':' + status + ':' + this.inst2.UTF8ToString(category) + ') msg: ' + this.inst2.UTF8ToString(formatMessage(message, other))
+    console.log('FMU(' + this.inst.UTF8ToString(instanceName) +  ':' + status + ':' + this.inst.UTF8ToString(category) + ') msg: ' + this.inst.UTF8ToString(formatMessage(message, other))
     );
 
-    this.inst2._free(formatMessage);
+    this.inst._free(formatMessage);
   }
 
   initialize() {
-//    this.fmiimpl.initialize();
-    if (this.inst instanceof Promise) this.inst.then(inst => {this.fmiinst = inst; this.inst2 = inst; this.initialize1();});
-    else {this.inst2 = this.inst; this.initialize1();}
-  }
-
-  initialize1() {
     this.fmiEnterInit(this.fmiinst);
     this.fmiExitInit(this.fmiinst);
   }
 
   instantiate() {
-    this.stepTime = 0;
-    this.stepSize = (typeof(this.fstepsize) === 'string' ) ? parseFloat(this.fstepsize) : this.fstepsize;
-    this.mystep = this.stepSize;
-    //console callback ptr, per emsripten create int ptr with signature viiiiii
-    this.inst = window.fmiinst[this.fminame].inst; //if (window.thisfmi) {this.inst = window.thisfmi.inst;}
-    console.log('instantiate() this:', this);
-    console.log('instantiate() this.inst:', this.inst);
-    //fix bug #2 - inst may be promise for
-    //inst may be either instance or Promise
-    if (this.inst instanceof Promise) {
-      //call promis inst
-      this.inst.then(value => this.initinstance1(value));
-    } else {this.initinstance1(this.inst);}
-  }
-
-  initinstance1(inst) {
     const sReset = 'fmi2Reset';
     const sInstantiate = 'fmi2Instantiate';
     const sSetup = 'fmi2SetupExperiment';
@@ -235,33 +216,40 @@ export class Fmi {
     const sGetboolean = 'fmi2GetBoolean';
     const sDostep = 'fmi2DoStep';
     const sCreateCallback = 'createFmi2CallbackFunctions';
+    this.stepTime = 0;
+    this.stepSize = (typeof(this.fstepsize) === 'string' ) ? parseFloat(this.fstepsize) : this.fstepsize;
+    this.mystep = this.stepSize;
+    //console callback ptr, per emsripten create int ptr with signature viiiiii
+    this.inst = window.fmiinst[this.fminame].inst; //if (window.thisfmi) {this.inst = window.thisfmi.inst;}
+    console.log('instantiate() this.inst', this.inst);
+    //set the fminame and JS WASM function references
     let separator = '_';
     let prefix = this.fminame;
-    console.log('initinstance1, attached fminame:', that.fminame);
+    //console.log('attached fminame:', that.fminame);
     // OpenModelica exported function names
     if (typeof window._fmi2GetVersion === 'function') {
       prefix = '';
       separator = '';
     }
-    this.fmiCreateCallback = inst.cwrap(sCreateCallback, 'number', ['number']);
-    this.fmiReset = inst.cwrap(prefix + separator + sReset, 'number', ['number']);
-    this.fmiInstantiate = inst.cwrap(prefix + separator + sInstantiate, 'number', ['string', 'number', 'string', 'string', 'number', 'number', 'number']);
-    this.fmiSetup = inst.cwrap(prefix + separator + sSetup, 'number', ['number', 'number', 'number', 'number', 'number', 'number']);
-    this.fmiEnterInit = inst.cwrap(prefix + separator + sEnterinit, 'number', ['number']);
-    this.fmiExitInit = inst.cwrap(prefix + separator + sExitinit, 'number', ['number']);
-    this.fmiSetReal = inst.cwrap(prefix + separator + sSetreal, 'number', ['number', 'number', 'number', 'number']);
-    this.fmiGetReal = inst.cwrap(prefix + separator + sGetreal, 'number', ['number', 'number', 'number', 'number']);
-    this.fmiSetBoolean = inst.cwrap(prefix + separator + sSetboolean, 'number', ['number', 'number', 'number', 'number']);
-    this.fmiGetBoolean = inst.cwrap(prefix + separator + sGetboolean, 'number', ['number', 'number', 'number', 'number']);
-    this.fmiDoStep = inst.cwrap(prefix + separator + sDostep, 'number', ['number', 'number', 'number', 'number']);
-    this.fmiGetVersion = inst.cwrap(prefix + separator + 'fmi2GetVersion', 'string');
-    this.fmiGetTypesPlatform = inst.cwrap(prefix + separator + 'fmi2GetTypesPlatform', 'string');
-    this.fmi2FreeInstance = inst.cwrap(prefix + separator + 'fmi2FreeInstance', 'number', ['number']);
+    this.fmiCreateCallback = this.inst.cwrap(sCreateCallback, 'number', ['number']);
+    this.fmiReset = this.inst.cwrap(prefix + separator + sReset, 'number', ['number']);
+    this.fmiInstantiate = this.inst.cwrap(prefix + separator + sInstantiate, 'number', ['string', 'number', 'string', 'string', 'number', 'number', 'number']);
+    this.fmiSetup = this.inst.cwrap(prefix + separator + sSetup, 'number', ['number', 'number', 'number', 'number', 'number', 'number']);
+    this.fmiEnterInit = this.inst.cwrap(prefix + separator + sEnterinit, 'number', ['number']);
+    this.fmiExitInit = this.inst.cwrap(prefix + separator + sExitinit, 'number', ['number']);
+    this.fmiSetReal = this.inst.cwrap(prefix + separator + sSetreal, 'number', ['number', 'number', 'number', 'number']);
+    this.fmiGetReal = this.inst.cwrap(prefix + separator + sGetreal, 'number', ['number', 'number', 'number', 'number']);
+    this.fmiSetBoolean = this.inst.cwrap(prefix + separator + sSetboolean, 'number', ['number', 'number', 'number', 'number']);
+    this.fmiGetBoolean = this.inst.cwrap(prefix + separator + sGetboolean, 'number', ['number', 'number', 'number', 'number']);
+    this.fmiDoStep = this.inst.cwrap(prefix + separator + sDostep, 'number', ['number', 'number', 'number', 'number']);
+    this.fmiGetVersion = this.inst.cwrap(prefix + separator + 'fmi2GetVersion', 'string');
+    this.fmiGetTypesPlatform = this.inst.cwrap(prefix + separator + 'fmi2GetTypesPlatform', 'string');
+    this.fmi2FreeInstance = this.inst.cwrap(prefix + separator + 'fmi2FreeInstance', 'number', ['number']);
     this.instantiated = false;
     //calculate pow, power of stepsize
     this.pow = this.stepSize < 1 ? -Math.ceil(-Math.log10(this.stepSize)) : Math.ceil(Math.log10(this.stepSize)); //use Math.trunc ??
-    console.log('instantiate() inst', inst);
-    this.consoleLoggerPtr = inst.addFunction(this.consoleLogger.bind(this), 'viiiiii');
+    console.log('instantiate() this.inst', this.inst);
+    this.consoleLoggerPtr = this.inst.addFunction(this.consoleLogger.bind(this), 'viiiiii');
     this.callbackptr = this.fmiCreateCallback(this.consoleLoggerPtr);
     //create instance of model simulation
     this.fmiinst = this.fmiInstantiate(this.fminame, this.cosimulation, this.guid, '', this.callbackptr, 0, 0); //last 1 debug, 0 nodebug
@@ -327,8 +315,7 @@ export class Fmi {
     this.animationstarted = true;
     const performAnimation = () => {
       this.request = requestAnimationFrame(performAnimation);
-      if (this.inst instanceof Promise) {this.inst.then(inst => this.step())}
-      else this.step();
+      this.step();
     };
     requestAnimationFrame(performAnimation);
   }
