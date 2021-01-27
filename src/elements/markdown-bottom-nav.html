@@ -1,7 +1,8 @@
 <template>
     <div class="w3-row">
         <div class="w3-half">
-            <div class="w3-margin-right w3-card-2 w3-row w3-hover-theme-l5"><a href="${previouslink}">
+            <div show.bind="previouslink==''">&nbsp;</div>
+            <div class="w3-margin-right w3-card-2 w3-row w3-hover-theme-l5" show.bind="previouslink!=''"><a href="${previouslink}">
                 <div class="w3-col" style="width:30px">
                     <i class="fa fa-arrow-left"></i>
                 </div>
@@ -13,7 +14,7 @@
             </div>
         </div>
         <div class="w3-half">
-            <div class="w3-margin-left w3-card-2 w3-row w3-hover-theme-l5"><a href="${nextlink}">
+            <div class="w3-margin-left w3-card-2 w3-row w3-hover-theme-l5"  show.bind="nextlink!=''"><a href="${nextlink}">
                 <div class="w3-col w3-right" style="width:30px">
                     <i class="fa fa-arrow-right"></i>
                 </div>
