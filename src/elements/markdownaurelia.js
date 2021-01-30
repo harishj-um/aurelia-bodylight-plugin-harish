@@ -71,9 +71,6 @@ export class Markdownaurelia {
       }
     }).use(Markdownitfootnote) //footnote - extension to MD - otherwise no link between [^1] and [^1]:
       .use(mk, {'throwOnError': true, 'errorColor': ' #cc0000'}); //math-> katex - should be faster than mathjax and crossbrowser compatible when chrom do not support mathml
-    //TODO make local TOC configurable
-    //  .use( markdownitAnchor, { permalink: true, permalinkBefore: true, permalinkSymbol: '§' } )
-    //  .use( markdownitTocDoneRight, {itemClass: 'nav-item', listType: 'ul'} );
 
     if (this.i18n.getLocale() === 'cs') {
       console.log('czech version');
