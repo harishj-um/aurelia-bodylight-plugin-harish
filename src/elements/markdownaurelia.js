@@ -4,8 +4,9 @@ import Markdownitfootnote from 'markdown-it-footnote'; //footnote in MD
 import mk from 'markdown-it-katexx'; //math in md, iktakahiro version seems to be most updated - works with latest katex
 import hljs from 'highlight.js'; //highlights in MD source blocks
 //npm install markdown-it-toc-done-right markdown-it-anchor
-//import markdownitTocDoneRight from 'markdown-it-toc-done-right'; //TOC on top of the page
-//import markdownitAnchor from 'markdown-it-anchor'; //MD anchors
+//import markdownItTocDoneRight from 'markdown-it-toc-done-right'; //TOC on top of the page
+//import markdownItAnchor from 'markdown-it-anchor'; //MD anchors
+import {markdownitbtoc} from './markdown-it-btoc';
 import {bindable, inject} from 'aurelia-framework';
 import {HttpClient} from 'aurelia-fetch-client';
 import {EventAggregator} from 'aurelia-event-aggregator';
@@ -22,11 +23,13 @@ export class Markdownaurelia {
   @bindable watchhash;
   @bindable base='';
   @bindable fromid;
+  @bindable toc;
   previoussrc='';
   constructor(i18n, httpclient, ea) {
     //this.i18n = i18n;
     this.client = httpclient;
     this.html = '';
+    this.toc = '';
     this.ea = ea;
     this.i18n = i18n;
     console.log('bdlmarkdownaurelia eventaggregator:', ea);
@@ -70,8 +73,10 @@ export class Markdownaurelia {
         return ''; // use external default escaping
       }
     }).use(Markdownitfootnote) //footnote - extension to MD - otherwise no link between [^1] and [^1]:
-      .use(mk, {'throwOnError': true, 'errorColor': ' #cc0000'}); //math-> katex - should be faster than mathjax and crossbrowser compatible when chrom do not support mathml
-
+      .use(mk, {'throwOnError': true, 'errorColor': ' #cc0000'}) //math-> katex - should be faster than mathjax and crossbrowser compatible when chrom do not support mathml
+      //.use(markdownItAnchor, { permalink: true, permalinkBefore: true, permalinkSymbol: '§' } )
+      //.use(markdownItTocDoneRight);
+      .use(markdownitbtoc);
     if (this.i18n.getLocale() === 'cs') {
       console.log('czech version');
     } else {
@@ -108,6 +113,9 @@ export class Markdownaurelia {
         this.text = data;
         //convert from md to html
         this.html = this.md.render(this.text);
+        let tocregex = /<div[^<>]*id="toc"[^<>]*>(.*?)<\/div>/g;
+        this.toc = this.md.render('@[toc] \n'+this.text).match(tocregex)[0];
+        console.log('readmd toc:', this.toc);
         this.update();
       });
   }

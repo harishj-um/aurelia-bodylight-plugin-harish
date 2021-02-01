@@ -5,25 +5,23 @@
     <require from="./markdown-bottom-nav"></require>
     <require from="./markdown"></require>
     <require from="./markdown-nav2"></require>
+    <require from="./markdown-toc"></require>
     <require from="../attributes/watchhash"></require>
     <require from="./watch-url-hash"></require>
     <require from="./w3fonts.css"></require>
-    <div class="w3-row">
-        <div class="w3-col s6 m4 l2" show.bind="shownav">
-            <div class="w3-padding">
+    <div class="w3-row-padding">
+        <div class="w3-col m4 l2 w3-hide-small" show.bind="shownav">
                 <watch-url-hash></watch-url-hash>
                 <markdown-nav2 navstyle="vertical" base="${base}" src="${summary}"></markdown-nav2>
-            </div>
         </div>
-        <div class="w3-col s6 m8 l10 w3-palatino">
-            <div class="w3-padding">
+        <div class="w3-col s12 m8 l8 w3-palatino">
                 <markdown-top-nav base="${base}" src="${summary}" index="${index}" nav.two-way="shownav"></markdown-top-nav>
-                <markdown class="w3-padding" base="${base}" src="${index}" watchhash="index,0;base,3"></markdown>
+                <markdown class="w3-padding" base="${base}" src="${index}" watchhash="index,0;base,3" toc.two-way="toc"></markdown>
                 <markdown-bottom-nav class="w3-padding" base="${base}" index="${index}" src="${summary}"></markdown-bottom-nav>
-            </div>
         </div>
-        <div class="w3-rest">
-
+        <div class="w3-rest w3-small w3-palatino w3-theme-l5" >
+            <!--dynamic-html html.two-way="toc"></dynamic-html-->
+            <div ref="mytoc"></div>
         </div>
     </div>
 </template>

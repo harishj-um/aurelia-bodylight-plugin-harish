@@ -37,7 +37,6 @@ nav.horizontal li > a:after { content: ' \2193' }
 /*this adds an arrow to every link*/
 nav.horizontal li li > a:after { content: ' \2192' }
 
-
 /* this removes the arrow when the link is the only child*/
 nav.horizontal li > a:only-child:after { content: ''; }
 
@@ -111,11 +110,16 @@ nav.vertical li a:hover:not(.active) {
   color: white;
 }
 
+nav.vertical li li a {font-size:smaller;color:#7d97a5}
+nav.vertical li li li a {font-size:smaller;color:#7d97a5}
+
 /*this adds a space and bullet to every link*/
-nav.vertical li > a:before { content: '\25cf\00a0' }
+nav.vertical li > a:after { content: '\00a0\203a' }
 
 /*this adds spaces and a square to every link*/
 nav.vertical li li > a:before { content: '\00a0\00a0\00a0\25a0\00a0' }
+nav.vertical li li > a:after { content: '' }
 
 /*this adds spaces and inverse square to every link*/
 nav.vertical li li li > a:before { content: '\00a0\00a0\00a0\00a0\00a0\00a0\25a1\00a0' }
+nav.vertical li li li > a:after { content: '' }
