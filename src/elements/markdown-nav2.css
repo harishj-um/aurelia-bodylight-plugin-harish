@@ -123,3 +123,7 @@ nav.vertical li li > a:after { content: '' }
 /*this adds spaces and inverse square to every link*/
 nav.vertical li li li > a:before { content: '\00a0\00a0\00a0\00a0\00a0\00a0\25a1\00a0' }
 nav.vertical li li li > a:after { content: '' }
+
+.bdl-sidebar {
+height:100%;position:fixed!important;z-index:1;overflow:auto
+}
