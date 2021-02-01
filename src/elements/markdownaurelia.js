@@ -114,7 +114,7 @@ export class Markdownaurelia {
         //convert from md to html
         this.html = this.md.render(this.text);
         let tocregex = /<div[^<>]*id="toc"[^<>]*>(.*?)<\/div>/g;
-        this.toc = this.md.render('@[toc] \n'+this.text).match(tocregex)[0];
+        this.toc = this.md.render('@[toc] \n' + this.text).match(tocregex)[0];
         console.log('readmd toc:', this.toc);
         this.update();
       });

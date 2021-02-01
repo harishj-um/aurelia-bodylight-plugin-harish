@@ -10,15 +10,13 @@ let defaultOptions = {
   reverseLink: false
 };
 
-export function markdownitbtoc(md, options) {
+export function markdownitbtoc(md, _options) {
   // Set default options
-  var options = Object.assign({}, defaultOptions, options);
+  let options = Object.assign({}, defaultOptions, _options);
 
   // Global variables
-  if (!headingInfos) {
-    var headingInfos = [];
-  } else {
-
+  if (!window.headingInfos) {
+    window.headingInfos = [];
   }
 
   md.inline.ruler.after('emphasis', 'toc', function(state, silent) {
@@ -53,7 +51,7 @@ export function markdownitbtoc(md, options) {
     // Parses all heading information to render the TOC
     for (let i = 0; i < tokens.length; i++) {
       if (tokens[i].type === 'heading_open') {
-        let tagLevel = parseInt(tokens[i].tag[1]);
+        let tagLevel = parseInt(tokens[i].tag[1], 10);
         let numbering = [];
 
         headingCounts[tagLevel] += 1;

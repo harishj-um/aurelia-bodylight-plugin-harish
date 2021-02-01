@@ -1,5 +1,5 @@
 import {MarkdownBook} from './markdown-book';
-import {bindable,observable} from 'aurelia-framework';
+import {bindable, observable} from 'aurelia-framework';
 
 export class MarkdownBook2 extends MarkdownBook {
     @bindable summary;
@@ -20,21 +20,19 @@ export class MarkdownBook2 extends MarkdownBook {
     }
 
     attached() {
-        console.log('markdown book2 attached() toc', this.toc);
+      console.log('markdown book2 attached() toc', this.toc);
       //super.attached();
       //console.log('markdownbook attached shownav', this.shownav);
     }
 
-    tocChanged(newValue,oldValue) {
-        this.mytoc.innerHTML = newValue;
+    tocChanged(newValue, oldValue) {
+      this.mytoc.innerHTML = newValue;
     }
 
-    scrollto(id){
-        let el = document.getElementById(id);
-        console.log('markdownbook2 scrollto() id,el',id,el);
-        el.scrollIntoView();
-//        document.getElementById(id).scrollIntoView();
+    scrollto(id) {
+      let el = document.getElementById(id);
+      console.log('markdownbook2 scrollto() id,el', id, el);
+      el.scrollIntoView();
+      //        document.getElementById(id).scrollIntoView();
     }
-
-
 }
