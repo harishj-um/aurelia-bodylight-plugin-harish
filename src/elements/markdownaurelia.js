@@ -8,8 +8,7 @@ import hljs from 'highlight.js'; //highlights in MD source blocks
 //import markdownItAnchor from 'markdown-it-anchor'; //MD anchors
 import {markdownitbtoc} from './markdown-it-btoc';
 import {bindable, inject} from 'aurelia-framework';
-import {HttpClient} from 'aurelia-fetch-client';
-import {EventAggregator} from 'aurelia-event-aggregator';
+import {HttpClient} from 'aure 
 import {I18N} from 'aurelia-i18n';
 import {ContentUpdate} from './messages';
 
