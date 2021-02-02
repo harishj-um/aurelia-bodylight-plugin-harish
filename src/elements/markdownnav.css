@@ -90,7 +90,7 @@ nav.vertical ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
-  background-color: #f1f1f1;
+  /*background-color: white;*/
   height: 100%;
 }
 
@@ -102,20 +102,26 @@ nav.vertical li a {
 }
 
 nav.vertical li a.active {
-  background-color: #4CAF50;
-  color: white;
+  background-color: antiquewhite;
+  color: darkgray;
 }
 
 nav.vertical li a:hover:not(.active) {
-  background-color: #57707d;/*#222;*/
+  background-color: darkgray;/*#222;*/
   color: white;
 }
 
+nav.vertical li li a {font-size:smaller;color:#7d97a5}
+nav.vertical li li li a {font-size:smaller;color:#7d97a5}
+
 /*this adds a space and bullet to every link*/
-nav.vertical li > a:before { content: '\25cf\00a0' }
+nav.vertical li > a:after { content: '\00a0\203a' }
 
 /*this adds spaces and a square to every link*/
 nav.vertical li li > a:before { content: '\00a0\00a0\00a0\25a0\00a0' }
+nav.vertical li li > a:after { content: '' }
 
 /*this adds spaces and inverse square to every link*/
 nav.vertical li li li > a:before { content: '\00a0\00a0\00a0\00a0\00a0\00a0\25a1\00a0' }
+nav.vertical li li li > a:after { content: '' }
+

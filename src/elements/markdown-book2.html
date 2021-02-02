@@ -8,19 +8,21 @@
     <require from="../attributes/watchhash"></require>
     <require from="./watch-url-hash"></require>
     <require from="./w3fonts.css"></require>
-    <div class="w3-row-padding w3-sans-serif">
-        <div class="w3-col m4 l2 w3-hide-small" show.bind="shownav">
+    <require from="./markdown-book2.css"></require>
+    <div class="w3-row">
+        <div class="bdl-sidebar m4 l2 w3-hide-small w3-border-right" show.bind="shownav">
                 <watch-url-hash></watch-url-hash>
                 <markdown-nav2 navstyle="vertical" base="${base}" src="${summary}"></markdown-nav2>
             &nbsp;
         </div>
-        <div class="w3-col s12 m8 l8 w3-palatino" style="margin-left:12px">
+        <div class="bdl-contentbar m4 l2 w3-palatino">
+            <div class="w3-col l9 m12" style="margin:0 20px">
                 <markdown-top-nav base="${base}" src="${summary}" index="${index}" nav.two-way="shownav"></markdown-top-nav>
                 <markdown class="w3-padding" base="${base}" src="${index}" watchhash="index,0;base,3" toc.two-way="toc"></markdown>
                 <markdown-bottom-nav class="w3-padding" base="${base}" index="${index}" src="${summary}"></markdown-bottom-nav>
+            </div>
         </div>
-        <div class="w3-rest w3-small w3-theme-l5 w3-sans-serif" >
-            <!--dynamic-html html.two-way="toc"></dynamic-html-->
+        <div class="w3-rest w3-hide-small w3-hide-medium w3-small w3-sans-serif w3-border-left" >
             <div ref="mytoc"></div>
         </div>
     </div>
