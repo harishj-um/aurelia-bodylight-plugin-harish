@@ -76,7 +76,7 @@ export function markdownitbtoc(md, _options) {
 
         let hInfo = {
           numbering: numbering,
-          content: tokens[i + 1].content.replace(/ *\{[^}]*\} */g, "") //will ignore custom numbering between { }
+          content: tokens[i + 1].content.replace(/ *\{[^}]*\} */g, '') //will ignore custom numbering between { }
         };
 
         headingInfos.push(hInfo);
