@@ -1,5 +1,7 @@
 import Markdownit from 'markdown-it';
-import Markdownitfootnote from 'markdown-it-footnote'; //footnote in MD
+//import Markdownitfootnote from 'markdown-it-footnote'; //footnote in MD
+import {bodylightFootnotePlugin} from './markdown-it-bfootnote';
+import MarkdownitAttrs from 'markdown-it-attrs';
 //import mk from '@liradb2000/markdown-it-katex'; //math in md, iktakahiro version seems to be most updated - works with latest katex
 import mk from 'markdown-it-katexx'; //math in md, iktakahiro version seems to be most updated - works with latest katex
 import hljs from 'highlight.js'; //highlights in MD source blocks
@@ -72,7 +74,8 @@ export class Markdownaurelia {
 
         return ''; // use external default escaping
       }
-    }).use(Markdownitfootnote) //footnote - extension to MD - otherwise no link between [^1] and [^1]:
+    }).use(bodylightFootnotePlugin) //footnote - extension to MD - otherwise no link between [^1] and [^1]:
+      .use(MarkdownitAttrs)
       .use(mk, {'throwOnError': true, 'errorColor': ' #cc0000'}) //math-> katex - should be faster than mathjax and crossbrowser compatible when chrom do not support mathml
       //.use(markdownItAnchor, { permalink: true, permalinkBefore: true, permalinkSymbol: '§' } )
       //.use(markdownItTocDoneRight);

@@ -1,4 +1,4 @@
-# Bodylight Web Components 
+# Bodylight Web Components  
 
 Bodylight Web Components is a suite of custom elements enhancing HTML with following advanced features: 
 * FMI component - to control simulation of modeul using FMI standard in browser. `Modelica` model can be exported by any Modelica tool into `FMU`. [Bodylight FMU Compiler](https://github.com/creative-connections/Bodylight.js-FMU-Compiler) can be used to export FMU into WebAssembly.
@@ -7,21 +7,21 @@ Bodylight Web Components is a suite of custom elements enhancing HTML with follo
 
 This plugin is part of broader tools to enable in-browser simulation using modern web technologies: Web Assembly, HTML, Javascript (ECMAScript6).
 
-# Usage
+## Usage
 To build web simulator:
 1) You need to export Modelica model into FMU with source codes including source codes for solver (Dymola exports CVODE, OpenModelica 1.14.x exports Euler and 1.16.x is declared to support CVODE export too).
 2) Then you need to convert the FMU into WebAssembly - using [Bodylight FMU Compiler](https://github.com/creative-connections/Bodylight.js-FMU-Compiler) 
 3) the exported ZIP contains JS file - to be reffered from `bdl-fmi` component, and `modelDescription.xml` - standard FMU description with variable references.
 4) optional - export Adobe Animate animation into CreateJS library usable by `bdl-adobe` component.
 5) use the Bodylight components, This plugin is distributed in 2 different way: 
-   * **1. Standard web components**[1] - follow [Bodylight.js-Components](https://github.com/creative-connections/Bodylight.js-Components) to create web simulator using HTML or Markdown - web framework agnostic way.  
-   * **2. Aurelia web components**[2] - follow [aurelia-bodylight-plugin](https://github.com/creative-connections/aurelia-bodylight-plugin) to create more interactive application using `Aurelia` framework.
+   * **1. Standard web components**[^1] - follow [Bodylight.js-Components](https://github.com/creative-connections/Bodylight.js-Components) to create web simulator using HTML or Markdown - web framework agnostic way.  
+   * **2. Aurelia web components**[^2] - follow [aurelia-bodylight-plugin](https://github.com/creative-connections/aurelia-bodylight-plugin) to create more interactive application using `Aurelia` framework.
 
-# Comparison to previous version
+## Comparison to previous version
 
-Compared to Bodylight.js v1.0
-  * in order to create web simulator in Bodylight.js 1.0 you need Bodylight.js Composer v1.0
-  * in order to create web simulator in Bodylight.js 2.0 you need any text editor.
+Compared to Bodylight.js v1.0 
+  * in order to create web simulator in Bodylight.js 1.0 you need Bodylight.js Composer v1.0 [^3]
+  * in order to create web simulator in Bodylight.js 2.0 you need any text editor or you may use Bodylight Editor [^4].
   * features of Bodylight.js Composer v1.0 was split into several independent subsystems and new features were introduced - Components, Editor, Composer, VirtualBody (3D visualization)   
   * optional [Bodylight-Editor](https://bodylight.physiome.cz/Bodylight-Editor/) can be used to edit the web simulator - it supports live preview for Markdown, Bodylight.js-Components, animation from Adobe Animate
   * BJP files from version 1.0 are not usable in v 2.0.beta. 

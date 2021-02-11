@@ -1,4 +1,6 @@
 //'use strict';
+/* Markdown-it plugin to generate table of content with numbering like wiki style
+*/
 
 let defaultOptions = {
   tocRegexp: /@\[toc\]/im,
@@ -53,8 +55,16 @@ export function markdownitbtoc(md, _options) {
       if (tokens[i].type === 'heading_open') {
         let tagLevel = parseInt(tokens[i].tag[1], 10);
         let numbering = [];
-
-        headingCounts[tagLevel] += 1;
+        //console.log('init toc tokens[i]',tokens[i]);
+        // e.g. # Title {num=3} set the numbering from 3 otherwise default increment
+        if (tokens[i].attrs && tokens[i].attrs.length > 0) {
+          headingCounts[tagLevel] = parseInt(tokens[i].attrs[0][1], 10);
+        } else {
+          headingCounts[tagLevel] += 1;
+        }
+        //console.log('headingCounts', headingCounts[tagLevel]);
+        //console.log('init toc tokens[i]', tokens[i]);
+        //console.log('init toc tokens[i+1]',tokens[i+1]);
 
         for (let j = 1; j < headingCounts.length; j++) {
           if (j <= tagLevel) {
@@ -66,7 +76,7 @@ export function markdownitbtoc(md, _options) {
 
         let hInfo = {
           numbering: numbering,
-          content: tokens[i + 1].content
+          content: tokens[i + 1].content.replace(/ *\{[^}]*\} */g, "") //will ignore custom numbering between { }
         };
 
         headingInfos.push(hInfo);
