@@ -1,7 +1,7 @@
 import Markdownit from 'markdown-it';
 //import Markdownitfootnote from 'markdown-it-footnote'; //footnote in MD
 import {bodylightFootnotePlugin} from './markdown-it-bfootnote';
-import MarkdownitAttrs from 'markdown-it-attrs';
+//import MarkdownitAttrs from 'markdown-it-attrs'; //replaced by regex in btoc - will parse ## 2. title 2
 //import mk from '@liradb2000/markdown-it-katex'; //math in md, iktakahiro version seems to be most updated - works with latest katex
 import mk from 'markdown-it-katexx'; //math in md, iktakahiro version seems to be most updated - works with latest katex
 import hljs from 'highlight.js'; //highlights in MD source blocks
@@ -34,7 +34,7 @@ export class Markdownaurelia {
     this.toc = '';
     this.ea = ea;
     this.i18n = i18n;
-    console.log('bdlmarkdownaurelia eventaggregator:', ea);
+    //console.log('bdlmarkdownaurelia eventaggregator:', ea);
     //option function to be called when customevent retrieved
     this.handleContentChange = e => {
       this.updateContent(e.detail.content);
@@ -42,19 +42,19 @@ export class Markdownaurelia {
   }
 
   bind() {
-    console.log('markdownaurelia bind() src', this.src);
+    //console.log('markdownaurelia bind() src', this.src);
     if (this.base && this.base.length > 0) window.bdlBaseHref = this.base; // define bdlbasehref only if not empty string
     if (this.src && this.src.length > 0 && this.md) this.readmd();
   }
 
   srcChanged() {
-    console.log('markdownaurelia srcChanged() src', this.src);
+    //console.log('markdownaurelia srcChanged() src', this.src);
     if (this.src && this.src.length > 0 && this.md) this.readmd();
   }
 
 
   attached() {
-    console.log('bdlmarkdownaurelia attached() src:', this.src);
+    //console.log('bdlmarkdownaurelia attached() src:', this.src);
     // eslint-disable-next-line new-cap
     //optionally, register customevent handler for 'contentupdate' when fromid is defined
     // eslint-disable-next-line new-cap
@@ -75,7 +75,7 @@ export class Markdownaurelia {
         return ''; // use external default escaping
       }
     }).use(bodylightFootnotePlugin) //footnote - extension to MD - otherwise no link between [^1] and [^1]:
-      .use(MarkdownitAttrs)
+      //.use(MarkdownitAttrs)
       .use(mk, {'throwOnError': true, 'errorColor': ' #cc0000'}) //math-> katex - should be faster than mathjax and crossbrowser compatible when chrom do not support mathml
       //.use(markdownItAnchor, { permalink: true, permalinkBefore: true, permalinkSymbol: '§' } )
       //.use(markdownItTocDoneRight);

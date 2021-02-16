@@ -50,12 +50,6 @@ some text and reference [^1] some other text ^[inline footnote]
 [^1]: footnote content
 ```
 
-* markdown-it-attr: add class attribute or custom attribute
-```markdown
-paragraph *style me*{.red} more text
-# header {num=4}
-```
-
 * customized markdown-it-btoc: add numbering and toc 1. 2. 3. 
 ```markdown
 # header 
@@ -63,13 +57,14 @@ paragraph *style me*{.red} more text
 # third header
 ```
 
-* markdown-it-btoc with specific number: will start from num=xx, e.g. 4 from 4. 5. 6.
+* markdown-it-btoc with custom number: if custom number will appear in header then all headers will be numbered
 ```markdown
-# header {num=4}
-# fifth header
-# sixth header
+# 4. header 
+## subheader
+# headerx
+# headery
 ```
- 
+will render to `4. header ... 4.1 subheader ... 5. headerx ... 6. headery`  
 
 ## markdown nav
 `<bdl-markdownnav>` renders navigation

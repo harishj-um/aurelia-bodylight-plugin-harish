@@ -4,6 +4,7 @@
 
 let defaultOptions = {
   tocRegexp: /@\[toc\]/im,
+  numberingRegexp: /^[0-9]+\./,
   tocTitle: 'Table of Contents',
   tocId: 'toc',
   tocWrapperClass: 'toc',
@@ -19,6 +20,7 @@ export function markdownitbtoc(md, _options) {
   // Global variables
   if (!window.headingInfos) {
     window.headingInfos = [];
+    window.headingNumberEnabled = false;
   }
 
   md.inline.ruler.after('emphasis', 'toc', function(state, silent) {
@@ -48,6 +50,8 @@ export function markdownitbtoc(md, _options) {
   md.core.ruler.push('init_toc', function(state) {
     // For each rendering, initialize heading count
     let headingCounts = [null, 0, 0, 0, 0, 0, 0];
+    //let countsEnabled = false;
+    headingNumberEnabled = false;
     let tokens = state.tokens;
 
     // Parses all heading information to render the TOC
@@ -57,8 +61,13 @@ export function markdownitbtoc(md, _options) {
         let numbering = [];
         //console.log('init toc tokens[i]',tokens[i]);
         // e.g. # Title {num=3} set the numbering from 3 otherwise default increment
-        if (tokens[i].attrs && tokens[i].attrs.length > 0) {
-          headingCounts[tagLevel] = parseInt(tokens[i].attrs[0][1], 10);
+        // # 3. Title
+        if (options.numberingRegexp.test(tokens[i + 1].content)) {
+        //if (tokens[i].attrs && tokens[i].attrs.length > 0) {
+          let customcount1 = options.numberingRegexp.exec(tokens[i + 1].content)[0];
+          let customcount = customcount1.slice(0, -1);
+          headingCounts[tagLevel] = parseInt(customcount, 10);
+          headingNumberEnabled = true;
         } else {
           headingCounts[tagLevel] += 1;
         }
@@ -76,6 +85,7 @@ export function markdownitbtoc(md, _options) {
 
         let hInfo = {
           numbering: numbering,
+          customNumber: options.numberingRegexp.test(tokens[i + 1].content),
           content: tokens[i + 1].content.replace(/ *\{[^}]*\} */g, '') //will ignore custom numbering between { }
         };
 
@@ -113,7 +123,10 @@ export function markdownitbtoc(md, _options) {
       let numberingStr = hInfo.numbering.join('.');
       let anchor = options.anchorIdPrefix + numberingStr;
 
-      results.push('<li> <a onclick="document.getElementById(\'' + anchor + '\').scrollIntoView();">' + numberingStr + '. ' + hInfo.content + '</a></li>');
+      results.push('<li> <a onclick="document.getElementById(\'' +
+          anchor + '\').scrollIntoView();">' +
+          ((headingNumberEnabled && !hInfo.customNumber) ? numberingStr + '. ' : '' ) +
+          hInfo.content + '</a></li>');
 
       previousLevel = headingInfos[i].numbering.length;
     }
@@ -130,7 +143,7 @@ export function markdownitbtoc(md, _options) {
     let hInfo = headingInfos.shift();
     let numberingStr = hInfo.numbering.join('.');
     let anchor = options.anchorIdPrefix + numberingStr;
-
-    return '<' + tokens[index].tag + '><a id="' + anchor + '">' + numberingStr + '.</a> ';
+    //console.log('rendering header', numberingStr, headingNumberEnabled);
+    return '<' + tokens[index].tag + '><a id="' + anchor + '">' + ((headingNumberEnabled && !hInfo.customNumber) ? numberingStr + '. ' : '' ) + '</a>';
   };
 }

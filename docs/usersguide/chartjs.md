@@ -1,6 +1,6 @@
-## BdlChartjs BdlChartjs-time BdlChartjs-xy
+# 3. BdlChartjs BdlChartjs-time BdlChartjs-xy
 
-### ChartJS
+## ChartJS
 
 <div class="w3-row">
 <div class="w3-quarter">
@@ -49,7 +49,7 @@ By default - no convertors - raw data (usually in SI) are presented in chart.
   </div>
   </div>
   
-### ChartJS time
+## ChartJS time
 <div class="w3-row">
   <div class="w3-quarter">
 
@@ -85,7 +85,7 @@ Example:
   </div>
 </div>
 
-### BdlChartjs-xy
+## BdlChartjs-xy
 
 XY chart from data
 
