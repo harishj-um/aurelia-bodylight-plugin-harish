@@ -26,6 +26,7 @@ export function configure(config) {
     PLATFORM.moduleName('./elements/animate-adobe'),
     PLATFORM.moduleName('./elements/animate-adobe-control'),
     PLATFORM.moduleName('./elements/bind2a'),
+    PLATFORM.moduleName('./elements/bind2a-text'),
     PLATFORM.moduleName('./elements/quiz'),
     PLATFORM.moduleName('./elements/audio-on-increase'),
     PLATFORM.moduleName('./elements/audio-on-decrease'),
@@ -35,6 +36,5 @@ export function configure(config) {
     PLATFORM.moduleName('./elements/markdown-book-au'),
     PLATFORM.moduleName('./elements/markdown-app.html'),
     PLATFORM.moduleName('./elements/fmi')
-
   ]);
 }
