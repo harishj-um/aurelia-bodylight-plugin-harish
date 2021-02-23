@@ -29,7 +29,10 @@ export class Bind2a {
 
       //create bind2animation structure
       let binding = new Bind2animation(this.findex, this.aname, this.amin, this.amax, this.fmin, this.fmax);
+      this.addbinding(binding);
+    }
 
+    addbinding(binding) {
       //create global bind2animation array - it is used then by animate-adobe instance
       if (!window.animatebindings) window.animatebindings = [];
       //keep index within the array, will be used when detaching

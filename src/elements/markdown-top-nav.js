@@ -13,6 +13,7 @@ export class MarkdownTopNav {
     @bindable base='';
     @bindable nav=false;
     @bindable index;
+    @bindable toc=true;
     notinitread=true;
     previoustitle='';//Introduction';
     nexttitle='';//Hemodynamics in Left Ventricle'
@@ -49,6 +50,10 @@ export class MarkdownTopNav {
 
     showhidenav() {
       this.nav = ! this.nav;
+    }
+
+    showhidetoc() {
+        this.toc = ! this.toc;
     }
 
     changesrc(...args) {

@@ -320,10 +320,11 @@ export class AnimateAdobe {
         //binding = {findex:findex,aname:aname,amin:amin,amax:amax,fmin:fmin,fmax:fmax}
         let value = e.detail.data[binding.findex];
         if (binding.aname.endsWith('_text')) {
-          this.setText(binding.aname, value);
+          let convertedvalue = binding.convertf2a(value); //precision
+          this.setText(binding.aname, convertedvalue);
         } else
         if (binding.aname.endsWith('_anim')) {
-          let convertedvalue = binding.convertf2a(value);
+          let convertedvalue = binding.convertf2a(value); //calculate approximation
           this.setAnimationValue(binding.aname, convertedvalue);
         }
       }

@@ -9,21 +9,21 @@
     <require from="./watch-url-hash"></require>
     <require from="./w3fonts.css"></require>
     <require from="./markdown-book2.css"></require>
+    <markdown-top-nav base="${base}" src="${summary}" index="${index}" nav.two-way="shownav" toc.two-way="showtoc"></markdown-top-nav>
     <div class="w3-row">
         <div class="bdl-sidebar m4 l2 w3-hide-small w3-border-right" show.bind="shownav">
                 <watch-url-hash></watch-url-hash>
                 <markdown-nav2 navstyle="vertical" base="${base}" src="${summary}"></markdown-nav2>
             &nbsp;
         </div>
-        <div class="bdl-contentbar m4 l2 w3-palatino">
-            <div class="w3-col l9 m12" style="margin:0 20px">
-                <markdown-top-nav base="${base}" src="${summary}" index="${index}" nav.two-way="shownav"></markdown-top-nav>
-                <markdown class="w3-padding" base="${base}" src="${index}" watchhash="index,0;base,3" toc.two-way="toc"></markdown>
-                <markdown-bottom-nav class="w3-padding" base="${base}" index="${index}" src="${summary}"></markdown-bottom-nav>
+        <div class.bind="shownav?'bdl-contentbar m4 l2':''">
+            <div class="w3-rest" style="margin:0 20px">
+                <div class="w3-hide-small w3-hide-medium w3-small w3-sans-serif w3-border-left w3-right" show.bind="showtoc">
+                    <div ref="mytoc"></div>
+                </div>
+                <markdown class="w3-padding  w3-palatino" base="${base}" src="${index}" watchhash="index,0;base,3" toc.two-way="toc"></markdown>
+                <markdown-bottom-nav class="w3-padding  w3-palatino" base="${base}" index="${index}" src="${summary}"></markdown-bottom-nav>
             </div>
-        </div>
-        <div class="w3-rest w3-hide-small w3-hide-medium w3-small w3-sans-serif w3-border-left" >
-            <div ref="mytoc"></div>
         </div>
     </div>
 </template>

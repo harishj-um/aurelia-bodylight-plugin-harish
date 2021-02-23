@@ -9,6 +9,7 @@ export class MarkdownBook2 extends MarkdownBook {
     @observable toc = '<p>some toc</p>'
     //shownav=true;
 
+
     constructor() {
       super();
     }
@@ -16,6 +17,7 @@ export class MarkdownBook2 extends MarkdownBook {
     bind() {
       super.bind();
       this.shownav = true;
+      this.showtoc = true;
       //console.log('markdownbook bind shownav', this.shownav);
     }
 
