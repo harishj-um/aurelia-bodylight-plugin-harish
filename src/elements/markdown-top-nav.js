@@ -53,7 +53,7 @@ export class MarkdownTopNav {
     }
 
     showhidetoc() {
-        this.toc = ! this.toc;
+      this.toc = ! this.toc;
     }
 
     changesrc(...args) {
