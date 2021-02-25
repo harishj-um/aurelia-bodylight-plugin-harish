@@ -3,6 +3,8 @@ import {PLATFORM} from 'aurelia-pal';
 export function configure(config) {
   config.globalResources([
     PLATFORM.moduleName('./elements/range.html'),
+    PLATFORM.moduleName('./elements/checkbox.html'),
+    PLATFORM.moduleName('./elements/buttonparams'),
     PLATFORM.moduleName('./elements/receptacle.html'),
     PLATFORM.moduleName('./elements/bind2previous'),
     PLATFORM.moduleName('./elements/dygraphchart'),

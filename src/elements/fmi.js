@@ -31,7 +31,8 @@ export class Fmi {
     this.handleValueChange = e => {
       //e.target; //triggered the event
       console.log('handlevaluechange', e, e.target);
-      let targetid = (e.detail && e.detail.id) ? e.detail.id : e.target.parentElement.parentElement.id;
+      //detail.id or target.id (button) if not empty string either parent of parent (range)
+      let targetid = (e.detail && e.detail.id) ? e.detail.id : (e.target.id.length > 0 ? e.target.id : e.target.parentElement.parentElement.id);
       let targetvalue = (e.detail && e.detail.value) ? e.detail.value : e.target.value;
       this.changeinputs.push({id: targetid, value: targetvalue}); //detail will hold the value being changed
       console.log('fmi handle value change', this.changeinputs);
@@ -363,8 +364,8 @@ export class Fmi {
       //changeinputs
       if (this.changeinputs.length > 0) {
         while (this.changeinputs.length > 0) {
-          console.log('changing inputs');
           let myinputs = this.changeinputs.shift(); //remove first item
+          console.log('changing inputs', myinputs);
           //set real - reference is in - one input one reference
           //for (let reference of this.inputs[myinputs.id])
 
