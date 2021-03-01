@@ -1,15 +1,4 @@
 <template>
-    <test myid.to-view="${moleculeid}"></test>
-    <div style="width:${width}px;height:${height}px;position:relative">
-
-    <pdbe-molstar
-            id="${pid}"
-            molecule-id="2h35"
-            myid.to-view="${moleculeid}"
-            hide-controls="true"
-            hide-polymer="true"
-            bg-color-r="255"
-            bg-color-g="255"
-            bg-color-b="255"></pdbe-molstar>
+    <div style="width:${width}px;height:${height}px;position:relative" ref="parentref">
     </div>
 </template>

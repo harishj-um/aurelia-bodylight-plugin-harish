@@ -12,25 +12,36 @@ import {bindable} from 'aurelia-framework';
  * <script type="text/javascript" src="https://www.ebi.ac.uk/pdbe/pdb-component-library/js/pdbe-molstar-component-1.1.0.js"></script>
  */
 export class PdbPdbeMolstar {
-    @bindable pid;
-    @bindable moleculeid='2hhd';
-    @bindable moleculeId='1cbs';
-    @bindable hidecontrols='true';
-    @bindable hidepolymer='true';
+    @bindable moleculeId='2hhd';
+    @bindable hideControls='true';
+    @bindable hidePolymer='false';
     @bindable width=400;
     @bindable height=300;
 
+    /* Adding to template do not have effect as pdbe-molstar is third party web component, thus appendchild notifies api to interpret it
+    Aurelia do not bind to unknown attributes - molecule-id etc. it creates
+              <pdbe-molstar molecule-id='2hhd'
+                      bg-color-r="255"
+                      bg-color-g="255"
+                      bg-color-b="255"></pdbe-molstar>
+*/
     bind() {
-      console.log('bind() moleculeid', this.moleculeid);
-      console.log('bind() moleculeId', this.moleculeId);
-      console.log('bind() hidecontrols', this.hidecontrols);
-      console.log('bind() hidepolymer', this.hidepolymer);
+      console.log('bind() moleculeId,hidecontrols,hidepolymer,moleculeidref', this.moleculeId, this.hideControls, this.hidePolymer, this.parentref);
+      this.pdbref = document.createElement('pdbe-molstar');
+      this.pdbref.setAttribute('molecule-id', this.moleculeId);
+      this.pdbref.setAttribute('hide-controls', this.hideControls);
+      this.pdbref.setAttribute('hide-polymer', this.hidePolymer);
+      this.pdbref.setAttribute('hide-polymer', this.hidePolymer);
+      this.pdbref.setAttribute('bg-color-r', 255);
+      this.pdbref.setAttribute('bg-color-g', 255);
+      this.pdbref.setAttribute('bg-color-b', 255);
+      this.parentref.appendChild(this.pdbref);
     }
 
     attached() {
       setTimeout( () => {
-        let pdbeMolstarComponent = document.getElementById(this.pid);
-        let viewerInstance = pdbeMolstarComponent.viewerInstance;
+        //let pdbeMolstarComponent = document.getElementById(this.pid);
+        let viewerInstance = this.pdbref.viewerInstance;
         viewerInstance.visual.toggleSpin(true);
       }, 3000);
     }
