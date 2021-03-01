@@ -37,6 +37,7 @@ export function configure(config) {
     PLATFORM.moduleName('./elements/markdown-book2'),
     PLATFORM.moduleName('./elements/markdown-book-au'),
     PLATFORM.moduleName('./elements/markdown-app.html'),
-    PLATFORM.moduleName('./elements/fmi')
+    PLATFORM.moduleName('./elements/fmi'),
+    PLATFORM.moduleName('./elements/pdb-pdbe-molstar')
   ]);
 }

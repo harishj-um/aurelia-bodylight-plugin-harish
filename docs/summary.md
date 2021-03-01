@@ -20,6 +20,7 @@
       * [BdlMarkdown - documents with <br /> bodylight web components](#usersguide/markdown.md)
       * [Buttonparams](#usersguide/button.md)      
       * [Checkbox](#usersguide/checkbox.md)
+      * [PDB](#usersguide/pdb.md)
     * [Developer's Guide](#developersguide.md)
   * [Examples](#examples.md)
     * [Hemodynamics Meurs with controls](#example/hemodynamicsmeurs.md)
