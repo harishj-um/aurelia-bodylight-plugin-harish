@@ -32,7 +32,10 @@ export class Fmi {
       //e.target; //triggered the event
       console.log('handlevaluechange', e, e.target);
       //detail.id or target.id (button) if not empty string either parent of parent (range)
-      let targetid = (e.detail && e.detail.id) ? e.detail.id : (e.target.id.length > 0 ? e.target.id : e.target.parentElement.parentElement.id);
+      let targetid;
+      if (e.detail && e.detail.id) targetid = e.detail.id;
+      else if (e.target.id.length > 0) targetid = e.target.id;
+      else targetid = e.target.parentElement.parentElement.id;
       let targetvalue = (e.detail && e.detail.value) ? e.detail.value : e.target.value;
       this.changeinputs.push({id: targetid, value: targetvalue}); //detail will hold the value being changed
       console.log('fmi handle value change', this.changeinputs);
