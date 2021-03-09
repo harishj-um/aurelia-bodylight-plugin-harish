@@ -15,8 +15,11 @@ export class PdbPdbeMolstar {
     @bindable moleculeId='2hhd';
     @bindable hideControls='true';
     @bindable hidePolymer='false';
+    @bindable rotate='true';
+    @bindable alwaysrotate='false';
     @bindable width=400;
     @bindable height=300;
+    @bindable assemblyId;
 
     /* Adding to template do not have effect as pdbe-molstar is third party web component, thus appendchild notifies api to interpret it
     Aurelia do not bind to unknown attributes - molecule-id etc. it creates
@@ -26,12 +29,13 @@ export class PdbPdbeMolstar {
                       bg-color-b="255"></pdbe-molstar>
 */
     bind() {
+      this.divstyle = 'width:' + this.width + 'px; height:' + this.height + 'px; position:relative';
       console.log('bind() moleculeId,hidecontrols,hidepolymer,moleculeidref', this.moleculeId, this.hideControls, this.hidePolymer, this.parentref);
       this.pdbref = document.createElement('pdbe-molstar');
       this.pdbref.setAttribute('molecule-id', this.moleculeId);
       this.pdbref.setAttribute('hide-controls', this.hideControls);
-      this.pdbref.setAttribute('hide-polymer', this.hidePolymer);
-      this.pdbref.setAttribute('hide-polymer', this.hidePolymer);
+      if (this.hidePolymer && this.hidePolymer === 'true') this.pdbref.setAttribute('hide-polymer', this.hidePolymer);
+      if (this.assemblyId) this.pdbref.setAttribute('assembly-id', this.assemblyId);
       this.pdbref.setAttribute('bg-color-r', 255);
       this.pdbref.setAttribute('bg-color-g', 255);
       this.pdbref.setAttribute('bg-color-b', 255);
@@ -39,10 +43,33 @@ export class PdbPdbeMolstar {
     }
 
     attached() {
-      setTimeout( () => {
-        //let pdbeMolstarComponent = document.getElementById(this.pid);
-        let viewerInstance = this.pdbref.viewerInstance;
-        viewerInstance.visual.toggleSpin(true);
-      }, 3000);
+      if (this.rotate && this.rotate === 'true') {
+        setTimeout(() => {
+          //let pdbeMolstarComponent = document.getElementById(this.pid);
+          let viewerInstance = this.pdbref.viewerInstance;
+          viewerInstance.visual.toggleSpin(true);
+        }, 3000);
+        setTimeout(() => {
+          //let pdbeMolstarComponent = document.getElementById(this.pid);
+          let viewerInstance = this.pdbref.viewerInstance;
+          viewerInstance.visual.toggleSpin(false);
+        }, 30000);
+        setTimeout(() => {
+          //let pdbeMolstarComponent = document.getElementById(this.pid);
+          let viewerInstance = this.pdbref.viewerInstance;
+          viewerInstance.visual.toggleSpin(true);
+        }, 60000);
+        setTimeout(() => {
+          //let pdbeMolstarComponent = document.getElementById(this.pid);
+          let viewerInstance = this.pdbref.viewerInstance;
+          viewerInstance.visual.toggleSpin(false);
+        }, 90000);
+      } else if (this.alwaysrotate && this.alwaysrotate === 'true') {
+        setTimeout(() => {
+          //let pdbeMolstarComponent = document.getElementById(this.pid);
+          let viewerInstance = this.pdbref.viewerInstance;
+          viewerInstance.visual.toggleSpin(true);
+        }, 3000);
+      }
     }
 }
