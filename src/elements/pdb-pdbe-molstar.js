@@ -17,8 +17,8 @@ export class PdbPdbeMolstar {
     @bindable hidePolymer='false';
     @bindable rotate='true';
     @bindable alwaysrotate='false';
-    @bindable width=400;
-    @bindable height=300;
+    @bindable width='100%';
+    @bindable height='300px';
     @bindable assemblyId;
 
     /* Adding to template do not have effect as pdbe-molstar is third party web component, thus appendchild notifies api to interpret it
@@ -29,7 +29,7 @@ export class PdbPdbeMolstar {
                       bg-color-b="255"></pdbe-molstar>
 */
     bind() {
-      this.divstyle = 'width:' + this.width + 'px; height:' + this.height + 'px; position:relative';
+      this.divstyle = `width:${this.width};height:${this.height}; position:relative`;
       console.log('bind() moleculeId,hidecontrols,hidepolymer,moleculeidref', this.moleculeId, this.hideControls, this.hidePolymer, this.parentref);
       this.pdbref = document.createElement('pdbe-molstar');
       this.pdbref.setAttribute('molecule-id', this.moleculeId);
@@ -53,17 +53,7 @@ export class PdbPdbeMolstar {
           //let pdbeMolstarComponent = document.getElementById(this.pid);
           let viewerInstance = this.pdbref.viewerInstance;
           viewerInstance.visual.toggleSpin(false);
-        }, 30000);
-        setTimeout(() => {
-          //let pdbeMolstarComponent = document.getElementById(this.pid);
-          let viewerInstance = this.pdbref.viewerInstance;
-          viewerInstance.visual.toggleSpin(true);
         }, 60000);
-        setTimeout(() => {
-          //let pdbeMolstarComponent = document.getElementById(this.pid);
-          let viewerInstance = this.pdbref.viewerInstance;
-          viewerInstance.visual.toggleSpin(false);
-        }, 90000);
       } else if (this.alwaysrotate && this.alwaysrotate === 'true') {
         setTimeout(() => {
           //let pdbeMolstarComponent = document.getElementById(this.pid);
