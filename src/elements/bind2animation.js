@@ -8,8 +8,9 @@ export class Bind2animation {
     amin;amax; //min and max values for animation (usually 0-100)
     fmin;fmax; //min and max values from FMU model simulation
     k1;k2;k3; //internal koefficients
+    operation; //converting operation - function (x) -> return some_algebraic_operation_on(x)
 
-    constructor(_findex, _aname, _amin, _amax, _fmin, _fmax) {
+    constructor(_findex, _aname, _amin, _amax, _fmin, _fmax, _operation) {
       this.findex = _findex;
       this.aname = _aname; //can be obtained by Object.keys(window.ani.lib).filter(name => name.endsWith('Celek'))
       this.amin = _amin;
@@ -19,6 +20,7 @@ export class Bind2animation {
       this.k1 = (1 / (this.fmax - this.fmin));
       this.k2 = (this.fmin / (this.fmax - this.fmin));
       this.k3 = (this.amax - this.amin);
+      this.operation = _operation;
     }
 
     /** convertf2a converts value to animation value between min-max
@@ -26,6 +28,8 @@ export class Bind2animation {
     * values beyond limits are converted to min or max
  **/
     convertf2a(x) {
+      //do conversion if operation is defined
+      if (this.operation) x = this.operation(x);
       if (x < this.fmin) return this.amin;
       if (x < this.fmax) return this.amin + (x * this.k1 - this.k2) * this.k3;
       return this.amax;

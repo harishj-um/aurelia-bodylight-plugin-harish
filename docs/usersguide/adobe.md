@@ -31,6 +31,7 @@ Sends custom events `animatestart` and `animatestop`. The target elements should
 * `amax` (default = 100) maximal value in animate component
 * `fmin` (default = 0) minimal value of variable from fmu model to be animated
 * `fmax` (default = 100) maximal value of variable from fmu model to be animated
+* `convertor` optional convertor - in form of 'numerator,denominator' or '1/x' or 'some algebraic expression with x' (e.g.'x^2' or '365-1/x')
 The conversion is made as linear approximation between amin and amax as following:
 * $x<f_{min} \Rightarrow a_{min}$ 
 * $f_{min} < x < f_{max} \Rightarrow a_{min} + \frac{(x-f_{min})(a_{max}-a_{min}}{f_{max}-f_{min}}$
@@ -60,5 +61,10 @@ Example in grid 1/3 and 2/3:
   </div>
 </div>
     
+** `bdl-bind2a-text` ** defines binding between FMU simulation variable and animation object value
+* `findex` index of variable in fmu array
+* `aname` name of animation component in AA (can go deep using dot `.` notation, see example bellow)
+* `convertor` optional convertor - in form of 'numerator,denominator' or '1/x' or 'some algebraic expression with x' (e.g.'x^2' or '365-1/x'), displayed is converted value
+
 
     

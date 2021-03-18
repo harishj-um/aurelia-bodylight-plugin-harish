@@ -13,6 +13,7 @@ export class Bind2a {
     @bindable amax = 100; //maximal value in animate component
     @bindable fmin = 0; //minimal value of variable from fmu model
     @bindable fmax = 100; //maximal value of variable from fmu model
+    @bindable convertor;
     index=0;
 
     constructor() {
@@ -26,10 +27,44 @@ export class Bind2a {
       this.amax = parseFloat(this.amax);
       this.fmin = parseFloat(this.fmin);
       this.fmax = parseFloat(this.fmax);
-
       //create bind2animation structure
-      let binding = new Bind2animation(this.findex, this.aname, this.amin, this.amax, this.fmin, this.fmax);
+      let binding = new Bind2animation(this.findex, this.aname, this.amin, this.amax, this.fmin, this.fmax, this.parseConvertors());
       this.addbinding(binding);
+    }
+
+    parseConvertors() {
+      //configure convertors - used to convert units received from fmi
+      if (this.convertor) {
+        let convertvalues = this.convertor.split(';');
+        let identity = x => x;
+        let operations = [];
+        for (let i = 0; i < convertvalues.length; i++) {
+          if (convertvalues[i].includes(',')) {
+            //convert values are in form numerator,denominator contains comma ','
+            let convertitems = convertvalues[i].split(',');
+            if (convertitems[0] === '1' && convertitems[1] === '1') operations.push(identity);
+            else {
+              let numerator = parseFloat(convertitems[0]);
+              let denominator = parseFloat(convertitems[1]);
+              operations.push(x => x * numerator / denominator);
+            }
+          } else {
+            //convert values are in form of expression, do not contain comma
+            if (convertvalues === '1/x') operations.push(x=> 1 / x);
+
+            else {
+              //filter only allowed characters: algebraic, digits, e, dot, modulo, parenthesis and 'x' is allowed
+              let expression = convertvalues[i].replace(/[^-\d/*+.()%xe]/g, '');
+              console.log('bind2a bind(), evaluating expression:' + convertvalues[i] + ' securely filtered to :' + expression);
+              // eslint-disable-next-line no-eval
+              operations.push(x => eval(expression));
+            }
+          }
+        }
+        //only one onvertor is usable in this component - return first
+        return operations[0];
+      }
+      return null;
     }
 
     addbinding(binding) {
