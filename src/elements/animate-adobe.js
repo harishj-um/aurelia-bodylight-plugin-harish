@@ -152,10 +152,20 @@ export class AnimateAdobe {
           // try to insert script by other app for previewing - scripts might be inserted into DOM
           if (window.editorapi && (typeof window.editorapi.insertScriptById === 'function')) {
             console.log('inserting script by thirdparty api');
-            window.editorapi.insertScriptById(source);
+            window.editorapi.insertScriptById(source, 'adobeobj')
+              .then(innerscript => {
+                console.log('third party script node', innerscript);
+                // eslint-disable-next-line no-eval
+                try {
+                  eval(innerscript.innerHTML);
+                } catch (e) {
+                  console.warn('Error during evaluation of adobe script. Probably OK to ignore', e.message);
+                }
+                if (callback) setTimeout(callback, 1000);
+              });
           }
-          // do callback after 1s
-          if (callback) setTimeout(callback, 1000);
+          // do callback after 2s
+          //if (callback) setTimeout(callback, 1000);
         }
       };
       script.onload = script.onreadystatechange = function( _, isAbort ) {

@@ -9,18 +9,19 @@ export class Fmi {
   @bindable inputs;
   @bindable otherinputs;
   @bindable valuereferences;
-  @bindable ticksToUpdate = 200;
+  @bindable ticksToUpdate = 30;
   @bindable src;
   @bindable fstepsize=0.01;
   @bindable controlid;
   @bindable showcontrols=true;
+  @bindable fpslimit = 60;
 
   cosimulation=1;
   stepSize=0.01;//0.0078125;
 
   doingstep=false;
   animationstarted=false;
-  measurefps=true;
+  measurefps=false;
   fpstick=0;
   stepi=0;
 
@@ -127,7 +128,7 @@ export class Fmi {
         // try to insert script by other app for previewing - scripts might be inserted into DOM
         if (window.editorapi && (typeof window.editorapi.insertScriptById === 'function')) {
           console.log('inserting script by thirdparty api');
-          window.editorapi.insertScriptById(source);
+          window.editorapi.insertScriptById(source, 'fmiobj');
         }
         //do callback even if isAbort - scripts might be inserted into DOM by another app
         if (callback) setTimeout(callback, 1000);
@@ -176,7 +177,9 @@ export class Fmi {
   }
   bind() {}
 
-  detached() {}
+  detached() {
+    if (this.animationstarted) {this.startstop()}
+  }
   /**
    * Implements a rudimentary browser console logger for the FMU.
    */
@@ -317,11 +320,27 @@ export class Fmi {
   //defines action to be done during browser animationframe and starts
   startSimulation() {
     this.animationstarted = true;
-    const performAnimation = () => {
+    //if (this.fpslimit && (this.fpslimit < 60)) {
+    this.fpsInterval = 1000 / (isNaN(this.fpslimit) ? parseInt(this.fpslimit, 10) : this.fpslimit);
+    this.then = window.performance.now();
+    //this.startTime = this.then;
+    //}
+    const performAnimation = (newtime) => {
+      if (!this.animationstarted) return;
       this.request = requestAnimationFrame(performAnimation);
-      this.step();
+      if (this.fpslimit && (this.fpslimit < 60)) {
+        if (isNaN(this.fpslimit)) this.fpslimit = parseInt(this.fpslimit, 10);
+        this.now = newtime;
+        //console.log('limiting fps to fpslimit, newtime, now, then, fpsinterval', this.fpslimit, newtime, this.now, this.then, this.fpsInterval);
+        this.elapsed = this.now - this.then;
+        //console.log('elapsed,fpsinterval', this.elapsed, this.fpsInterval);
+        if (this.elapsed > this.fpsInterval) {
+          this.then = this.now - (this.elapsed % this.fpsInterval);
+          this.step();
+        }
+      } else this.step();
     };
-    requestAnimationFrame(performAnimation);
+    performAnimation();
   }
 
   //cancels all action to be done during browser animationframe and starts
@@ -401,16 +420,26 @@ export class Fmi {
       //dispatch event - it should be listened by some other component
       document.getElementById(this.id).dispatchEvent(event);
 
+      //do computation only every tickstoupdate tick
       if (this.measurefps) {
-        if (this.fpstick === 0) {this.startfpstime = Date.now(); }
+        if (this.fpstick === 0) {this.startfpstime = window.performance.now(); }
         this.fpstick++;
         if (this.fpstick >= this.ticksToUpdate) {
+          this.fpsInterval = 1000 / (isNaN(this.fpslimit) ? parseInt(this.fpslimit, 10) : this.fpslimit);
+          //update ticks - so it will be every 3 seconds
+          this.ticksToUpdate = Math.round(3000 / this.fpsInterval);
+          //console.log('corrected fpsInterval', this.fpsInterval);
           //do correction step calculation
           //this.pow = 0;
-          if (this.stepSize < 1) this.pow = - Math.ceil(- Math.log10(this.stepSize)); else this.pow = Math.ceil(Math.log10(this.stepSize));
+          if (this.stepSize < 1) {
+            this.pow = - Math.ceil(- Math.log10(this.stepSize));
+          } else {
+            this.pow = Math.ceil(Math.log10(this.stepSize));
+          }
           this.mystep = this.round(this.stepTime + this.stepSize, this.pow) - this.stepTime;
           //do fps calculation
-          this.fps = 1000 * this.ticksToUpdate / (Date.now() - this.startfpstime);
+          //console.log(this.ticksToUpdate,this.startfpstime,this.fpstick);
+          this.fps = (1000 * this.ticksToUpdate / (window.performance.now() - this.startfpstime)).toPrecision(4);
           this.fpstick = 0;
         }
       }
