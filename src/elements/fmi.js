@@ -392,7 +392,7 @@ export class Fmi {
           //for (let reference of this.inputs[myinputs.id])
 
           //sets individual values - if id is in input, then reference is taken from inputs definition
-          //console.log('changing inputs,id,value', this.inputreferences, myinputs.id, myinputs.value);
+          console.log('changing inputs,id,value', this.inputreferences, myinputs.id, myinputs.value);
           let normalizedvalue = myinputs.value * this.inputreferences[myinputs.id].numerator / this.inputreferences[myinputs.id].denominator;
           if (myinputs.id) this.setSingleReal(this.inputreferences[myinputs.id].ref, normalizedvalue);
           // if reference is in input, then it is set directly
