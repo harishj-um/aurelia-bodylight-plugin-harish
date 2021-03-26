@@ -1,5 +1,7 @@
 import {bindable} from 'aurelia-framework';
+//import '@danzen/createjs';
 import 'createjs/builds/1.0.0/createjs';
+//import 'createjs/builds/1.0.0/createjs';
 //import * as createjs from 'createjs/builds/1.0.0/createjs';
 
 /**
@@ -288,8 +290,12 @@ export class AnimateAdobe {
     }
 
     disableAnimation() {
-      window.ani.animationstarted = false;
-      if (window.ani.stage) {window.createjs.Ticker.removeEventListener('tick', window.ani.stage);}
+      if (window.ani) {
+        window.ani.animationstarted = false;
+        if (window.ani.stage) {
+          window.createjs.Ticker.removeEventListener('tick', window.ani.stage);
+        }
+      }
     }
 
     enableAnimation() {

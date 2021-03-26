@@ -1,4 +1,5 @@
 import 'isomorphic-fetch';
+import '@danzen/createjs';
 import {StageComponent} from 'aurelia-testing';
 import {bootstrap} from 'aurelia-bootstrapper';
 import {Plotly} from '../../../src/elements/plotly';
