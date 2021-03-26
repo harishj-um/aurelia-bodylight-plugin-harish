@@ -1,5 +1,5 @@
 import {bindable} from 'aurelia-framework';
-import 'latest-createjs';
+import 'createjs/builds/1.0.0/createjs';
 //import * as createjs from 'createjs/builds/1.0.0/createjs';
 
 /**

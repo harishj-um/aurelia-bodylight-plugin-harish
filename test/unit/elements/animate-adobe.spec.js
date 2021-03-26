@@ -1,6 +1,6 @@
+import 'createjs/builds/1.0.0/createjs';
 import {StageComponent} from 'aurelia-testing';
 import {bootstrap} from 'aurelia-bootstrapper';
-import 'latest-createjs';
 
 describe('animate-adobe element', () => {
   let component;
@@ -12,7 +12,8 @@ describe('animate-adobe element', () => {
   });
 
 
-  it('creates animate-adobe with createjs', done => {
+  it('creates animate-adobe with createjs', async done => {
+    await waitForTimeout(1000);
     component = StageComponent
       .withResources('elements/animate-adobe')
       .inView('<div><script></script><animate-adobe src="Faze_srdce.js"></animate-adobe></div>');
