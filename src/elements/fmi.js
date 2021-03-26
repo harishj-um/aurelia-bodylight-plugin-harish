@@ -178,7 +178,7 @@ export class Fmi {
   bind() {}
 
   detached() {
-    if (this.animationstarted) {this.startstop()}
+    if (this.animationstarted) {this.startstop();}
   }
   /**
    * Implements a rudimentary browser console logger for the FMU.
