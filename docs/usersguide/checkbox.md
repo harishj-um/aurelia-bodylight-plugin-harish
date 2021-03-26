@@ -3,11 +3,13 @@
 attributes:
   * id - unique id - referenced by fmi component
   * default - default value
-  * title
+  * title - defautl title for all options (if titlemin and titlemax is not defined)
+  * titlemin - title to be displayed when is unchecked
+  * titlemax - title to be displayed when is checked
   
 Example:  
 ```
-<bdl-checkbox id="id1" default="true" title="abnormal heart rate" min="60" max="180"></bdl-checkbox>
+<bdl-checkbox id="id1" default="true" titlemin="normal heart rate 60" titlemax="abnormal heart rate 180" min="60" max="180"></bdl-checkbox>
 <bdl-checkbox id="id2" default="false" title="gene knockout"></bdl-checkbox>
 <bdl-checkbox id="id3" title="gene knockout no-default"></bdl-checkbox>
 ```
@@ -17,6 +19,6 @@ Example:
                valuelabels="Pressure in Aorta,Pressure in Left Ventricle, Intrathoracic Artery Volume, Extrathoracic Arteries Volume, Pulmonary Arteries Volume, Intrathoracic Veins Volume, Extrathoracic Veins volume, Pulmonary Veins Volume,Heart Rate"
                inputs="id1,16777313,60,1;id2,16777313,60,1;id3,16777313,60,1"></bdl-fmi>
 
-<bdl-checkbox id="id1" default="true" title="abnormal heart rate" min="60" max="180"></bdl-checkbox>
+<bdl-checkbox id="id1" default="true" titlemin="normal heart rate 60" titlemax="abnormal heart rate 180" min="60" max="180"></bdl-checkbox>
 <bdl-checkbox id="id2" default="false" title="gene knockout"></bdl-checkbox>
 <bdl-checkbox id="id3" title="gene knockout no-default"></bdl-checkbox>

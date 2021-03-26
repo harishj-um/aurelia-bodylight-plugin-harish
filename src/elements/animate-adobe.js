@@ -1,5 +1,6 @@
 import {bindable} from 'aurelia-framework';
-import * as createjs from 'createjs-module';
+import 'latest-createjs';
+//import * as createjs from 'createjs/builds/1.0.0/createjs';
 
 /**
  * Exposes animation exported from Adobe Animate to JS CreateJS
@@ -46,15 +47,24 @@ export class AnimateAdobe {
       //this.anim_container = document.getElementById("animation_container");
       //this.dom_overlay_container = document.getElementById("dom_overlay_container");
       //      console.log('animate-adobe attached() window.ani.adobecanvas,window.ani.anim_container,window.ani.dom_overlay_container',this.adobecanvas,this.anim_container,this.dom_overlay_container);
-      //set global instance of createjs
-      if (!window.createjs) window.createjs = createjs;
-      //make this component global - due to further calls
-      this.bindings = [];
-      window.ani = this;
-      //adds script in src attribute into DOM - so browser will load it, after that, initAdobe() will be called
-      this.getScript(this.src, this.initAdobe);
-      this.ratio = this.width / this.height;
-      //window.addEventListener('resize', this.handleResize);
+      let that = this;
+      let continueAfter = () => {
+        if (typeof createjs === 'undefined') console.log('WARN: createjs not present');
+        //if (!window.createjs) window.createjs = createjs;
+        //make this component global - due to further calls
+        that.bindings = [];
+        window.ani = that;
+        //detects and if not present - adds script with JS into DOM - so browser will load it, after that, initAdobe() will be called
+        this.getScript(that.src, that.initAdobe);
+        that.ratio = that.width / that.height;
+        //window.addEventListener('resize', this.handleResize);
+      };
+
+      //check global instance of createjs
+      if (typeof createjs === 'undefined') {
+        console.log('INFO: waiting 500ms for createjs ');
+        setTimeout(() => continueAfter, 500);
+      } else continueAfter();
     }
 
     makeResponsive(isResp, respDim, isScale, scaleType, domContainers) {
@@ -155,8 +165,8 @@ export class AnimateAdobe {
             window.editorapi.insertScriptById(source, 'adobeobj')
               .then(innerscript => {
                 console.log('third party script node', innerscript);
-                // eslint-disable-next-line no-eval
                 try {
+                  // eslint-disable-next-line no-eval
                   eval(innerscript.innerHTML);
                 } catch (e) {
                   console.warn('Error during evaluation of adobe script. Probably OK to ignore', e.message);

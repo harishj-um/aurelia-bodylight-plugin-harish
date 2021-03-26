@@ -9,6 +9,7 @@
       * [Receptacle](#usersguide/receptacle.md)
       * [Animate](#usersguide/animate.md)
       * [Animate Adobe](#usersguide/adobe.md)
+      * [Animate Adobe2021](#usersguide/adobe2021.md)
       * [Audio](#usersguide/audio.md)
       * [Beaker](#usersguide/beaker.md)
       * [Capillary](#usersguide/capillary.md)

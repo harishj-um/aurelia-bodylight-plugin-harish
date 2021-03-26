@@ -16,7 +16,9 @@ Creates a chartjs element controlled by BdlChartjs library.
   labels="Intrathoracic Arteries,ExtraThoracic Arteries, Pulmonary Arteries, Intrathoracic Veins, Extrathoracic veins, Pulmonary Veins"
   initialdata="0,4,2,3" 
   refindex="2" 
-  refvalues="6"></bdl-chartjs>
+  refvalues="6"
+  xlabel="x axis label"
+  ylabel="y axis label"></bdl-chartjs>
 </div>
 <div class="w3-rest">
 

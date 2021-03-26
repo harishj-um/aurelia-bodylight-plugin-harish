@@ -1,5 +1,5 @@
-<template bindable="default,title,min,max">
+<template bindable="default,title,min,max,titlemin,titlemax">
     <div class="slidecontainer">
-        <input class="w3-check" type="checkbox" checked.two-way="isChecked" value.bind="isChecked?max:min"/> <label>${title}</label>
+        <input class="w3-check" type="checkbox" checked.two-way="isChecked" value.bind="isChecked?max:min"/> <label>${isChecked?titlemax:titlemin}</label>
     </div>
 </template>

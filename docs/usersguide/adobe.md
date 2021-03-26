@@ -66,5 +66,10 @@ Example in grid 1/3 and 2/3:
 * `aname` name of animation component in AA (can go deep using dot `.` notation, see example bellow)
 * `convertor` optional convertor - in form of 'numerator,denominator' or '1/x' or 'some algebraic expression with x' (e.g.'x^2' or '365-1/x'), displayed is converted value
 
-
-    
+```
+<bdl-bind2a-text findex="8" aname="Hodnota5_text" convertor="1,0.237"></bdl-bind2a-text>
+<bdl-bind2a-text findex="7" aname="Hodnota2Cerveny_text" convertor="1,3.612"></bdl-bind2a-text>
+<bdl-bind2a-text findex="4" aname="Hodnota4_text" convertor="1,0.7428"></bdl-bind2a-text>
+<bdl-bind2a-text findex="5" aname="Hodnota3_text" convertor="1,2.228"></bdl-bind2a-text>
+<bdl-bind2a-text findex="18" aname="Hodnota9_text" convertor="1,1.51"></bdl-bind2a-text>   
+```
