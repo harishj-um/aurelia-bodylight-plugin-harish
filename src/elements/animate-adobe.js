@@ -1,6 +1,6 @@
 import {bindable} from 'aurelia-framework';
-//import '@danzen/createjs';
-import 'createjs/builds/1.0.0/createjs';
+import '@danzen/createjs';
+//import 'createjs/builds/1.0.0/createjs';
 //import 'createjs/builds/1.0.0/createjs';
 //import * as createjs from 'createjs/builds/1.0.0/createjs';
 
@@ -133,6 +133,29 @@ export class AnimateAdobe {
         fromel.removeEventListener('fmistart', this.enableAnimation);
         fromel.removeEventListener('fmistop', this.disableAnimation);
       }
+      this.destroyAdobe();
+    }
+
+    destroyAdobe() {
+      console.log('animate adobe destroy()');
+      if (window.stage) {
+        window.stage.enableMouseOver(-1);
+        window.stage.enableDOMEvents(false);
+        window.stage.removeAllEventListeners();
+        window.stage.removeAllChildren();
+        window.stage.canvas = null;
+        window.stage = null;
+      }
+      if (window.ani && window.ani.exportRoot) window.ani.exportRoot = null;
+      if (window.ani && window.ani.ss) window.ani.ss = null;
+      if (window.ani && window.ani.lib) window.ani.lib = null;
+      if (window.ani && window.ani.comp) window.ani.comp = null;
+      if (window.ani && window.ani.cid) window.ani.cid = null;
+      if (window.ani && window.ani.objs) window.ani.objs = null;
+      if (window.ani && window.ani.animobjs) window.ani.animobjs = null;
+      if (window.ani && window.ani.textobjs) window.ani.textobjs = null;
+      if (window.ani && window.ani.playobjs) window.ani.playobjs = null;
+      if (window.AdobeAn) window.AdobeAn = null;
     }
 
     removeScript(source) {
@@ -163,6 +186,9 @@ export class AnimateAdobe {
           script = undefined;
           // try to insert script by other app for previewing - scripts might be inserted into DOM
           if (window.editorapi && (typeof window.editorapi.insertScriptById === 'function')) {
+            //disable previoues definition
+            window.ani.destroyAdobe();
+            //enable current def
             console.log('inserting script by thirdparty api');
             window.editorapi.insertScriptById(source, 'adobeobj')
               .then(innerscript => {
