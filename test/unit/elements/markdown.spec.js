@@ -4,6 +4,11 @@ import {StageComponent} from 'aurelia-testing';
 import {bootstrap} from 'aurelia-bootstrapper';
 import {Plotly} from '../../../src/elements/plotly';
 
+function delay(time) {
+  return new Promise(function(resolve) {
+    setTimeout(resolve, time);
+  });
+}
 
 describe('markdown element',  () => {
   let component;
@@ -20,7 +25,7 @@ describe('markdown element',  () => {
   });
 
   it('creates div and section with md content', done => {
-    //waitForTimeout(500);
+    //await delay(500);
     component = StageComponent
       .withResources('elements/markdownaurelia')
       .inView('<markdownaurelia></markdownaurelia>');
