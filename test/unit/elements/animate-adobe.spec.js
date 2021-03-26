@@ -1,6 +1,6 @@
 import {StageComponent} from 'aurelia-testing';
 import {bootstrap} from 'aurelia-bootstrapper';
-import * as createjs from 'createjs-module';
+import 'latest-createjs';
 
 describe('animate-adobe element', () => {
   let component;
