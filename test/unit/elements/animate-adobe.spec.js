@@ -14,7 +14,7 @@ describe('animate-adobe element', () => {
 
 
   it('creates animate-adobe with createjs', done => {
-    //await waitForTimeout(1000);
+    //waitForTimeout(500);
     component = StageComponent
       .withResources('elements/animate-adobe')
       .inView('<div><script></script><animate-adobe src="Faze_srdce.js"></animate-adobe></div>');

@@ -5,7 +5,7 @@ import {bootstrap} from 'aurelia-bootstrapper';
 import {Plotly} from '../../../src/elements/plotly';
 
 
-describe('markdown element', () => {
+describe('markdown element',  () => {
   let component;
   beforeEach(() => {
     //fake function to satisfy plotly
@@ -20,6 +20,7 @@ describe('markdown element', () => {
   });
 
   it('creates div and section with md content', done => {
+    //waitForTimeout(500);
     component = StageComponent
       .withResources('elements/markdownaurelia')
       .inView('<markdownaurelia></markdownaurelia>');

@@ -22,8 +22,8 @@ describe('range element', () => {
       const view = component.element;
       const inputs = view.getElementsByTagName('input');
       expect(inputs.length).toBe(2);
-      expect(inputs[0].getAttribute('type')).toBe('range')
-      expect(inputs[1].getAttribute('type')).toBe('number')
+      expect(inputs[0].getAttribute('type')).toBe('range');
+      expect(inputs[1].getAttribute('type')).toBe('number');
       done();
     }).catch(e => {
       fail(e);
