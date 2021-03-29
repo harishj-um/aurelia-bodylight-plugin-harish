@@ -135,6 +135,9 @@ export class Markdownaurelia {
 
   updateContent(content) {
     //console.log('markdownaurelia updatecontent:', content);
+    //fix remove global binding
+    window.animatebindings = [];
+    //continue with rendering
     this.text = content;
     this.html = this.md.render(this.text);
     this.update();

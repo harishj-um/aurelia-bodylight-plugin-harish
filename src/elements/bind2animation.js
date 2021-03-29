@@ -17,10 +17,10 @@ export class Bind2animation {
       this.amax = _amax;
       this.fmin = _fmin;
       this.fmax = _fmax;
-      this.k1 = (1 / (this.fmax - this.fmin));
-      this.k2 = (this.fmin / (this.fmax - this.fmin));
-      this.k3 = (this.amax - this.amin);
       this.operation = _operation;
+      this.k1 = (this.fmax !== this.fmin) ? (1 / (this.fmax - this.fmin)) : 0;
+      this.k2 = (this.fmax !== this.fmin) ? (this.fmin / (this.fmax - this.fmin)) : 0;
+      this.k3 = (this.amax - this.amin);
     }
 
     /** convertf2a converts value to animation value between min-max

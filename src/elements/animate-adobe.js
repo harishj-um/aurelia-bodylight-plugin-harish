@@ -18,7 +18,9 @@ export class AnimateAdobe {
     animationstarted = false;
 
     constructor() {
-      //        console.log('animate-adobe constructor()');
+      console.log('animate-adobe constructor()');
+      //fix issue - some bindings not detached
+      //window.animatebindings = [];
       this.handleValueChange = e => {
         this.handleData(e);
       };
@@ -60,6 +62,7 @@ export class AnimateAdobe {
         this.getScript(that.src, that.initAdobe);
         that.ratio = that.width / that.height;
         //window.addEventListener('resize', this.handleResize);
+
       };
 
       //check global instance of createjs

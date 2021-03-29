@@ -6,6 +6,8 @@ export class Bind2aText extends Bind2a {
   @bindable aname; //name of animation component in AA
   @bindable findex; //index of variable in fmu array
   @bindable convertor;
+  @bindable precision;
+  @bindable fixed;
 
   constructor() {
     super();
@@ -14,7 +16,13 @@ export class Bind2aText extends Bind2a {
   //it is called when all bindable properties are set to class instance;
   bind() {
     //create bind2animation structure
-    let binding = new Bind2animtext(this.findex, this.aname, this.parseConvertors());
+    let binding = new Bind2animtext(
+      this.findex,
+      this.aname,
+      this.parseConvertors(),
+      this.precision ? parseInt(this.precision, 10) : 0,
+      this.fixed ? parseInt(this.fixed, 10) : 2
+    );
     this.addbinding(binding);
   }
 }
