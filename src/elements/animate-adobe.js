@@ -62,7 +62,6 @@ export class AnimateAdobe {
         this.getScript(that.src, that.initAdobe);
         that.ratio = that.width / that.height;
         //window.addEventListener('resize', this.handleResize);
-
       };
 
       //check global instance of createjs
@@ -304,7 +303,7 @@ export class AnimateAdobe {
           .reduce((o, p) => o ? o[p] : defaultValue, object);
         let myobj = resolvePath(window.ani.exportRoot.children[0], objname, undefined);
         if (myobj) myobj.gotoAndStop(Math.floor(value));
-
+        else console.warn('objname is undefined for window.ani.esportRoot.children[0]', objname);
         //window.ani.exportRoot.children[0][objname].gotoAndStop(value);
       }
     }
@@ -360,7 +359,12 @@ export class AnimateAdobe {
      */
     setText(objname, textvalue) {
       if (window.ani.exportRoot) {
-        window.ani.exportRoot.children[0][objname].text = textvalue;
+        const resolvePath = (object, path, defaultValue) => path
+          .split('.')
+          .reduce((o, p) => o ? o[p] : defaultValue, object);
+        let myobj = resolvePath(window.ani.exportRoot.children[0], objname, undefined);
+        if (myobj) myobj.text = textvalue;
+        else console.warn('objname is undefined for window.ani.esportRoot.children[0]', objname);
       }
     }
 
@@ -374,11 +378,11 @@ export class AnimateAdobe {
       for (let binding of bindings) {
         //binding = {findex:findex,aname:aname,amin:amin,amax:amax,fmin:fmin,fmax:fmax}
         let value = e.detail.data[binding.findex];
-        if (binding.aname.endsWith('_text')) {
+        if (binding.aname.includes('_text')) {
           let convertedvalue = binding.convertf2a(value); //precision
           this.setText(binding.aname, convertedvalue);
         } else
-        if (binding.aname.endsWith('_anim')) {
+        if (binding.aname.includes('_anim')) {
           let convertedvalue = binding.convertf2a(value); //calculate approximation
           this.setAnimationValue(binding.aname, convertedvalue);
         }
