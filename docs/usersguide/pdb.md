@@ -15,11 +15,11 @@ To visualize molecule in PDB database
 * molecule-id - required - pdb id of molecule e.g. 2h35
 * hide-controls - default true - hides controls within the window
 * hide-polymer - default false - hides controls within the window
-* rotate - will rotate for 30 sec. and after 1 minutes for 30 sec.
+* rotate - will rotate for 60 sec. and then stops, default true.
 * alwaysrotate - will rotate always
-* width, height - in pixesl width and height of canvas to render pdbe component 
+* width, height - set width and height of canvas to render pdbe component, include unit in css, e.g. '300px' or '100%' 
 
-The component renders window 300x400 and set's automatic spin of the molecule.
+The component renders by default window with width 100% and height 400px and set's automatic spin of the molecule for 60s.
  
 `<bdl-pdb-pdbe-molstar molecule-id="2h35" hide-controls="true" hide-polymer="true"></bdl-pdb-pdbe-molstar>`
 

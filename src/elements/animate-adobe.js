@@ -258,9 +258,9 @@ export class AnimateAdobe {
         //get all objects from animation
         window.ani.objs = Object.keys(window.ani.exportRoot.children[0]);
         //filter objects by purpose - so it can be bind to model value
-        window.ani.animobjs = window.ani.objs.filter(name => name.endsWith('_anim'));
-        window.ani.textobjs = window.ani.objs.filter(name => name.endsWith('_text'));
-        window.ani.playobjs = window.ani.objs.filter(name => name.endsWith('_play'));
+        window.ani.animobjs = window.ani.objs.filter(name => name.includes('_anim'));
+        window.ani.textobjs = window.ani.objs.filter(name => name.includes('_text'));
+        window.ani.playobjs = window.ani.objs.filter(name => name.includes('_play'));
         //stop all animation
         window.ani.stopAllAnimation();
         //disable animation ticker
