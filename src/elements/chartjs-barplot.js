@@ -19,11 +19,33 @@ export class ChartjsBarplot extends Chartjs {
     @bindable height='50';
     @bindable nominal=0.01; //sets precision to floor/round
     @bindable twoway = false; //whether click will create event 'change'
-    //    @bindable convertors;
+    @bindable responsive;
 
 
     constructor() {
       super();
+      this.handleValueChange = e => {
+        //sets data to dataset
+        //apply value convert among all data
+        let rawdata = e.detail.data.slice(this.refindex, this.refendindex);
+        //if convert operation is defined as array
+        if (this.operation) {
+          for (let i = 0; i < rawdata.length; i++) {
+            //if particular operation is defined
+            if (this.operation[i]) rawdata[i] = this.operation[i](rawdata[i]);
+          }
+        }
+        this.chart.data.datasets[0].data = rawdata;
+        //now decide whether datalabel is right or left
+        if (((this.elimits[1] - rawdata) / (this.elimits[1] - this.elimits[0])) < 0.05) {
+          this.options.plugins.datalabels.align = 'left';
+          this.options.plugins.datalabels.color = 'white';
+        } else {
+          this.options.plugins.datalabels.align = 'right';
+          this.options.plugins.datalabels.color = 'black';
+        }
+        this.chart.update();
+      };
     }
 
     bind() {
@@ -52,11 +74,18 @@ export class ChartjsBarplot extends Chartjs {
       this.options.legend.display = false;
       //sets xaxis limits to extremelimits
       if (!this.options.scales.xAxes) this.options.scales.xAxes = [{}];
+
       this.options.scales.xAxes[0].ticks = {
-        autoSkip: false,
+        autoSkip: true,
         min: this.elimits[0],
         max: this.elimits[1],
-        fontSize: 8
+        fontSize: 8,
+        callback: function(value, index, values) {
+          //count relative distance to last tick value
+          const reldistance = (values[3] - value) / (values[3] - values[0]);
+          // do not display tick label if too close to extreme limit (<5% of length)
+          if (index === 2 && (reldistance < 0.05)) return ''; return value;
+        }
       };
       //set ticks to normal limits only
       let myticks = [this.elimits[0], this.nlimits[0], this.nlimits[1], this.elimits[1]];
@@ -72,10 +101,23 @@ export class ChartjsBarplot extends Chartjs {
       this.options.plugins = {
         datalabels: {
           align: 'right',
-          anchor: 'end'
+          anchor: 'end',
+          formatter: function(value, context) { return value.toPrecision(3); },
+          font: {size: 8},
+          padding: {top: 0, right: 0, bottom: 0, left: 1}
 
         }
       };
+      //now decide whether datalabel is right or left
+      //TODO eliminate duplicate in handlevaluechange
+      if (((this.elimits[1] - parseFloat(this.initialdata)) / (this.elimits[1] - this.elimits[0])) < 0.05) {
+        this.options.plugins.datalabels.align = 'left';
+        this.options.plugins.datalabels.color = 'white';
+      } else {
+        this.options.plugins.datalabels.align = 'right';
+        this.options.plugins.datalabels.color = 'black';
+      }
+
       //if the component is twoway - on click shows second bar with desired value and triggers 'change' event
       if (this.twoway) {
         //sets options for chart
