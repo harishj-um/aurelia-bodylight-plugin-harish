@@ -13,7 +13,7 @@ export class ChartjsBarplot extends Chartjs {
     @bindable refindex;
     @bindable refvalues=1;
     @bindable extremelimits='0,1'; //csv limits of chart min and max
-    @bindable normallimits='0.25,0.75'; //csv normal limits inside chart
+    @bindable normallimits;//='';//0.25,0.75'; //csv normal limits inside chart
     @bindable initialdata='7.5';
     @bindable width='500';
     @bindable height='50';
@@ -87,8 +87,10 @@ export class ChartjsBarplot extends Chartjs {
           if (index === 2 && (reldistance < 0.05)) return ''; return value;
         }
       };
-      //set ticks to normal limits only
-      let myticks = [this.elimits[0], this.nlimits[0], this.nlimits[1], this.elimits[1]];
+      //set ticks to extreme and normal limits only
+      let myticks = (this.normallimits)
+        ? [this.elimits[0], this.nlimits[0], this.nlimits[1], this.elimits[1]]
+        : [this.elimits[0], this.elimits[1]];
       //console.log('charjs barplot myticks', myticks);
       this.options.scales.xAxes[0].afterBuildTicks = function(scale) {
         scale.ticks = myticks;

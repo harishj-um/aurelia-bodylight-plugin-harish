@@ -13,6 +13,7 @@ barplot chart with minimum/maximum and normal range
   twoway="true">
 </bdl-chartjs-barplot>
 ```
+test left/right label in barplot data
 <bdl-chartjs-barplot
   id="id11"
   fromid="id4"
@@ -50,6 +51,18 @@ barplot chart with minimum/maximum and normal range
   extremelimits="0,1"
   normallimits="0.93,0.99"
   initialdata="0.9313412526"
+  convertors="1,1"
+  twoway="true">
+</bdl-chartjs-barplot>
+
+test without normal limits:
+
+<bdl-chartjs-barplot
+  id="id11"
+  fromid="id4"
+  refindex="2"
+  extremelimits="0,1"
+  initialdata="0.972634"
   convertors="1,1"
   twoway="true">
 </bdl-chartjs-barplot>
