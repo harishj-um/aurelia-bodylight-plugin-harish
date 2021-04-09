@@ -56,7 +56,8 @@ export class Chartjs {
    * empties data in every dataset and empties section
    */
   resetdata() {
-    for (let dataset of this.chart.data.dataset) dataset.data = [];
+    //fix TypeError: o is undefined
+    for (let dataset of this.chart.data.dataset) if (dataset && dataset.data) dataset.data = [];
     if (this.sectionid) this.chart.config.options.section = [];
   }
 

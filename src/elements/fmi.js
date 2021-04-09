@@ -384,23 +384,7 @@ export class Fmi {
       this.stepi++;
 
       //changeinputs
-      if (this.changeinputs.length > 0) {
-        while (this.changeinputs.length > 0) {
-          let myinputs = this.changeinputs.shift(); //remove first item
-          console.log('changing inputs', myinputs);
-          //set real - reference is in - one input one reference
-          //for (let reference of this.inputs[myinputs.id])
-
-          //sets individual values - if id is in input, then reference is taken from inputs definition
-          console.log('changing inputs,id,value', this.inputreferences, myinputs.id, myinputs.value);
-          let normalizedvalue = myinputs.value * this.inputreferences[myinputs.id].numerator / this.inputreferences[myinputs.id].denominator;
-          if (myinputs.id) this.setSingleReal(this.inputreferences[myinputs.id].ref, normalizedvalue);
-          // if reference is in input, then it is set directly
-          else if (myinputs.valuereference) this.setSingleReal(myinputs.valuereference, normalizedvalue);
-        }
-        //flush all in one call to fmi
-        this.flushRealQueue();
-      }
+      this.setInputVariables();
       //dostep
       //compute step to round the desired time
       //const res = this.fmiDoStep(this.fmiinst, this.stepTime, this.stepSize, 1);
@@ -447,12 +431,39 @@ export class Fmi {
     }
   }
 
+  setInputVariables() {
+    if (this.changeinputs.length > 0) {
+      //TODO 1. stop simulation
+      //TODO 2. get fmu statte
+      //TODO 3. set fmu state
+      //TODO 4. initialize
+      //TODO 5. set parameter values
+      while (this.changeinputs.length > 0) {
+        let myinputs = this.changeinputs.shift(); //remove first item
+        console.log('changing inputs', myinputs);
+        //set real - reference is in - one input one reference
+        //for (let reference of this.inputs[myinputs.id])
+
+        //sets individual values - if id is in input, then reference is taken from inputs definition
+        console.log('changing inputs,id,value', this.inputreferences, myinputs.id, myinputs.value);
+        let normalizedvalue = myinputs.value * this.inputreferences[myinputs.id].numerator / this.inputreferences[myinputs.id].denominator;
+        if (myinputs.id) this.setSingleReal(this.inputreferences[myinputs.id].ref, normalizedvalue);
+        // if reference is in input, then it is set directly
+        else if (myinputs.valuereference) this.setSingleReal(myinputs.valuereference, normalizedvalue);
+      }
+      //flush all in one call to fmi
+      this.flushRealQueue();
+    }
+  }
+
   reset() {
     this.stepTime = 0;
     this.stepSize = (typeof(this.fstepsize) === 'string' ) ? parseFloat(this.fstepsize) : this.fstepsize;
     this.mystep = this.stepSize;
     this.setupExperiment();
     this.fmiReset(this.fmiinst);
+    //set input variables for possible change of non-tunable - fixed parameter values
+    this.setInputVariables();
     this.initialize();
     //create custom event
     let event = new CustomEvent('fmireset');

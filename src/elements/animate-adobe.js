@@ -378,7 +378,7 @@ export class AnimateAdobe {
       if (!bindings) return;
       for (let binding of bindings) {
         //binding = {findex:findex,aname:aname,amin:amin,amax:amax,fmin:fmin,fmax:fmax}
-        let value = e.detail.data[binding.findex];
+        let value = (binding.findex == -1) ? e.detail.time : e.detail.data[binding.findex];
         if (binding.aname.includes('_text')) {
           let convertedvalue = binding.convertf2a(value); //precision
           this.setText(binding.aname, convertedvalue);

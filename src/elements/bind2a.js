@@ -28,7 +28,8 @@ export class Bind2a {
       this.fmin = parseFloat(this.fmin);
       this.fmax = parseFloat(this.fmax);
       //create bind2animation structure
-      let binding = new Bind2animation(this.findex, this.aname, this.amin, this.amax, this.fmin, this.fmax, this.parseConvertors());
+      let operation = this.parseConvertors();
+      let binding = new Bind2animation(this.findex, this.aname, this.amin, this.amax, this.fmin, this.fmax, operation);
       this.addbinding(binding);
     }
 
@@ -54,7 +55,7 @@ export class Bind2a {
 
             else {
               //filter only allowed characters: algebraic, digits, e, dot, modulo, parenthesis and 'x' is allowed
-              let expression = convertvalues[i].replace(/[^-\d/*+.()%xe]/g, '');
+              let expression = convertvalues[i].replace(/[^-\d/*+.\^()%xeMathsincopw]/g, '');
               console.log('bind2a bind(), evaluating expression:' + convertvalues[i] + ' securely filtered to :' + expression);
               // eslint-disable-next-line no-eval
               operations.push(x => eval(expression));
