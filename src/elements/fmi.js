@@ -403,7 +403,8 @@ export class Fmi {
         //initialize
         this.initialize();
         //make big step from 0 to current stepTime ???
-        const res = this.fmiDoStep(this.fmiinst, 0, this.stepTime, 1);
+        //const res =
+        this.fmiDoStep(this.fmiinst, 0, this.stepTime, 1);
         //reset the signature
         this.resetBeforeChange = false;
       } else {
