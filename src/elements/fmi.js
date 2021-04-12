@@ -394,12 +394,16 @@ export class Fmi {
 
       //changeinputs
       if (this.resetBeforeChange) {
+        //fmi call
+        this.setupExperiment();
         //do reset
         this.fmiReset(this.fmiinst);
         //setting fixed parameters are now allowed
         this.setInputVariables();
         //initialize
         this.initialize();
+        //make big step from 0 to current stepTime ???
+        const res = this.fmiDoStep(this.fmiinst, 0, this.stepTime, 1);
         //reset the signature
         this.resetBeforeChange = false;
       } else {
@@ -414,7 +418,7 @@ export class Fmi {
       this.mystep = this.stepSize; //update correction step to current step
       //console.log('step() res:', res);
       if (res === 1 || res === 2) {
-        console.warn('step() result:, trying to do fmiReset', res);
+        console.warn('step() result trying to do fmiReset', res);
         this.fmiReset(this.fmiinst);
       }
 
