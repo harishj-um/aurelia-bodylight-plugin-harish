@@ -24,6 +24,7 @@ export class Fmi {
   measurefps=false;
   fpstick=0;
   stepi=0;
+  resetBeforeChange = false;
 
 
   constructor() {
@@ -39,7 +40,9 @@ export class Fmi {
       else targetid = e.target.parentElement.parentElement.id;
       let targetvalue = (e.detail && e.detail.value) ? e.detail.value : e.target.value;
       this.changeinputs.push({id: targetid, value: targetvalue}); //detail will hold the value being changed
-      console.log('fmi handle value change', this.changeinputs);
+      //determine whether it is fixed parameter - further reset is needed?
+      this.resetBeforeChange = this.resetBeforeChange || this.inputreferences[targetid].fixed;
+      console.log('fmi handle value change, will be reset before change', this.changeinputs, this.resetBeforeChange);
     };
     this.handleDetailChange = e => {
       //e.target; //triggered the event
@@ -66,16 +69,22 @@ export class Fmi {
     this.references = this.valuereferences.split(',');
 
     //parse inputs id,ref1;id2,ref2 ...
+    //id,ref,numerator?,denominator?,add?,fixed? 'f' or other char e.g.
+    //id1,13123141,1,60,10,f => y = x/60-10 and parameter is fixed - reinit on every change
     if (this.inputs) { //register DOM elements to listen to their 'change' event directly
       let inputparts = this.inputs.split(';'); //splits groups delimited by ;
       this.inputreferences = [];
       for (let inputpart of inputparts) {
         let myinputs = inputpart.split(','); //splits reference and id by ,
-        let numerator = (myinputs.length > 2) ? myinputs[2] : 1;
-        let denominator = (myinputs.length > 3) ? myinputs[3] : 1;
-        this.inputreferences[myinputs[0]] = {ref: myinputs[1], numerator: numerator, denominator: denominator}; //first is id second is reference
+        let numerator = (myinputs.length > 2) ? parseFloat(myinputs[2]) : 1;
+        let denominator = (myinputs.length > 3) ? parseFloat(myinputs[3]) : 1;
+        let addconst = (myinputs.length > 4) ? parseFloat(myinputs[4]) : 0;
+        let fixedsignature = (myinputs.length > 5) ? (myinputs[5] === 'f') : false;
+        this.inputreferences[myinputs[0]] = {ref: myinputs[1], numerator: numerator, denominator: denominator, addconst: addconst, fixed: fixedsignature}; //first is id second is reference
         //register change event - the alteration is commited
-        document.getElementById(myinputs[0]).addEventListener('change', this.handleValueChange);
+        let dependentEl = document.getElementById(myinputs[0]);
+        if (dependentEl) dependentEl.addEventListener('change', this.handleValueChange);
+        else console.warn('cannot register changes for non-existing element id:', myinputs[0]);
       }
     }
 
@@ -384,7 +393,19 @@ export class Fmi {
       this.stepi++;
 
       //changeinputs
-      this.setInputVariables();
+      if (this.resetBeforeChange) {
+        //do reset
+        this.fmiReset(this.fmiinst);
+        //setting fixed parameters are now allowed
+        this.setInputVariables();
+        //initialize
+        this.initialize();
+        //reset the signature
+        this.resetBeforeChange = false;
+      } else {
+        //do only change of variables
+        this.setInputVariables();
+      }
       //dostep
       //compute step to round the desired time
       //const res = this.fmiDoStep(this.fmiinst, this.stepTime, this.stepSize, 1);
@@ -393,6 +414,7 @@ export class Fmi {
       this.mystep = this.stepSize; //update correction step to current step
       //console.log('step() res:', res);
       if (res === 1 || res === 2) {
+        console.warn('step() result:, trying to do fmiReset', res);
         this.fmiReset(this.fmiinst);
       }
 
@@ -446,7 +468,7 @@ export class Fmi {
 
         //sets individual values - if id is in input, then reference is taken from inputs definition
         console.log('changing inputs,id,value', this.inputreferences, myinputs.id, myinputs.value);
-        let normalizedvalue = myinputs.value * this.inputreferences[myinputs.id].numerator / this.inputreferences[myinputs.id].denominator;
+        let normalizedvalue = myinputs.value * this.inputreferences[myinputs.id].numerator / this.inputreferences[myinputs.id].denominator + this.inputreferences[myinputs.id].addconst;
         if (myinputs.id) this.setSingleReal(this.inputreferences[myinputs.id].ref, normalizedvalue);
         // if reference is in input, then it is set directly
         else if (myinputs.valuereference) this.setSingleReal(myinputs.valuereference, normalizedvalue);
