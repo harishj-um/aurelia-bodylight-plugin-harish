@@ -24,10 +24,10 @@ export class ChartjsXyPoints extends ChartjsXy {
         //e.detail do not reallocate - using same buffer, thus slicing to append to data array
         //let datapoints =e.detail.data.slice(this.refindex, this.refendindex);
         let j = 0;
-        //put first value on x axis, others on y axis other values
-        for (let i = (this.refindex + 1); i < this.refindex + this.refvalues; i++) {
+        //put each first value on x axis, second on y axis
+        for (let i = (this.refindex + 1); i < this.refindex + this.refvalues; i = i + 2) {
           //remember only current x,y value - on the index
-          this.chart.data.datasets[j].data[this.index] = {x: e.detail.data[this.refindex], y: e.detail.data[i]};
+          this.chart.data.datasets[j].data[this.index] = {x: e.detail.data[i - 1], y: e.detail.data[i]};
           j++;
         }
         //console.log('chartjs-xy handlevaluechange datasets, e.detail.data',this.chart.data.datasets, e.detail.data);
@@ -57,8 +57,8 @@ export class ChartjsXyPoints extends ChartjsXy {
       this.options.tooltips.callbacks = {
         label: function(tooltipItem, data) {
           if (data.datasets.length < 2) return tooltipItem.yLabel;
-          let label = '(' + data.datasets[0].data[tooltipItem.index].y + ') (' + data.datasets[1].data[tooltipItem.index].y + ') ' +
-                    'd:' + Math.abs(data.datasets[0].data[tooltipItem.index].y - data.datasets[1].data[tooltipItem.index].y);
+          let label = '(' + data.datasets[0].data[tooltipItem.index].y.toPrecision(2) + ') (' + data.datasets[1].data[tooltipItem.index].y.toPrecision(2) + ') ' +
+                    'd:' + Math.abs(data.datasets[0].data[tooltipItem.index].y - data.datasets[1].data[tooltipItem.index].y).toPrecision(2);
           return label;
         }
       };
