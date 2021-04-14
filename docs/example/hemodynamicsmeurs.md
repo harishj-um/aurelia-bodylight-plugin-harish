@@ -28,11 +28,16 @@ dygraph:
 chartjs mmHg:
 <!--bdl-chartjs-time width="300" height="100" fromid="id4" refindex="0" refvalues="2" convertors="1,133.322368;x*0.0075006183"></bdl-chartjs-time-->
 <bdl-chartjs-time width="300" height="100" fromid="id4" refindex="0" refvalues="2" convertors="1,133.322368;1,133.322368"></bdl-chartjs-time>
+
+chartjs scatter:
+<bdl-chartjs-xy-points min="0" max="20000" xmin="0" xmax="20000" width="300" height="100" fromid="id4" refindex="0" refvalues="3" convertors="1,133.322368;1,133.322368"></bdl-chartjs>
+
 </div>
 <div class="w3-third">
 plotly
 <bdl-plotly fromid="id4" refindex="0" refvalues="2" width="500"></bdl-plotly>
 </div></div>
+
 
 
 

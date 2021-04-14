@@ -20,6 +20,7 @@ export function configure(config) {
     PLATFORM.moduleName('./elements/chartjs'),
     PLATFORM.moduleName('./elements/chartjs-time'),
     PLATFORM.moduleName('./elements/chartjs-xy'),
+    PLATFORM.moduleName('./elements/chartjs-xy-points'),
     PLATFORM.moduleName('./elements/chartjs-barplot'),
     PLATFORM.moduleName('./elements/plotly'),
     PLATFORM.moduleName('./elements/animate-gif'),
