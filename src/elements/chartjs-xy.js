@@ -10,6 +10,7 @@ export class ChartjsXy extends ChartjsTime {
   @bindable refindex;
   @bindable refvalues;
   @bindable type;
+  showlines = true;
 
   constructor() {
     super();
@@ -58,10 +59,10 @@ export class ChartjsXy extends ChartjsTime {
       datasets.push({
         data: this.mydata[i],
         label: this.chlabels[i],
-        backgroundColor: this.colors[i],
-        borderColor: this.colors[i],
+        backgroundColor: this.colors[i - 1],
+        borderColor: this.colors[i - 1],
         fill: false,
-        showLine: true,
+        showLine: this.showlines,
         borderWidth: 1,
         refvalues: this.refvalues
       });
@@ -83,7 +84,7 @@ export class ChartjsXy extends ChartjsTime {
           backgroundColor: this.selectColor(i),
           borderColor: this.selectColor(i),
           fill: false,
-          showLine: true
+          showLine: this.showlines
         });
         j++;
       }

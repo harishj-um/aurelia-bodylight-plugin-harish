@@ -123,3 +123,30 @@ barplot chart with minimum/maximum and normal range
   initialdata="7">
 </bdl-chartjs-barplot>
 
+### bdl-chartjs scatter
+1. chartjs
+<bdl-chartjs 
+  id="id9" 
+  width="300" 
+  height="500" 
+  fromid="id4" 
+  type="scatter" 
+  labels="Intrathoracic Arteries,ExtraThoracic Arteries, Pulmonary Arteries, Intrathoracic Veins, Extrathoracic veins, Pulmonary Veins"
+  initialdata="1,2,3,4;1,2,3,4;4,3,2,1" 
+  refindex="2" 
+  refvalues="6"
+  xlabel="x axis label"
+  ylabel="y axis label"></bdl-chartjs>
+  
+2.  chartjs-xy-points
+<bdl-chartjs-xy-points 
+  id="id9" 
+  width="300" 
+  height="500" 
+  fromid="id4"    
+  labels="Intrathoracic Arteries,ExtraThoracic Arteries, Pulmonary Arteries, Intrathoracic Veins, Extrathoracic veins, Pulmonary Veins"
+  initialdata="1,2,3,4;1,4,1,3;2,2,2,5"  
+  refindex="2" 
+  refvalues="6"
+  xlabel="x axis label"
+  ylabel="y axis label"></bdl-chartjs-xy-points>
