@@ -104,7 +104,8 @@ export class Chartjs {
           if (convertvalues === '1/x') this.operation.push(x=> 1 / x);
 
           else {
-            //filter only allowed characters: algebraic, digits, e, dot, modulo, parenthesis and 'x' is allowed
+            // for eval() security filter only allowed characters:
+            // algebraic, digits, e, dot, modulo, parenthesis and 'x' and 'e' is allowed
             let expression = convertvalues[i].replace(/[^-\d/*+.()%xe]/g, '');
             console.log('chartjs bind(), evaluating expression:' + convertvalues[i] + ' securely filtered to :' + expression);
             // eslint-disable-next-line no-eval
@@ -203,6 +204,9 @@ export class Chartjs {
         position: 'nearest',
         mode: 'x-axis',
         intersect: false
+      },
+      hover: {
+        animationDuration: 0 //disable animation on hover - e.g. for tooltips
       },
       scales: axisopts
     };
