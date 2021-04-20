@@ -194,6 +194,7 @@ export class Chartjs {
 
     //initialize options - used later by chartjs instance
     this.options = {
+      live: true,
       responsive: this.responsive, //true - rescale, false - will keep canvas width and height
       legend: {
         //display: false,
@@ -202,8 +203,15 @@ export class Chartjs {
       animation: animopts,
       tooltips: {
         position: 'nearest',
-        mode: 'x-axis',
-        intersect: false
+        mode: 'index',
+        intersect: false,
+        titleFontFamily: 'Open Sans',
+        backgroundColor: 'rgba(0,0,0,0.3)',
+        //titleFontColor: 'red',
+        caretSize: 5,
+        cornerRadius: 4,
+        xPadding: 3,
+        yPadding: 3
       },
       hover: {
         animationDuration: 0 //disable animation on hover - e.g. for tooltips

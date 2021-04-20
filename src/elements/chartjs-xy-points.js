@@ -1,5 +1,6 @@
 import {ChartjsXy} from './chartjs-xy';
 import {bindable, useView} from 'aurelia-templating';
+import Chart from 'chart.js';
 //import {PLATFORM} from 'aurelia-pal';
 //@useView(PLATFORM.moduleName('./bdl-chartjs.html'))
 
@@ -81,17 +82,86 @@ export class ChartjsXyPoints extends ChartjsXy {
       }
       //customize tooltip display
       this.options.tooltips.callbacks = {
+        label: function(tooltipItem, data) {
+          let label = data.datasets[tooltipItem.datasetIndex].label || '';
+          if (label) {
+            label += ': ';
+          }
+          label += '(' + tooltipItem.xLabel.toPrecision(3) + ',' + tooltipItem.yLabel.toPrecision(3) + ')';
+          return label;
+        },
         footer: function(tooltipItem, data) {
           if (data.datasets.length < 2) return tooltipItem[0].yLabel;
           let label = [];
-          label.push('1:(' + data.datasets[0].data[tooltipItem[0].index].x.toPrecision(2) + ',' + data.datasets[0].data[tooltipItem[0].index].y.toPrecision(2) + ')');
-          label.push('d:' + Math.abs(data.datasets[0].data[tooltipItem[0].index].y - data.datasets[1].data[tooltipItem[0].index].y).toPrecision(2));
-          label.push('2:(' + data.datasets[1].data[tooltipItem[0].index].x.toPrecision(2) + ',' + data.datasets[1].data[tooltipItem[0].index].y.toPrecision(2) + ')');
+          //label.push('| ' + data.datasets[0].data[tooltipItem[0].index].y.toPrecision(3) + ' - ' + data.datasets[1].data[tooltipItem[0].index].y.toPrecision(3) + ' |');
+          label.push('diff: ' + Math.abs(data.datasets[0].data[tooltipItem[0].index].y - data.datasets[1].data[tooltipItem[0].index].y).toPrecision(2));
           return label;
         }
       };
       this.type = 'scatter';
       this.plugins = null;
+      this.options.XYPlugin = true;
+    }
+    attached() {
+      //register horizontal line drawing, shows difference line between appropriate points from dataset0 and dataset1
+      Chart.pluginService.register({
+        beforeDraw: function(chart, ease) {
+          if (chart.config.options.XYPlugin && chart.tooltip._active && chart.tooltip._active.length) {
+            let activePoint = chart.tooltip._active[0];
+            //console.log('chart horizontal line debug chart activepoint:', activePoint);
+            let ctx = chart.ctx;
+
+            let y = activePoint.tooltipPosition().y;
+            //let topY = this.chart.legend.bottom;
+            let leftX = chart.chartArea.left;
+            //let bottomY = this.chart.chartArea.bottom;
+            let rightX = chart.chartArea.right;
+            // draw line
+            ctx.save();
+            ctx.beginPath();
+            ctx.moveTo(leftX, y);
+            ctx.lineTo(rightX, y);
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = '#ff0000';
+            ctx.stroke();
+            let meta1 = chart.getDatasetMeta(0);
+            let meta2 = chart.getDatasetMeta(1);
+            if (meta1) {
+              //draw second line
+              //console.log('plugin meta', chart, meta);
+              let secondy2 = meta1.data[activePoint._index]._model.y;
+              let secondy = secondy2 !== y ? secondy2 : meta2.data[activePoint._index]._model.y;
+              //let stop  = meta.data[chart.config.options.section[i].index]._model.x;
+              ctx.beginPath();
+              ctx.moveTo(leftX, secondy);
+              ctx.lineTo(rightX, secondy);
+              ctx.lineWidth = 1;
+              ctx.strokeStyle = '#ff0000';
+              ctx.stroke();
+              let x = activePoint.tooltipPosition().x;
+              ctx.beginPath();
+              ctx.moveTo(x, y);
+              let sy = (y > secondy) ? 3 : -3;
+              //small arrow up
+              ctx.lineTo(x - sy, y - sy);
+              ctx.lineTo(x + sy, y - sy);
+              //line
+              ctx.lineTo(x, y);
+              ctx.lineTo(x, secondy);
+              //small arrow down
+              ctx.lineTo(x - sy, secondy + sy);
+              ctx.lineTo(x + sy, secondy + sy);
+              ctx.lineTo(x, secondy);
+              ctx.lineWidth = 1;
+              ctx.strokeStyle = '#0000ff';
+              ctx.stroke();
+            }
+            ctx.restore();
+          }
+        }
+
+      });
+      super.attached();
     }
     addpoint() {this.index++;}
     removepoint() {if (this.index > 0) this.index--;}

@@ -139,6 +139,7 @@ barplot chart with minimum/maximum and normal range
   ylabel="y axis label"></bdl-chartjs>
   
 2.  chartjs-xy-points
+
 <bdl-chartjs-xy-points 
   id="id9" 
   width="300" 

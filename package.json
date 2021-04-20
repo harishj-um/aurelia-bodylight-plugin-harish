@@ -135,7 +135,7 @@
     "aurelia-i18n": "^3.1.1",
     "aurelia-loader": "^1.0.2",
     "aurelia-templating": "^1.10.4",
-    "chart.js": "^2.9.3",
+    "chart.js": "^2.9.4",
     "chartjs-plugin-datalabels": "^0.7.0",
     "createjs": "^1.0.1",
     "dygraphs": "^2.1.0",
