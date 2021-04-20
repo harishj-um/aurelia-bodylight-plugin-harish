@@ -94,7 +94,7 @@ export class ChartjsXyPoints extends ChartjsXy {
           if (data.datasets.length < 2) return tooltipItem[0].yLabel;
           let label = [];
           //label.push('| ' + data.datasets[0].data[tooltipItem[0].index].y.toPrecision(3) + ' - ' + data.datasets[1].data[tooltipItem[0].index].y.toPrecision(3) + ' |');
-          label.push('diff: ' + Math.abs(data.datasets[0].data[tooltipItem[0].index].y - data.datasets[1].data[tooltipItem[0].index].y).toPrecision(2));
+          label.push('Δ ' + Math.abs(data.datasets[0].data[tooltipItem[0].index].y - data.datasets[1].data[tooltipItem[0].index].y).toPrecision(3));
           return label;
         }
       };
