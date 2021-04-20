@@ -122,7 +122,7 @@ export class ChartjsXyPoints extends ChartjsXy {
             ctx.moveTo(leftX, y);
             ctx.lineTo(rightX, y);
             ctx.lineWidth = 1;
-            ctx.strokeStyle = '#ff0000';
+            ctx.strokeStyle = '#ff9c9c';
             ctx.stroke();
             let meta1 = chart.getDatasetMeta(0);
             let meta2 = chart.getDatasetMeta(1);
@@ -136,7 +136,7 @@ export class ChartjsXyPoints extends ChartjsXy {
               ctx.moveTo(leftX, secondy);
               ctx.lineTo(rightX, secondy);
               ctx.lineWidth = 1;
-              ctx.strokeStyle = '#ff0000';
+              ctx.strokeStyle = '#ff9c9c';
               ctx.stroke();
               let x = activePoint.tooltipPosition().x;
               ctx.beginPath();
@@ -153,7 +153,7 @@ export class ChartjsXyPoints extends ChartjsXy {
               ctx.lineTo(x + sy, secondy + sy);
               ctx.lineTo(x, secondy);
               ctx.lineWidth = 1;
-              ctx.strokeStyle = '#0000ff';
+              ctx.strokeStyle = '#7b7bff';
               ctx.stroke();
             }
             ctx.restore();
