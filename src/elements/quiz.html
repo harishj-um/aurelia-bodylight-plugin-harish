@@ -1,7 +1,7 @@
 <template>
   <fieldset>
     ${question}
-    <ul class="w3-ul">
+    <ul>
     <li repeat.for="answer of answer_exp_array">
       <input type="checkbox" checked.bind="answer.user" class="w3-check" disabled.bind="showresult"/><label>${answer.answer}</label>
       <span show.bind="showresult" class="w3-theme-l5">
