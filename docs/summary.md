@@ -23,6 +23,7 @@
       * [Checkbox](#usersguide/checkbox.md)
       * [PDB](#usersguide/pdb.md)
       * [Quiz](#usersguide/quiz.md)
+      * [Tabs](#usersguide/tabs.md)
     * [Developer's Guide](#developersguide.md)
   * [Examples](#examples.md)
     * [Hemodynamics Meurs with controls](#example/hemodynamicsmeurs.md)
