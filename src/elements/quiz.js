@@ -4,6 +4,7 @@ export class Quiz {
   @bindable answers;
   @bindable explanations;
   @bindable correctoptions;
+  @bindable button='check answers';
 
   bind() {
     this.useranswer = [];
@@ -12,6 +13,7 @@ export class Quiz {
     this.explanation_array = this.explanations.split('|').map(s => s.trim());
     this.correct_array = this.correctoptions.split('|').map(s => s.trim());
     this.answer_exp_array = [];
+
     for (let i = 0; i < this.answers_array.length; i++) {
       this.answer_exp_array.push(
         {
@@ -25,7 +27,7 @@ export class Quiz {
   }
 
   submit() {
-    console.log('Bdlquis submit()');
+    //console.log('Bdlquis submit()');
     this.showresult = true;
   }
 }

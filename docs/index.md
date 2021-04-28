@@ -1,5 +1,7 @@
 # Bodylight Web Components  
 
+This is demos of web components - full documentation see at Bodylight-docs/referenceguide
+
 Bodylight Web Components is a suite of custom elements enhancing HTML with following advanced features: 
 * FMI component - to control simulation of modeul using FMI standard in browser. `Modelica` model can be exported by any Modelica tool into `FMU`. [Bodylight FMU Compiler](https://github.com/creative-connections/Bodylight.js-FMU-Compiler) can be used to export FMU into WebAssembly.
 * Adobe-Animate and Gif-Animate component - to control animation exported from Adobe-Animate or animated GIF and bind them to variables of model simulation.

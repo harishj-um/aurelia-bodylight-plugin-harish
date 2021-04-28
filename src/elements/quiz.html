@@ -1,7 +1,7 @@
 <template>
   <fieldset>
     ${question}
-    <ul>
+    <ul style="list-style-type: none">
     <li repeat.for="answer of answer_exp_array">
       <input type="checkbox" checked.bind="answer.user" class="w3-check" disabled.bind="showresult"/><label>${answer.answer}</label>
       <span show.bind="showresult" class="w3-theme-l5">
@@ -11,6 +11,6 @@
       </span>
     </li>
     </ul>
-    <input type="submit" value="Submit" click.delegate="submit()"/>
+    <input type="submit" value.bind="button" click.delegate="submit()"/>
   </fieldset>
 </template>
