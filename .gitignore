@@ -38,3 +38,4 @@ node_modules
 #/fonts
 #/font-awesome
 /docs/scripts/
+build-nb.sh
