@@ -170,18 +170,19 @@ export class Fmi {
 
     //create instance
     let myinst = window[that.fminame]();
+    //EMSDK v x.x compiles fmu to Promise based api
     if (myinst instanceof Promise) {
       myinst.then(inst => {
         that.inst = inst;
         if (!window.fmiinst) { window.fmiinst = [];}
         window.fmiinst[that.fminame] = that;
-        console.log('fmi callback from Promist that', that, that.inst);
+        //console.log('fmi callback from Promise that', that, that.inst);
       });
-    } else {
+    } else { //older EMSDK compiles directly to api
       that.inst = myinst;
       if (!window.fmiinst) { window.fmiinst = [];}
       window.fmiinst[that.fminame] = that;
-      console.log('fmi callback that, that.inst', that, that.inst);
+      //console.log('fmi callback that, that.inst', that, that.inst);
     }
   }
   bind() {}

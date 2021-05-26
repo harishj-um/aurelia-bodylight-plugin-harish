@@ -19,7 +19,7 @@ export class AnimateAdobe {
     animationstarted = false;
 
     constructor() {
-      console.log('animate-adobe constructor()');
+      //console.log('animate-adobe constructor()');
       //fix issue - some bindings not detached
       //window.animatebindings = [];
       this.handleValueChange = e => {
@@ -67,7 +67,7 @@ export class AnimateAdobe {
 
       //check global instance of createjs
       if (typeof createjs === 'undefined') {
-        console.log('INFO: waiting 500ms for createjs ');
+        //console.log('INFO: waiting 500ms for createjs ');
         setTimeout(() => continueAfter, 500);
       } else continueAfter();
     }
@@ -140,7 +140,7 @@ export class AnimateAdobe {
     }
 
     destroyAdobe() {
-      console.log('animate adobe destroy()');
+      //console.log('animate adobe destroy()');
       if (window.stage) {
         window.stage.enableMouseOver(-1);
         window.stage.enableDOMEvents(false);
@@ -173,7 +173,7 @@ export class AnimateAdobe {
     getScript(source, callback) {
       //check whether the script is not already there
       if (Array.from(document.getElementsByTagName('script')).filter(x=> x.getAttribute('src') === source).length > 0) {
-        console.log('AnimateAdobe.getScript() WARNING, script is already added into DOM:', source);
+        console.warn('AnimateAdobe.getScript() WARNING, script is already added into DOM:', source);
         //do callback?
         if (callback) setTimeout(callback, 0);
         return;
@@ -192,10 +192,10 @@ export class AnimateAdobe {
             //disable previoues definition
             window.ani.destroyAdobe();
             //enable current def
-            console.log('inserting script by thirdparty api');
+            //console.log('inserting script by thirdparty api');
             window.editorapi.insertScriptById(source, 'adobeobj')
               .then(innerscript => {
-                console.log('third party script node', innerscript);
+                //console.log('third party script node', innerscript);
                 try {
                   // eslint-disable-next-line no-eval
                   eval(innerscript.innerHTML);

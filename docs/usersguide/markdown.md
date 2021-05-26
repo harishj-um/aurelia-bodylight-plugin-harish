@@ -82,7 +82,7 @@ will render to `4. header ... 4.1 subheader ... 5. headerx ... 6. headery`
   * `index` - index MD to be shown as content
   * `summary` - navigation MD - navigation sidebar is rendered per list in it
 
-# demo markdown input
+# demo markdown and markdown input
 ```
 <bdl-markdown-input id="id7"></bdl-markdown-input>
 <bdl-markdown fromid="id7"></bdl-markdown>
@@ -90,3 +90,14 @@ will render to `4. header ... 4.1 subheader ... 5. headerx ... 6. headery`
 
 <bdl-markdown-input id="id7"></bdl-markdown-input>
 <bdl-markdown fromid="id7"></bdl-markdown>
+
+# demo markdown-au and input
+<bdl-markdown-input id="id8"></bdl-markdown-input>
+<bdl-markdown-au fromid="id8"></bdl-markdown>
+
+# demo markdown and input bind via shared attribute
+<form>
+  <input value.two-way="textareavalue" />
+</form>
+
+<bdl-markdown content.two-way="textareavalue"></bdl-markdown>

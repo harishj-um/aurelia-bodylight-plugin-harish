@@ -18,6 +18,7 @@ export class Markdown extends Markdownaurelia {
   @bindable base='';
   @bindable fromid;
   @bindable toc;
+  @bindable content;
 
   constructor(i18n, httpclient, ea) {
     super(i18n, httpclient, ea);

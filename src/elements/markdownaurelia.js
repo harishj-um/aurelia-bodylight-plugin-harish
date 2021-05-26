@@ -16,7 +16,8 @@ import {I18N} from 'aurelia-i18n';
 import {ContentUpdate} from './messages';
 
 /**
- * This is markdownaurelia component to be used as aurelia component,
+ * This is markdownaurelia component to be used in aurelia apps,
+ * requires aurelia-dynamic-html plugin to be enabled,
  * in case of using as web-component, use mardkdown which inherits majority
  */
 @inject(I18N, HttpClient, EventAggregator )
@@ -26,6 +27,7 @@ export class Markdownaurelia {
   @bindable base='';
   @bindable fromid;
   @bindable toc;
+  @bindable content;
   previoussrc='';
   constructor(i18n, httpclient, ea) {
     //this.i18n = i18n;
@@ -141,5 +143,10 @@ export class Markdownaurelia {
     this.text = content;
     this.html = this.md.render(this.text);
     this.update();
+  }
+
+  contentChanged(newvalue, oldvalue) {
+    //console.log('markdown2 update called by OOP polymorphism mydiv, html', this.mydiv, this.html);
+    this.updateContent(newvalue);
   }
 }

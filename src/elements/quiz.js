@@ -4,7 +4,7 @@ export class Quiz {
   @bindable answers;
   @bindable explanations;
   @bindable correctoptions;
-  @bindable button='check answers';
+  @bindable buttontitle='check answers';
 
   bind() {
     this.useranswer = [];

@@ -9,6 +9,7 @@ cd ../aurelia-bodylight-plugin/
 cp -TRv ../Bodylight.js-Components/dist/ ../Bodylight-Editor/node_modules/bodylight-components/dist/
 cp -TRv ../Bodylight.js-Components/dist/ ../aurelia-bodylight-plugin/docs/scripts/
 cp -TRv dist/ ../Bodylight-Editor/node_modules/aurelia-bodylight-plugin/dist/
+cp -TRv dist/ ../bodylight-notebook/node_modules/aurelia-bodylight-plugin/dist/
 # build editor
 cd ../Bodylight-Editor
 au build
