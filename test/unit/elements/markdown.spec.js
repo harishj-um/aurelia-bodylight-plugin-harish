@@ -28,15 +28,17 @@ describe('markdown element',  () => {
     //await delay(500);
     component = StageComponent
       .withResources('elements/markdownaurelia')
-      .inView('<markdownaurelia></markdownaurelia>');
+      .inView('<markdownaurelia content="# title\n## title 2"></markdownaurelia>');
 
 
     component.create(bootstrap).then(() => {
       const view = component.element;
-      const section = view.getElementsByTagName('section');
-      expect(section.length).toBe(1);
-      const div = view.getElementsByTagName('div');
-      expect(div.length).toBe(1);
+      const dynhtml = view.getElementsByTagName('dynamic-html');
+      expect(dynhtml.length).toBe(1);
+      /*const h1 = view.getElementsByTagName('h1');
+      expect(h1.length).toBe(1);
+      const h2 = view.getElementsByTagName('h2');
+      expect(h2.length).toBe(1);*/
       done();
     }).catch(e => {
       fail(e);
