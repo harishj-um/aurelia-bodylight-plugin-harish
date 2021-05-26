@@ -6,6 +6,19 @@ import {I18N} from 'aurelia-i18n';
 import {HttpClient} from 'aurelia-fetch-client';
 import {EventAggregator} from 'aurelia-event-aggregator';
 
+//global function
+window.bodylightnavopenhide = function(obj) {
+  //set show/hide to
+  //console.log('openhide()', obj);
+  if (obj.nextSibling.className === 'w3-hide') {
+    obj.nextSibling.className = 'w3-show';
+    obj.firstChild.className = 'fa fa-minus';
+  } else {
+    obj.nextSibling.className = 'w3-hide';
+    obj.firstChild.className = 'fa fa-plus';
+  }
+};
+
 @inject(I18N, HttpClient, EventAggregator)
 export class Markdownnav {
   @bindable src;
@@ -36,11 +49,13 @@ export class Markdownnav {
     this.mdtoc = Markdownit({html: true})
       .use(mk, {'throwOnError': true, 'errorColor': ' #cc0000'})
       .use(iterator, 'url', 'link_open', function(tokens, idx) {
+        //detect link and token in MD
         let aIndex = tokens[idx].attrIndex('href');
         if (aIndex < 0) {
           //tokens[idx].attrPush(['target', '_blank']);
           //no href
         } else {
+          //save detected link into global links array
           let link = tokens[idx].attrs[aIndex][1];
           let linktext = tokens[idx + 1].content;
           //console.log('nav token open + 2:', tokens[idx], tokens[idx+1],tokens[idx+2]);
@@ -50,6 +65,12 @@ export class Markdownnav {
     this.navclass = (this.navstyle && this.navstyle.length > 0) ? this.navstyle : 'horizontal';
     //adds rule to add a class to li item
     this.mdtoc.renderer.rules.list_item_open = function(tokens, idx, options, env, slf) { return '<li class="navitem">'; };
+    this.mdtoc.renderer.rules.bullet_list_open = function(tokens, idx, options, env, slf) {
+      if (window.markdownnavdepth) window.markdownnavdepth++; else window.markdownnavdepth = 1;
+      if (window.markdownnavdepth && window.markdownnavdepth === 2) return '<span class="w3-small" onclick="bodylightnavopenhide(this)" ><i class="fa fa-plus"></i></span><ul class="w3-hide">';
+      return '<ul>';
+    };
+    this.mdtoc.renderer.rules.bullet_list_close = function(tokens, idx, options, env, slf) { if (window.markdownnavdepth) window.markdownnavdepth--; return '</ul>';};
     //fetch md source from src attribute
     this.fetchMDSrc();
   }
@@ -77,6 +98,9 @@ export class Markdownnav {
 
   update() {
     this.mynav.innerHTML = this.html;
+  }
+
+  openhide() {
   }
 
   /*changesrc(...args) {

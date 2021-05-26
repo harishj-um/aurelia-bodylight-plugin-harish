@@ -95,7 +95,7 @@ nav.vertical ul {
 }
 
 nav.vertical li a {
-  display: block;
+  display: inline-block;
   color: black;/*#000;*/
   padding: 0px 16px;
   text-decoration: none;
@@ -114,8 +114,8 @@ nav.vertical li a:hover:not(.active) {
 nav.vertical li li a {font-size:smaller;color:#7d97a5}
 nav.vertical li li li a {font-size:smaller;color:#7d97a5}
 
-/*this adds a space and bullet to every link*/
-nav.vertical li > a:after { content: '\00a0\203a' }
+/*this adds a space and bullet to every link
+nav.vertical li > a:after { content: '\00a0\203a' } */
 
 /*this adds spaces and a square to every link*/
 nav.vertical li li > a:before { content: '\00a0\00a0\00a0\25a0\00a0' }
