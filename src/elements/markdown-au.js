@@ -1,3 +1,5 @@
-import {Markdownaurelia} from "./markdownaurelia";
+import {Markdownaurelia} from './markdownaurelia';
 
-export class MarkdownAu extends Markdownaurelia {}
+export class MarkdownAu extends Markdownaurelia {
+
+}
