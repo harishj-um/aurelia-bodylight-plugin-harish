@@ -125,3 +125,6 @@ nav.vertical li li > a:after { content: '' }
 nav.vertical li li li > a:before { content: '\00a0\00a0\00a0\00a0\00a0\00a0\25a1\00a0' }
 nav.vertical li li li > a:after { content: '' }
 
+.activenavitem {
+  background-color: #ffe69b;
+}

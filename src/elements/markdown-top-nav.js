@@ -45,6 +45,20 @@ export class MarkdownTopNav {
         this.navtitle = (currentlinkindex > 0) && (currentlinkindex < window.markdownnav.links.length)
           ? window.markdownnav.links[currentlinkindex].title
           : '';
+        //erase activenavitem class
+        let activenavitems = window.document.getElementsByClassName('activenavitem');
+        for (let item of activenavitems) { item.classList.remove('activenavitem'); }
+        //make current link as class activenavitem
+        let currentnavitem = window.document.getElementById(currentlink);
+        if (currentnavitem) {
+          //set class - so it will have different color
+          currentnavitem.firstChild.classList.add('activenavitem');
+          //show parent ul if hidden
+          if (currentnavitem.parentNode.className === 'w3-hide') {
+            //do open/hide as defined in markdownnav
+            if (window.bodylightnavopenhide) window.bodylightnavopenhide(currentnavitem.parentNode.previousSibling);
+          }
+        }
       }
     }
 
