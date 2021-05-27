@@ -13,10 +13,10 @@ window.bodylightnavopenhide = function(obj) {
   //console.log('openhide()', obj);
   if (obj.nextSibling.className === 'w3-hide') {
     obj.nextSibling.className = 'w3-animate-opacity';
-    obj.firstChild.className = 'fa fa-minus';
+    obj.firstChild.className = 'fa fa-chevron-down';
   } else {
     obj.nextSibling.className = 'w3-hide';
-    obj.firstChild.className = 'fa fa-plus';
+    obj.firstChild.className = 'fa fa-chevron-right';
   }
 };
 
@@ -79,7 +79,7 @@ export class Markdownnav {
     };
     this.mdtoc.renderer.rules.bullet_list_open = function(tokens, idx, options, env, slf) {
       if (window.markdownnavdepth) window.markdownnavdepth++; else window.markdownnavdepth = 1;
-      if (window.markdownnavdepth && window.markdownnavdepth === 2) return '<span class="w3-small" onclick="bodylightnavopenhide(this)" ><i class="fa fa-plus"></i></span><ul class="w3-hide">';
+      if (window.markdownnavdepth && window.markdownnavdepth === 2) return '<span class="w3-small" onclick="bodylightnavopenhide(this)" ><i class="fa fa-chevron-right"></i></span><ul class="w3-hide">';
       return '<ul>';
     };
     this.mdtoc.renderer.rules.bullet_list_close = function(tokens, idx, options, env, slf) { if (window.markdownnavdepth) window.markdownnavdepth--; return '</ul>';};
