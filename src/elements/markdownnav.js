@@ -71,7 +71,9 @@ export class Markdownnav {
       let link = null;
       try {
         link = tokens[idx + 2].children[0].attrs[0][1];
-      } catch (e) { }
+      } catch (e) {
+        //ignore
+      }
       if (link) return '<li class="navitem" id="' + link + '">';
       return '<li class="navitem">';
     };
