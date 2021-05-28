@@ -126,13 +126,15 @@ export class Markdownaurelia {
   }
 
   detached() {
-    window.removeEventListener('hashchange', this.handleHashChange);
+    window.removeEventListener('hashchange', this.handleContentChange);
   }
 
   update() {
     //console.log('markdownaurelia update');
     //if (this.mj)this.mj.typesetPromise();
     //if (window.MathJax) window.MathJax.typeset();
+    //scroll to top of the page
+    window.scrollTo(0, 0);
   }
 
   updateContent(content) {
