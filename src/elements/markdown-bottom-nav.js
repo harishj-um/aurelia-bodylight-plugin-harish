@@ -9,7 +9,7 @@ export class MarkdownBottomNav {
     @bindable src;
     @bindable navstyle;
     @bindable base='';
-    @bindable index;
+    @bindable index='index.md';
     notinitread=true;
     previoustitle='';//Introduction';
     nexttitle='';//Hemodynamics in Left Ventricle'
