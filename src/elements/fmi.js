@@ -80,11 +80,17 @@ export class Fmi {
         let denominator = (myinputs.length > 3) ? parseFloat(myinputs[3]) : 1;
         let addconst = (myinputs.length > 4) ? parseFloat(myinputs[4]) : 0;
         let fixedsignature = (myinputs.length > 5) ? (myinputs[5] === 'f') : false;
+        if (isNaN(addconst)) {
+          addconst = 0;
+          fixedsignature = myinputs[4] === 'f';
+        } //fixes bug, setting  instead of NaN, when 4th param is omited and instead 'f' or 't' is specified
+
         this.inputreferences[myinputs[0]] = {ref: myinputs[1], numerator: numerator, denominator: denominator, addconst: addconst, fixed: fixedsignature}; //first is id second is reference
         //register change event - the alteration is commited
         let dependentEl = document.getElementById(myinputs[0]);
         if (dependentEl) dependentEl.addEventListener('change', this.handleValueChange);
         else console.warn('cannot register changes for non-existing element id:', myinputs[0]);
+        console.log('registering input, ref, num,den,add,fixed', myinputs[0], myinputs[1], numerator, denominator, addconst, fixedsignature);
       }
     }
 

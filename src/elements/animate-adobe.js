@@ -365,9 +365,11 @@ export class AnimateAdobe {
         const resolvePath = (object, path, defaultValue) => path
           .split('.')
           .reduce((o, p) => o ? o[p] : defaultValue, object);
-        let myobj = resolvePath(window.ani.exportRoot.children[0], objname, undefined);
+        let myobj = resolvePath(window.ani.exportRoot, objname, undefined);
+        //backward compatibility
+        if (!myobj) myobj = resolvePath(window.ani.exportRoot.children[0], objname, undefined);
         if (myobj) myobj.text = textvalue;
-        else console.warn('objname is undefined for window.ani.esportRoot.children[0]', objname);
+        else console.warn('objname is undefined for window.ani.exportRoot', objname);
       }
     }
 
