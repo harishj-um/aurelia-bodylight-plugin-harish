@@ -71,6 +71,7 @@ export class Fmi {
     //parse inputs id,ref1;id2,ref2 ...
     //id,ref,numerator?,denominator?,add?,fixed? 'f' or other char e.g.
     //id1,13123141,1,60,10,f => y = x/60-10 and parameter is fixed - reinit on every change
+    //bug - some elements not yet in DOM tree - wait some time or put those elements (components) before fmi component
     if (this.inputs) { //register DOM elements to listen to their 'change' event directly
       let inputparts = this.inputs.split(';'); //splits groups delimited by ;
       this.inputreferences = [];
