@@ -20,6 +20,7 @@ export class PdbPdbeMolstar {
     @bindable width='100%';
     @bindable height='300px';
     @bindable assemblyId;
+    @bindable visualStyle;
 
     /* Adding to template do not have effect as pdbe-molstar is third party web component, thus appendchild notifies api to interpret it
     Aurelia do not bind to unknown attributes - molecule-id etc. it creates
@@ -36,6 +37,8 @@ export class PdbPdbeMolstar {
       this.pdbref.setAttribute('hide-controls', this.hideControls);
       if (this.hidePolymer && this.hidePolymer === 'true') this.pdbref.setAttribute('hide-polymer', this.hidePolymer);
       if (this.assemblyId) this.pdbref.setAttribute('assembly-id', this.assemblyId);
+      //console.log('pdbpdbemolstart bind() this:', this);
+      if (this.visualStyle) this.pdbref.setAttribute('visual-style', this.visualStyle);
       this.pdbref.setAttribute('bg-color-r', 255);
       this.pdbref.setAttribute('bg-color-g', 255);
       this.pdbref.setAttribute('bg-color-b', 255);
