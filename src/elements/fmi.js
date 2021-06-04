@@ -15,6 +15,8 @@ export class Fmi {
   @bindable controlid;
   @bindable showcontrols=true;
   @bindable fpslimit = 60;
+  @bindable showtime = false;
+  @bindable showtimemultiply = 1;
 
   cosimulation=1;
   stepSize=0.01;//0.0078125;
@@ -25,6 +27,7 @@ export class Fmi {
   fpstick=0;
   stepi=0;
   resetBeforeChange = false;
+  simulationtime = 0;
 
 
   constructor() {
@@ -438,7 +441,8 @@ export class Fmi {
       let event = new CustomEvent('fmidata', {detail: {time: this.round(this.stepTime, this.pow), data: this.mydata}});
       //dispatch event - it should be listened by some other component
       document.getElementById(this.id).dispatchEvent(event);
-
+      //compute showtime
+      if (this.showtime)  this.simulationtime = this.secondsToTime(this.stepTime,this.showtimemultiply);
       //do computation only every tickstoupdate tick
       if (this.measurefps) {
         if (this.fpstick === 0) {this.startfpstime = window.performance.now(); }
@@ -650,5 +654,17 @@ export class Fmi {
     this.freeBuffer(queryBuffer);
     this.freeBuffer(outputBuffer);
     return bool;
+  }
+
+  secondsToTime(sec, multiply = 1) {
+    let x = Math.floor(sec * multiply);
+    let seconds = Math.floor(x % 60).toString().padStart(2,'0');
+    x /= 60;
+    let minutes = Math.floor(x % 60).toString().padStart(2,'0');
+    x /= 60;
+    let hours = Math.floor(x % 24).toString().padStart(2,'0');
+    x /= 24;
+    let days = Math.floor(x);
+    return ' ' + days + ' ' + hours + ':' + minutes + ':' + seconds;
   }
 }

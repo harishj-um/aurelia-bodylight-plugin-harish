@@ -18,11 +18,17 @@
         </td>
         <td class="w3-tiny">
           <table>
-            <tr><td><input class="w3-check w3-tiny" type="checkbox" checked.bind="measurefps"/>
+            <tr><td><input type="checkbox" checked.bind="measurefps"/>
               <i show.bind="measurefps" title="FMI: ${fminame}">FPS:${fps}</i></td>
             </tr>
-            <tr show.bind="measurefps"><td><input type="range"  min="1" max="60" value.bind="fpslimit" />${fpslimit}</td>
+            <tr><td show.bind="measurefps"><input type="number" min="1" max="60" value.bind="fpslimit" style="width:8ch" /></td>
             </tr>
+          </table>
+        </td>
+        <td show.bind="showtime">
+          <table style="font-family:Consolas,'courier new';line-height: 1.0;" title="simulation time">
+            <tr><td><span>d hh:mm:ss</span></td></tr>
+            <tr><td><span>${simulationtime}</span></td></tr>
           </table>
         </td>
       </tr>

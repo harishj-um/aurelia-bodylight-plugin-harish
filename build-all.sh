@@ -4,7 +4,12 @@ cp -TRv dist/ ../Bodylight.js-Components/node_modules/aurelia-bodylight-plugin/d
 # build components
 cd ../Bodylight.js-Components/
 #npm run build
+# dev bundle rename as debug.js to scenarios
 npm run build:dev
+cp dist/bodylight.bundle.js ../Bodylight-Scenarios/bodylight.bundle.debug.js
+# production bundle copy as is to scenarios
+npm run build
+cp -TRv dist/ ../Bodylight-Scenarios/
 #au build
 cd ../aurelia-bodylight-plugin/
 cp -TRv ../Bodylight.js-Components/dist/ ../Bodylight-Editor/node_modules/bodylight-components/dist/
