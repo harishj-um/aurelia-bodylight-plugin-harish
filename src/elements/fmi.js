@@ -442,7 +442,7 @@ export class Fmi {
       //dispatch event - it should be listened by some other component
       document.getElementById(this.id).dispatchEvent(event);
       //compute showtime
-      if (this.showtime)  this.simulationtime = this.secondsToTime(this.stepTime,this.showtimemultiply);
+      if (this.showtime)  this.simulationtime = this.secondsToTime(this.stepTime, this.showtimemultiply);
       //do computation only every tickstoupdate tick
       if (this.measurefps) {
         if (this.fpstick === 0) {this.startfpstime = window.performance.now(); }
@@ -658,11 +658,11 @@ export class Fmi {
 
   secondsToTime(sec, multiply = 1) {
     let x = Math.floor(sec * multiply);
-    let seconds = Math.floor(x % 60).toString().padStart(2,'0');
+    let seconds = Math.floor(x % 60).toString().padStart(2, '0');
     x /= 60;
-    let minutes = Math.floor(x % 60).toString().padStart(2,'0');
+    let minutes = Math.floor(x % 60).toString().padStart(2, '0');
     x /= 60;
-    let hours = Math.floor(x % 24).toString().padStart(2,'0');
+    let hours = Math.floor(x % 24).toString().padStart(2, '0');
     x /= 24;
     let days = Math.floor(x);
     return ' ' + days + ' ' + hours + ':' + minutes + ':' + seconds;
