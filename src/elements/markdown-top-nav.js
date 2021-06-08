@@ -53,6 +53,10 @@ export class MarkdownTopNav {
         if (currentnavitem) {
           //set class - so it will have different color
           currentnavitem.firstChild.classList.add('activenavitem');
+          //show children ul if hidden
+          if (currentnavitem.lastChild.className === 'w3-hide') {
+            if (window.bodylightnavopenhide) window.bodylightnavopenhide(currentnavitem.lastChild.previousSibling);
+          }
           //show parent ul if hidden
           if (currentnavitem.parentNode.className === 'w3-hide') {
             //do open/hide as defined in markdownnav

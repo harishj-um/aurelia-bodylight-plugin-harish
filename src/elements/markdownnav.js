@@ -8,6 +8,8 @@ import {EventAggregator} from 'aurelia-event-aggregator';
 
 //global function to operate on translated markdown in navigation panel
 //adds + or - and shows hides list under it
+// obj expects to be element of span, nextsibling is <ul> and first child is <i>
+// e.g. <a></a><span><i></i></span><ul></ul>
 window.bodylightnavopenhide = function(obj) {
   //set show/hide to
   //console.log('openhide()', obj);
