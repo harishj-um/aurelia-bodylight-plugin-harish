@@ -68,7 +68,7 @@ export class Markdownnav {
     this.navclass = (this.navstyle && this.navstyle.length > 0) ? this.navstyle : 'horizontal';
     //adds rule to add a class to li item
     this.mdtoc.renderer.rules.list_item_open = function(tokens, idx, options, env, slf) {
-      console.log('markdownnav list item open tokens[idx], options:', tokens, idx);
+      //console.log('markdownnav list item open tokens[idx], options:', tokens, idx);
       //use link as id
       let link = null;
       try {
