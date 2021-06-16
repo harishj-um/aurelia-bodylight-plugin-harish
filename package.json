@@ -151,6 +151,7 @@
     "markdown-it": "^12.0.4",
     "markdown-it-for-inline": "^0.1.1",
     "markdown-it-katexx": "^3.2.0",
+    "pdbe-molstar": "git+https://github.com/TomasKulhanek/pdbe-molstar.git",
     "plotly.js-dist": "^1.57.1"
   },
   "bugs": {

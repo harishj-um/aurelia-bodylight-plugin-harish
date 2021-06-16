@@ -12,7 +12,6 @@ describe('range element', () => {
   });
 
   it('creates 2 inputs, first range, second number', done => {
-
     component = StageComponent
       .withResources('elements/range.html')
       .inView('<range></range>');
@@ -27,6 +26,18 @@ describe('range element', () => {
       done();
     }).catch(e => {
       fail(e);
+      done();
+    });
+  });
+
+  test('First try', done => {
+    component = StageComponent
+      .withResources('elements/range.html')
+      .inView('<range></range>');
+
+    console.log('x');
+    component.create(bootstrap).then(() => {
+      expect('3').toEqual('4');
       done();
     });
   });
