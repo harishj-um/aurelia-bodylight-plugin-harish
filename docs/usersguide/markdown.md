@@ -64,7 +64,23 @@ some text and reference [^1] some other text ^[inline footnote]
 # headerx
 # headery
 ```
-will render to `4. header ... 4.1 subheader ... 5. headerx ... 6. headery`  
+will render to `4. header ... 4.1 subheader ... 5. headerx ... 6. headery`
+
+## abbr
+
+```
+*[HTML]: Hyper Text Markup Language
+*[W3C]:  World Wide Web Consortium
+The HTML specification
+is maintained by the W3C.
+```
+
+is rendered as:
+
+*[HTML]: Hyper Text Markup Language
+*[W3C]:  World Wide Web Consortium
+The HTML specification
+is maintained by the W3C.
 
 ## markdown nav
 `<bdl-markdownnav>` renders navigation

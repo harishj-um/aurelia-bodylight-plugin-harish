@@ -5,6 +5,8 @@ import {bodylightFootnotePlugin} from './markdown-it-bfootnote';
 //import mk from '@liradb2000/markdown-it-katex'; //math in md, iktakahiro version seems to be most updated - works with latest katex
 import mk from 'markdown-it-katexx'; //math in md, iktakahiro version seems to be most updated - works with latest katex
 import hljs from 'highlight.js'; //highlights in MD source blocks
+import mka from 'markdown-it-abbr';
+
 //npm install markdown-it-toc-done-right markdown-it-anchor
 //import markdownItTocDoneRight from 'markdown-it-toc-done-right'; //TOC on top of the page
 //import markdownItAnchor from 'markdown-it-anchor'; //MD anchors
@@ -79,6 +81,7 @@ export class Markdownaurelia {
     }).use(bodylightFootnotePlugin) //footnote - extension to MD - otherwise no link between [^1] and [^1]:
       //.use(MarkdownitAttrs)
       .use(mk, {'throwOnError': true, 'errorColor': ' #cc0000'}) //math-> katex - should be faster than mathjax and crossbrowser compatible when chrom do not support mathml
+      .use(mka)
       //.use(markdownItAnchor, { permalink: true, permalinkBefore: true, permalinkSymbol: '§' } )
       //.use(markdownItTocDoneRight);
       .use(markdownitbtoc);
