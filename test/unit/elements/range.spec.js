@@ -29,16 +29,4 @@ describe('range element', () => {
       done();
     });
   });
-
-  test('First try', done => {
-    component = StageComponent
-      .withResources('elements/range.html')
-      .inView('<range></range>');
-
-    console.log('x');
-    component.create(bootstrap).then(() => {
-      expect('3').toEqual('4');
-      done();
-    });
-  });
 });
