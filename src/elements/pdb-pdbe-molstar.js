@@ -14,7 +14,7 @@ import {bindable} from 'aurelia-framework';
 export class PdbPdbeMolstar {
     @bindable moleculeId;
     @bindable customDataUrl;
-  @bindable customDataFormat;
+    @bindable customDataFormat;
     @bindable hideControls='true';
     @bindable hidePolymer='false';
     @bindable rotate='true';
