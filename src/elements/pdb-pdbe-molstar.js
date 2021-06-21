@@ -13,6 +13,7 @@ import {bindable} from 'aurelia-framework';
  */
 export class PdbPdbeMolstar {
     @bindable moleculeId='2hhd';
+    @bindable customDataUrl;
     @bindable hideControls='true';
     @bindable hidePolymer='false';
     @bindable rotate='true';
@@ -38,6 +39,7 @@ export class PdbPdbeMolstar {
       this.pdbref.setAttribute('hide-controls', this.hideControls);
       if (this.hidePolymer && this.hidePolymer === 'true') this.pdbref.setAttribute('hide-polymer', this.hidePolymer);
       if (this.assemblyId) this.pdbref.setAttribute('assembly-id', this.assemblyId);
+      if (this.customDataUrl) this.pdbref.setAttribute('custom-data-url', this.customDataUrl);
       //console.log('pdbpdbemolstart bind() this:', this);
       if (this.visualStyle) this.pdbref.setAttribute('visual-style', this.visualStyle);
       this.pdbref.setAttribute('bg-color-r', 255);
