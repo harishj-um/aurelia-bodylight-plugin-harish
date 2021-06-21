@@ -12,8 +12,9 @@ import {bindable} from 'aurelia-framework';
  * <script type="text/javascript" src="https://www.ebi.ac.uk/pdbe/pdb-component-library/js/pdbe-molstar-component-1.1.0.js"></script>
  */
 export class PdbPdbeMolstar {
-    @bindable moleculeId='2hhd';
+    @bindable moleculeId;
     @bindable customDataUrl;
+  @bindable customDataFormat;
     @bindable hideControls='true';
     @bindable hidePolymer='false';
     @bindable rotate='true';
@@ -35,11 +36,15 @@ export class PdbPdbeMolstar {
       this.divstyle = `width:${this.width};height:${this.height}; position:relative`;
       console.log('bind() moleculeId,hidecontrols,hidepolymer,moleculeidref', this.moleculeId, this.hideControls, this.hidePolymer, this.parentref);
       this.pdbref = document.createElement('pdbe-molstar');
-      this.pdbref.setAttribute('molecule-id', this.moleculeId);
+      if (this.moleculeId) this.pdbref.setAttribute('molecule-id', this.moleculeId);
       this.pdbref.setAttribute('hide-controls', this.hideControls);
       if (this.hidePolymer && this.hidePolymer === 'true') this.pdbref.setAttribute('hide-polymer', this.hidePolymer);
       if (this.assemblyId) this.pdbref.setAttribute('assembly-id', this.assemblyId);
-      if (this.customDataUrl) this.pdbref.setAttribute('custom-data-url', this.customDataUrl);
+      if (this.customDataUrl) {
+        this.pdbref.setAttribute('custom-data-url', this.customDataUrl);
+        if (this.customDataFormat) this.pdbref.setAttribute('custom-data-format', this.customDataFormat);
+        else this.pdbref.setAttribute('custom-data-format', 'pdb');
+      }
       //console.log('pdbpdbemolstart bind() this:', this);
       if (this.visualStyle) this.pdbref.setAttribute('visual-style', this.visualStyle);
       this.pdbref.setAttribute('bg-color-r', 255);
