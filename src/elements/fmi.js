@@ -17,6 +17,7 @@ export class Fmi {
   @bindable fpslimit = 60;
   @bindable showtime = false;
   @bindable showtimemultiply = 1;
+  @bindable eventlisten = 'input';//input==continuous/change==when user drops the value
 
   cosimulation=1;
   stepSize=0.01;//0.0078125;
@@ -92,7 +93,8 @@ export class Fmi {
         this.inputreferences[myinputs[0]] = {ref: myinputs[1], numerator: numerator, denominator: denominator, addconst: addconst, fixed: fixedsignature}; //first is id second is reference
         //register change event - the alteration is commited
         let dependentEl = document.getElementById(myinputs[0]);
-        if (dependentEl) dependentEl.addEventListener('change', this.handleValueChange);
+        //now register 'change' event or eventlisten
+        if (dependentEl) dependentEl.addEventListener(this.eventlisten, this.handleValueChange);
         else console.warn('cannot register changes for non-existing element id:', myinputs[0]);
         console.log('registering input, ref, num,den,add,fixed', myinputs[0], myinputs[1], numerator, denominator, addconst, fixedsignature);
       }

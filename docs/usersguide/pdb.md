@@ -20,6 +20,7 @@ To visualize molecule in PDB database
 * width, height - set width and height of canvas to render pdbe component, include unit in css, e.g. '300px' or '100%'
 * visual-style - set visual style - "cartoon","ball-and-stick",...
 * show-ions - comma separated labels of ions to be shown differently using gaussian-surface - big balls 
+* custom-data-url - sets url to custom pdb file 
 
 The component renders by default window with width 100% and height 400px and set's automatic spin of the molecule for 60s.
 

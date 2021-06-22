@@ -8,11 +8,13 @@
   * `guid` guid as it appears in FMU model description
   * `valuereferences` references to variables, custom event 'fmidata' with `event.detail` set to  `{time: number , data:[number,...]}` where time is timepoint of the current simulation step and data is array of values in same order as in 
   valuereferences
-  * `inputs` id of component, value reference, optional nominator,denominator to normalize `value * nominator / denominator` all delimited by coma`,`, other inputs delimited by semicolon `;` e.g. `inputs="id1,1677323,1,60;id2,16725364"` cause that the value from id1 will be converted `x= valueid1 *1/60` and value from id2 `x = valueid2*1/1` ; 
+  * `inputs` id of component, value reference, optional nominator,denominator to normalize `value * nominator / denominator` all delimited by coma`,`, other inputs delimited by semicolon `;` e.g. `inputs="id1,1677323,1,60;id2,16725364"` cause that the value from id1 will be converted `x= valueid1 *1/60` and value from id2 `x = valueid2*1/1` ;
+  * `eventlisten` event to listen on input elements - default "input" event - change is fired hen e.g. cursor is moved. You may change it to "change" - it is fired only when user drops the vlaue/ confirms the change. 
   * `otherinputs` ids of components which triggers custom event 'fmiinput', it is expected that in event.detail contains 
   this structure `{ valuereference: number, value: number }`
   * `showcontrols` - default `true`, shows/hides basic control buttons to start/stop/restart simulation
   * `fpslimit` - 1-60, default 60 = unlimited (default FPS allowed by browser). This attribute will limit the frames per second 
+
   and for values <60 will introduce some artificial delay to reduce framerate to the desired value. The limiting range is also available in UI.  
 
 Example:
