@@ -3,6 +3,6 @@
     <label>${title}</label>
     <button class="w3-theme w3-small" style="border:none" click.delegate="setDefault()"><i class="fa fa-refresh"></i></button>
     <input ref="refinput" class="w3-theme w3-small" type="range" min="${min}" max="${max}" value.bind="value" value="${default}" step="${step}"/>
-    <input class="w3-small" style="width:6ch;border:0px" style.bind="maxlength?'width:'+maxlength+'ch;border:0px':'width:7ch;border:0px'" type="number" min="${min}" max="${max}" value.bind="value" value="${default}" step="${step}"/>
+    <input ref="refnumber" class="w3-small" style="width:6ch;border:0px" style.bind="maxlength?'width:'+maxlength+'ch;border:0px':'width:7ch;border:0px'" type="number" min="${min}" max="${max}" value.bind="value" value="${default}" step="${step}"/>
   </span>
 </template>
