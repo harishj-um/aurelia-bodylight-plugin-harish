@@ -2,7 +2,7 @@ import {PLATFORM} from 'aurelia-pal';
 
 export function configure(config) {
   config.globalResources([
-    PLATFORM.moduleName('./elements/range.html'),
+    PLATFORM.moduleName('./elements/range'),
     PLATFORM.moduleName('./elements/checkbox'),
     PLATFORM.moduleName('./elements/buttonparams'),
     PLATFORM.moduleName('./elements/receptacle.html'),
