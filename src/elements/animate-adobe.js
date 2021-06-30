@@ -40,7 +40,7 @@ export class AnimateAdobe {
           fromel.addEventListener('animatestart', this.startAllAnimation);
           fromel.addEventListener('animatestop', this.stopAllAnimation);
           fromel.addEventListener('fmidata', this.handleValueChange);
-          fromel.addEventListener('fmistart', this.enableAnimation);
+          fromel.addEventListener('fmistart', this.startAllAnimation);
           fromel.addEventListener('fmistop', this.disableAnimation);
         } else {
           console.error('adobe-animate component cannot find control element with id:', this.fromid);
@@ -386,33 +386,9 @@ export class AnimateAdobe {
         //it might be tring or number - from custom element attribute
         // eslint-disable-next-line eqeqeq
         let value = (binding.findex == -1) ? e.detail.time : e.detail.data[binding.findex];
-        if (binding.aname.includes('_text')) {
-          let convertedvalue = binding.convertf2a(value); //precision
-          this.setText(binding.aname, convertedvalue);
-        } else
-        if (binding.aname.includes('_anim')) {
-          let convertedvalue = binding.convertf2a(value); //calculate approximation
-
-          //triggers animation when the converted value is >0 by default
-          if (binding.trigger) {
-            if (!binding.triggered) {
-              //not triggered - check if animation should start
-              if (convertedvalue > binding.limit) {
-                this.startAnimation(binding.name);
-                binding.triggered = true;
-              }
-            } else {
-              //triggered - check if animation should stop
-              if (convertedvalue <= binding.limit) {
-                this.stopAnimation(binding.name);
-                binding.triggered = false;
-              }
-            }
-          } else {
-            //set animation as approximation - value
-            this.setAnimationValue(binding.aname, convertedvalue);
-          }
-        }
+        //refactored - add decision to binding object
+        //let convertedvalue = binding.convertf2a(value);
+        binding.handleValue(this, value);
       }
     }
 }

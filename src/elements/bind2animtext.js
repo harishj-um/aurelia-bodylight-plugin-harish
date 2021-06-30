@@ -12,7 +12,12 @@ export class Bind2animtext extends Bind2animation {
     if (this.operation) x = this.operation(x);
     //let xstr = x.toPrecision(4);
     //return x.toPrecision(4);
-
     return this.precision > 0 ? x.toPrecision(this.precision) : x.toFixed(this.fixed);
+  }
+
+  //animobj is type of animate-adobe
+  handleValue(animobj, value) {
+    animobj.setText(this.aname, this.convertf2a(value));
+    //this.setText(binding.aname, convertedvalue);
   }
 }

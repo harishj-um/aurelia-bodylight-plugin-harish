@@ -3,6 +3,7 @@ import {Bind2animation} from './bind2animation';
 
 /**
  * component used to define binding between Adobe Animation object and FMU model simulation
+ * value is directly converted to animation state using bind2animationb
  */
 export class Bind2a {
     @bindable aid; //id of animate - optionall, g

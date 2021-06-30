@@ -35,4 +35,8 @@ export class Bind2animation {
       if (x < this.fmax) return this.amin + (x * this.k1 - this.k2) * this.k3;
       return this.amax;
     }
+
+    handleValue(animobj, value) {
+      animobj.setAnimationValue(this.aname, this.convertf2a(value));
+    }
 }

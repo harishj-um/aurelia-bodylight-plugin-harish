@@ -2,6 +2,10 @@ import {Bind2a} from './bind2a';
 import {bindable} from 'aurelia-templating';
 import {Bind2animtext} from './bind2animtext';
 
+/**
+ * component used to define binding between Adobe Animation object and FMU model simulation
+ * value is converted to text which is shown, using bind2animtext
+ */
 export class Bind2aText extends Bind2a {
   @bindable aname; //name of animation component in AA
   @bindable findex; //index of variable in fmu array
