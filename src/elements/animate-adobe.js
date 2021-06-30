@@ -379,6 +379,7 @@ export class AnimateAdobe {
      */
     handleData(e) {
       let bindings = window.animatebindings;
+      //const eps = 1e-12;
       if (!bindings) return;
       for (let binding of bindings) {
         //binding = {findex:findex,aname:aname,amin:amin,amax:amax,fmin:fmin,fmax:fmax}
@@ -391,7 +392,26 @@ export class AnimateAdobe {
         } else
         if (binding.aname.includes('_anim')) {
           let convertedvalue = binding.convertf2a(value); //calculate approximation
-          this.setAnimationValue(binding.aname, convertedvalue);
+
+          //triggers animation when the converted value is >0 by default
+          if (binding.trigger) {
+            if (!binding.triggered) {
+              //not triggered - check if animation should start
+              if (convertedvalue > binding.limit) {
+                this.startAnimation(binding.name);
+                binding.triggered = true;
+              }
+            } else {
+              //triggered - check if animation should stop
+              if (convertedvalue <= binding.limit) {
+                this.stopAnimation(binding.name);
+                binding.triggered = false;
+              }
+            }
+          } else {
+            //set animation as approximation - value
+            this.setAnimationValue(binding.aname, convertedvalue);
+          }
         }
       }
     }

@@ -7,6 +7,7 @@ export class Buttonparams {
     @bindable resetvalues;
     @bindable ticks2reset = 1;
     @bindable fromid;
+    @bindable fireevent='input'; //name of the event to be fired
     showinputs=false; //debug to show inputs true, otherwise false
     values2send=[];
     ids2send=[];
@@ -39,7 +40,7 @@ export class Buttonparams {
     }
 
     bind() {
-      console.log('button.bind()');
+      //console.log('button.bind()');
       this.ids2send = this.ids.split(',');
       this.createids = [];
       //create those ids not yet in HTML DOM and put them to createids array
@@ -66,7 +67,7 @@ export class Buttonparams {
       for (let i = 0; i < this.ids2send.length; i++) {
         let inputel = document.getElementById(this.ids2send[i]);
         inputel.value = this.values2send[i];
-        let event = new Event('change');
+        let event = new Event(this.fireevent);
         inputel.dispatchEvent(event);
       }
       //listen to ticks - fmidata event

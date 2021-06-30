@@ -1,4 +1,5 @@
 /** Bind2animation class instance
+ * this class makes conversion from fmu value to animation value
  * keeps min and max values of FMU model simulation and calling
  *  convertf2a converts value to animation value between min-max
  * **/
