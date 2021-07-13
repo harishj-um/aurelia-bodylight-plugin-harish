@@ -42,6 +42,7 @@ export function configure(config) {
     PLATFORM.moduleName('./elements/fmi'),
     PLATFORM.moduleName('./elements/pdb-pdbe-molstar'),
     PLATFORM.moduleName('./elements/tabs'),
-    PLATFORM.moduleName('./elements/markdown-au')
+    PLATFORM.moduleName('./elements/markdown-au'),
+    PLATFORM.moduleName('./elements/carousel')
   ]);
 }
