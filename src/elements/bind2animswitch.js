@@ -2,7 +2,7 @@ import {Bind2animation} from './bind2animation';
 
 export class Bind2animswitch extends Bind2animation {
   //trigger = true;
-  triggered = false;
+  triggered = true;
   limit;
   constructor(_findex, _aname, limit) {
     super(_findex, _aname, 0, 0, 0, 0, null);
@@ -21,7 +21,7 @@ export class Bind2animswitch extends Bind2animation {
         this.triggered = true;
       }
     } else {
-      //triggered - check if animation should stop
+    //check if animation should stop
       if (value <= this.limit) {
         animobj.stopAnimation(this.aname);
         this.triggered = false;

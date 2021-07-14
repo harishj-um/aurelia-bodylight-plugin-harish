@@ -273,9 +273,16 @@ export class AnimateAdobe {
      * @param objname
      */
     startAnimation(objname) {
-      if (this.exportRoot && this.exportRoot.children[0][objname]) {
+      const resolvePath = (object, path, defaultValue) => path
+        .split('.')
+        .reduce((o, p) => o ? o[p] : defaultValue, object);
+      let myobj = resolvePath(window.ani.exportRoot, objname, undefined);
+      //backward compatibility
+      if (!myobj) myobj = resolvePath(window.ani.exportRoot.children[0], objname, undefined);
+      if (myobj) myobj.play();
+      /*if (this.exportRoot && this.exportRoot.children[0][objname]) {
         this.exportRoot.children[0][objname].play();
-      }
+      }*/
       //this.timeline.addTween(cjs.Tween.get(this.instance).to({alpha:1},159).wait(1));
     }
 
@@ -284,9 +291,13 @@ export class AnimateAdobe {
      * @param objname
      */
     stopAnimation(objname) {
-      if (this.exportRoot && this.exportRoot.children[0][objname]) {
-        this.exportRoot.children[0][objname].stop();
-      }
+      const resolvePath = (object, path, defaultValue) => path
+        .split('.')
+        .reduce((o, p) => o ? o[p] : defaultValue, object);
+      let myobj = resolvePath(window.ani.exportRoot, objname, undefined);
+      //backward compatibility
+      if (!myobj) myobj = resolvePath(window.ani.exportRoot.children[0], objname, undefined);
+      if (myobj) myobj.stop();
     }
 
     /**
