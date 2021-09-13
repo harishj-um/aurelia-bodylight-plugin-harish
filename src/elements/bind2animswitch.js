@@ -1,5 +1,10 @@
 import {Bind2animation} from './bind2animation';
 
+/**
+ * This class checks the value coming from outside simulation
+ * - if the value triggers limit then starts the animation
+ * if the value is bellow limit, then stops the animation
+ */
 export class Bind2animswitch extends Bind2animation {
   //trigger = true;
   triggered = true;

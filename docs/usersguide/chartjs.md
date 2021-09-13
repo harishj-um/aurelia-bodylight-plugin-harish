@@ -48,6 +48,8 @@ as follows:
 By default - no convertors - raw data (usually in SI) are presented in chart.
   * `animate` - if `true`, smooth animation (by 500 ms) when data is updated. Default `false`.
   * `sectionid` - if set, then listens the component with this id for 'addsection' event, bind it to `bdl-animatecontrol` component
+  * xlabel
+  * ylabel 
   </div>
   </div>
   
@@ -80,12 +82,16 @@ Example:
   labels="Pressure in Aorta,Pressure in Left Ventricle, Intrathoracic Artery Volume, Extrathoracic Arteries Volume, Pulmonary Arteries Volume, Intrathoracic Veins Volume"
   initialdata="0,1,2,3,4;2,2,2,2;3,2,4;1,5,3;2,2,3,2" 
   refindex="2"   
-  refvalues="6"></bdl-chartjs-time>
+  refvalues="6"
+  min="0"
+  max="3.14"></bdl-chartjs-time>
 
 ```
 
   </div>
 </div>
+
+* min/max sets 
 
 ## BdlChartjs-xy
 
