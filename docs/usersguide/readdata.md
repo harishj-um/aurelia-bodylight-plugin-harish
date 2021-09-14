@@ -13,11 +13,34 @@ Reads data from `url` every `timeout` milliseconds, displays data in a view if `
 as an input for fmi component as input element with id's `ids` separated by comma.
 The endpoint should have CORS enabled - return HTTP headers 'Access-Control-Allow-Origin = '*' and 'Access-Control-Allow-Methods' = 'GET'
 
-Demo:
+# SendData
+```xml
+<bdl-senddata
+  fromid="id4"
+  refindex="1"
+  numerator="1"
+  denominator="1"
+  addconst="0"
+  url="http://localhost:5000/simulatordata">
+</bdl-senddata>
+```
+
+Sends data obtained from fmu - at index `refindex` to the url using HTTP POST method. It provides basic value conversion `y = x * numerator/denominator + addconst`
+and sends it as floating number as string 
+The endpoint should have CORS enabled - return HTTP headers 'Access-Control-Allow-Origin = '*' and 'Access-Control-Allow-Methods' = 'POST'
+
+# Demo:
 ```xml
 <bdl-readdata ids="id1" url="http://localhost:5000/devicedata" display="true" timeout="5000"></bdl-readdata>
 ```
 <bdl-readdata ids="id1" url="http://localhost:5000/devicedata" display="true" timeout="5000"></bdl-readdata>
+
+```xml
+<bdl-senddata fromid="id4" url="http://localhost:5000/simulatordata" refindex="1"></bdl-senddata>
+```
+<bdl-senddata fromid="id4" url="http://localhost:5000/simulatordata" refindex="1"></bdl-senddata>
+
+
 ```xml
 <bdl-chartjs-barplot id="id2" extremelimits="20,220" normallimits="40,180" nominal="1" initialdata="60"
 fromid="id4"

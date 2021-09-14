@@ -44,6 +44,7 @@ export function configure(config) {
     PLATFORM.moduleName('./elements/tabs'),
     PLATFORM.moduleName('./elements/markdown-au'),
     PLATFORM.moduleName('./elements/carousel'),
-    PLATFORM.moduleName('./elements/readdata')
+    PLATFORM.moduleName('./elements/readdata'),
+    PLATFORM.moduleName('./elements/senddata')
   ]);
 }

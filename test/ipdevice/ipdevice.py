@@ -11,6 +11,7 @@ data_posted_time= ['2021-09-13']
 @app.after_request
 def prepare_response(response):
     response.headers.set('Access-Control-Allow-Origin', '*')
+    response.headers.set('Access-Control-Allow-Headers', 'Content-Type')
     response.headers.set('Access-Control-Allow-Methods', 'GET, POST')
     return response
 
@@ -29,10 +30,10 @@ def info():
 
 @app.route('/simulatordata', methods=['POST'])
 def simulatordatapost():
-    data = request.data
+    data = float(request.data)
     data_posted.append(data)
     data_posted_time.append(time.strftime('%Y-%m-%d'))
-    return jsonify(success=True, data=data)
+    return jsonify(success=True)
 
 @app.route('/simulatordata', methods=['GET'])
 def simulatordataget():
