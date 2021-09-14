@@ -97,4 +97,11 @@ export class Carousel {
     this.items[this.slideIndex].show = true;
     if (this.infoarray.length > this.slideIndex) this.currentinfo = this.infoarray[this.slideIndex];
   }
+
+  detached() {
+    if (this.timeoutvar) {
+      clearTimeout(this.timeoutvar);
+      this.timeoutvar = null;
+    }
+  }
 }
