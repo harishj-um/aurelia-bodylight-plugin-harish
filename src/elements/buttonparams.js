@@ -62,6 +62,10 @@ export class Buttonparams {
       //console.log('button.attached() ids2send, values2send', this.ids2send, this.values2send);
     }
 
+    /*
+    this is fired when the button is pressed, it sets values to the defined state
+    dispatch the event and if resetvalues is set - then listen fmidata event
+     */
     switchvalues() {
       if (this.ids2send.length !== this.values2send.length) {console.log('warning ids and values contain different number of items.', this.ids2send, this.values2send); return;}
       for (let i = 0; i < this.ids2send.length; i++) {

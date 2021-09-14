@@ -1,3 +1,8 @@
 <template>
-  <div show.bind="display">${data}</div>
+  <div if.bind="display">${value}</div>
+  <span show.bind="showinputs">
+        <span repeat.for="myid of createids">
+            <input id="${myid}" value="" type="number" />
+        </span>
+    </span>
 </template>

@@ -10,6 +10,10 @@ export class readdata {
   @bindable display;
   @bindable url;
   @bindable timeout;
+  @bindable ids;
+  showinputs = false;
+  previousvalue=0;
+  fireevent = 'input'
 
   constructor(client) {
     this.httpclient = client;
@@ -18,6 +22,11 @@ export class readdata {
   bind() {
     this.display = this.display && (this.display === 'true');
     if (this.timeout) this.timeout = parseInt(this.timeout, 10); else this.timeout = 0;
+    //id of input elements
+    this.ids2send = this.ids.split(',');
+    this.createids = [];
+    //create those ids not yet in HTML DOM and put them to createids array
+    for (let myid of this.ids2send) {if (! document.getElementById(myid)) this.createids.push(myid);}
   }
 
   attached() {
@@ -37,7 +46,20 @@ export class readdata {
       .then(response => response.text())
       .then(text => {
         //set data that was fetched
-        that.data = text;
+        that.value = text;
+        //dispatch event if value differs from previous
+        if (that.previousvalue !== that.value) {
+          //if (this.ids2send.length !== this.values2send.length) {console.log('warning ids and values contain different number of items.', this.ids2send, this.values2send); return;}
+          for (let i = 0; i < that.ids2send.length; i++) {
+            let inputel = document.getElementById(that.ids2send[i]);
+            //console.log('readdata.update() debugging that', that);
+            //console.log('readdata.update() debugging inputel', inputel);
+            inputel.value = that.value;
+            let event = new Event(that.fireevent);
+            inputel.dispatchEvent(event);
+          }
+        }
+        that.previousvalue = that.value;
         //console.log('readdata.update', that.data);
         //schedule next call
         //let that = this;

@@ -1,10 +1,9 @@
 # BDL-buttonparams
 
 button to set multiple values in one click, these attributes
-* value
 * title
-* ids
-* values
+* ids - id of input elements separated by comma.
+* values 
 
 Example:
 `<bdl-buttonparams title="tachykardia" ids="id1" values="40"></bdl-buttonparams>`
