@@ -1,7 +1,7 @@
 import {inject} from 'aurelia-framework';
 import {bindable} from 'aurelia-framework';
-//import {HttpClient} from 'aurelia-fetch-client';
-import {HttpClient} from 'aurelia-http-client';
+import {HttpClient} from 'aurelia-fetch-client';
+//import {HttpClient} from 'aurelia-http-client';
 /**
  * reads data from remote url - periodically
  */
@@ -17,28 +17,37 @@ export class readdata {
   }
   bind() {
     this.display = this.display && (this.display === 'true');
-    if (!this.url) { console.error('expected url attribute in readdata component'); } else {
-      //first update
-      this.update();
-    }
-    if (this.timeout) this.timeout = parseInt(this.timeout, 10); else this.timeout = 1;
-    if (this.timeout === 0) this.timeout = 1;
+    if (this.timeout) this.timeout = parseInt(this.timeout, 10); else this.timeout = 0;
   }
 
-  update() {
+  attached() {
+    if (!this.url) { console.error('expected url attribute in readdata component'); } else {
+      //first update
+      this.update(this);
+      //set periodic update
+      //let that = this;
+      console.log('readdata.attached with fetch api', this.timeout);
+      //
+    }
+  }
+
+  update(that) {
     //this.httpclient.fetch(this.url)
-    let that = this;
-    this.httpclient.get(this.url)
-      //.then(response => response.text())
+    that.httpclient.fetch(that.url)
+      .then(response => response.text())
       .then(text => {
         //set data that was fetched
         that.data = text;
-        //set periodic update
-        if (that.continue) that.timerid = setTimeout(that.update(), that.timeout * 1000);
+        //console.log('readdata.update', that.data);
+        //schedule next call
+        //let that = this;
+        if (that.timeout > 0) that.timerid = setTimeout(that.update, that.timeout, that);
       });
   }
-  unbind() {
+
+  detached() {
     this.continue = false;
-    clearTimeout(this.timerid);
+    if (this.timerid) clearInterval(this.timerid);
+    console.log('readdate.detached');
   }
 }
