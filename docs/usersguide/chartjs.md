@@ -157,3 +157,9 @@ barplot chart with minimum/maximum and normal range
   refvalues="6"
   xlabel="x axis label"
   ylabel="y axis label"></bdl-chartjs-xy-points>
+
+## chartjs canvasobj
+
+Render canvas into different object
+* `<bdl-chartjs canvasobj='3dtexturecanvas' ...></bdl-chartjs>` the global variable 3dtexturecanvas is context of canvas,
+e.g. from webgl or babylonjs 

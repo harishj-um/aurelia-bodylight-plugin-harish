@@ -21,6 +21,7 @@ export class Chartjs {
   @bindable generatelabels=false;
   @bindable sectionid;  //id to listen addsection event
   @bindable responsive = false; //false - to keep width and height, true - to rescale
+  @bindable canvasobj;
   indexsection=0;
   datalabels=false; //may be configured by subclasses
 
@@ -383,8 +384,16 @@ export class Chartjs {
       });
     }
 
-    let ctx = this.chartcanvas.getContext('2d');
+    //canvasobj - if defined then use this object name to get canvas object -  otherwise the one from template
 
+    let ctx = (this.canvasobj)? window[this.canvasobj] : this.chartcanvas.getContext('2d');
+    //ctx may be null if canvasobj is not yet initialized.
+    if (ctx) this.initChart(ctx); //init chart only if ctx is ready
+    else window.lazyInitChart = this;
+
+  }
+
+  initChart(ctx){
     this.chart = new Chart(ctx, {
       plugins: this.plugins,
       type: this.type,
@@ -393,6 +402,7 @@ export class Chartjs {
       tooltipEvents: this.tooltips
     });
     // console.log('chartjs data', this.data);
+
   }
 
   /**
