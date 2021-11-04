@@ -53,6 +53,6 @@ export class Range {
       bubbles: true,
       cancelable: true
     }));
-    }
   }
 }
+
