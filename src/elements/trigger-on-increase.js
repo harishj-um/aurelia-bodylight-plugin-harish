@@ -2,6 +2,7 @@ import {Value} from './value';
 import {bindable} from 'aurelia-templating';
 export class TriggerOnIncrease extends Value {
   @bindable thresholdvalue;
+  @bindable action;
   constructor() {
     super();
     //create lambda function which is added as listener later
@@ -34,7 +35,9 @@ export class TriggerOnIncrease extends Value {
    * This should be overriden, is triggered when threshold is reached
    */
   trigger() {
-    console.log('trigger not implemented');
+    if (this.action) {
+      eval(this.action);
+    } else console.warn('no trigger set');
     //not implemented
   }
 
