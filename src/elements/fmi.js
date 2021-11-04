@@ -124,7 +124,7 @@ export class Fmi {
     }
 
     if (typeof this.showcontrols === 'string') {
-      this.showcontrols = this.showcontrols === 'true';
+      this.showcontrols = (this.showcontrols === 'true');
     }
   }
 

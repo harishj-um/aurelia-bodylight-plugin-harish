@@ -2,7 +2,6 @@ import {PLATFORM} from 'aurelia-pal';
 
 export function configure(config) {
   config.globalResources([
-    PLATFORM.moduleName('./elements/range'),
     PLATFORM.moduleName('./elements/checkbox'),
     PLATFORM.moduleName('./elements/buttonparams'),
     PLATFORM.moduleName('./elements/receptacle.html'),
@@ -45,6 +44,7 @@ export function configure(config) {
     PLATFORM.moduleName('./elements/markdown-au'),
     PLATFORM.moduleName('./elements/carousel'),
     PLATFORM.moduleName('./elements/readdata'),
-    PLATFORM.moduleName('./elements/senddata')
+    PLATFORM.moduleName('./elements/senddata'),
+    PLATFORM.moduleName('./elements/range'),
   ]);
 }
