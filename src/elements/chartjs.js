@@ -394,12 +394,14 @@ export class Chartjs {
   }
 
   initChart(ctx){
-    this.chart = new Chart(ctx, {
-      plugins: this.plugins,
-      type: this.type,
-      data: this.data,
-      options: this.options,
-      tooltipEvents: this.tooltips
+    let that = this;
+    if (window.lazyInitChart) {let that = window.lazyInitChart;}
+    that.chart = new Chart(ctx, {
+      plugins: that.plugins,
+      type: that.type,
+      data: that.data,
+      options: that.options,
+      tooltipEvents: that.tooltips
     });
     // console.log('chartjs data', this.data);
 

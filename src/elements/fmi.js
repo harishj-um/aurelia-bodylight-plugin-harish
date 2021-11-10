@@ -36,7 +36,7 @@ export class Fmi {
     this.changeinputs = [];
     this.handleValueChange = e => {
       //e.target; //triggered the event
-      console.log('handlevaluechange', e, e.target);
+      //console.log('handlevaluechange', e, e.target);
       //detail.id or target.id (button) if not empty string either parent of parent (range)
       let targetid;
       if (e.detail && e.detail.id) targetid = e.detail.id;
@@ -46,7 +46,7 @@ export class Fmi {
       this.changeinputs.push({id: targetid, value: targetvalue}); //detail will hold the value being changed
       //determine whether it is fixed parameter - further reset is needed?
       this.resetBeforeChange = this.resetBeforeChange || this.inputreferences[targetid].fixed;
-      console.log('fmi handle value change, will be reset before change', this.changeinputs, this.resetBeforeChange);
+      //console.log('fmi handle value change, will be reset before change', this.changeinputs, this.resetBeforeChange);
     };
     this.handleDetailChange = e => {
       //e.target; //triggered the event
