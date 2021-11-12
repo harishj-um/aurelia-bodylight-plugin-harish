@@ -17,6 +17,7 @@ export class ChartjsFixed extends Chartjs {
     @bindable min;
     @bindable max;
     @bindable maxdata=3;
+
     //@bindable cachesize;
     currentdataset=0;
     constructor(){

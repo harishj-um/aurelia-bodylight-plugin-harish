@@ -32,6 +32,7 @@
     * [Hemodynamics Burkhoff with controls](#example/hemodynamicsburkhoff.md)
     * [Cardiac cycle](#example/hemo1.md)
     * [Charts](#example/charts.md)
+    * [Oneshot Mode](#example/oneshot.md)
     * [Animation](#example/animation.md)
     * [Animation segments](#example/animationsegments.md)
     * [Animation segments<br />continuous](#example/animationsegmentscont.md)

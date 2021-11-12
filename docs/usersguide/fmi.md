@@ -13,7 +13,8 @@
   * `otherinputs` ids of components which triggers custom event 'fmiinput', it is expected that in event.detail contains 
   this structure `{ valuereference: number, value: number }`
   * `showcontrols` - default `true`, shows/hides basic control buttons to start/stop/restart simulation
-  * `fpslimit` - 1-60, default 60 = unlimited (default FPS allowed by browser). This attribute will limit the frames per second 
+  * `fpslimit` - 1-60, default 60 = unlimited (default FPS allowed by browser). This attribute will limit the frames per second
+  * `mode` - if set to `oneshot` then controls are not shown and simulation step is performed after load and after a value is changed, default `continuous` mode means control buttons start stop simulation 
 
   and for values <60 will introduce some artificial delay to reduce framerate to the desired value. The limiting range is also available in UI.  
 

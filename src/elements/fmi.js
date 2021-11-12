@@ -18,6 +18,7 @@ export class Fmi {
   @bindable showtime = false;
   @bindable showtimemultiply = 1;
   @bindable eventlisten = 'input';//input==continuous/change==when user drops the value
+  @bindable mode="continuous"; //continuous or oneshot
 
   cosimulation=1;
   stepSize=0.01;//0.0078125;
@@ -29,6 +30,7 @@ export class Fmi {
   stepi=0;
   resetBeforeChange = false;
   simulationtime = 0;
+  isOneshot = false;
 
 
   constructor() {
@@ -46,7 +48,8 @@ export class Fmi {
       this.changeinputs.push({id: targetid, value: targetvalue}); //detail will hold the value being changed
       //determine whether it is fixed parameter - further reset is needed?
       this.resetBeforeChange = this.resetBeforeChange || this.inputreferences[targetid].fixed;
-      //console.log('fmi handle value change, will be reset before change', this.changeinputs, this.resetBeforeChange);
+      //do step if mode is oneshot
+      if (this.isOneshot) setTimeout(this.step.bind(this),100); //do simulation step after 100 ms
     };
     this.handleDetailChange = e => {
       //e.target; //triggered the event
@@ -54,6 +57,8 @@ export class Fmi {
       //let targetvalue = e.target.value;
       this.changeinputs.push({valuereference: e.detail.valuereference, value: e.detail.value, fromid: e.detail.id}); //detail will hold the value being changed
       console.log('fmi handle detail change', this.changeinputs);
+      //do step if mode is oneshot
+      if (this.isOneshot) setTimeout(this.step.bind(this),100); //do simulation step after 100 ms
     };
     this.handleStart = e => {
       //console.log('handlestart');
@@ -196,8 +201,19 @@ export class Fmi {
       window.fmiinst[that.fminame] = that;
       //console.log('fmi callback that, that.inst', that, that.inst);
     }
+
+    //do one step if mode is oneshot
+    //https://newbedev.com/pass-correct-this-context-to-settimeout-callback
+    setTimeout(window.thisfmi.step.bind(window.thisfmi),100); //do simulation step after 100 ms
+
   }
-  bind() {}
+
+  bind() {
+    this.isOneshot = this.mode === 'oneshot';
+    if (this.isOneshot) {
+      this.showcontrols = false;
+    }
+  }
 
   detached() {
     if (this.animationstarted) {this.startstop();}
@@ -394,6 +410,7 @@ export class Fmi {
   }
 
   step() {
+    //this = window.thisfmi;
     //primitive semaphore, only one instance can perform this call
     if (!this.doingstep) {
       this.doingstep = true;
