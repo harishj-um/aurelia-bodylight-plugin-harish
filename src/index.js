@@ -47,5 +47,6 @@ export function configure(config) {
     PLATFORM.moduleName('./elements/senddata'),
     PLATFORM.moduleName('./elements/range'),
     PLATFORM.moduleName('./elements/chartjs-fixed'),
+    PLATFORM.moduleName('./elements/chartjs-fixed-xy'),
   ]);
 }
