@@ -90,7 +90,6 @@ Example:
 
   </div>
 </div>
-
 * min/max sets 
 
 ## BdlChartjs-xy
@@ -163,3 +162,19 @@ barplot chart with minimum/maximum and normal range
 Render canvas into different object
 * `<bdl-chartjs canvasobj='3dtexturecanvas' ...></bdl-chartjs>` the global variable 3dtexturecanvas is context of canvas,
 e.g. from webgl or babylonjs 
+
+## chartjs-fixed
+
+Renders line chart from array of points, on x axis is position on y axis is data.
+
+chartjs-fixed
+<bdl-chartjs-fixed
+  id="id11"
+  width="700"
+  height="400"
+  fromid="id4"
+  refindex="1"
+  refvalues="3"
+  maxdata="40"></bdl-chartjs-fixed>
+
+

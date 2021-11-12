@@ -35,6 +35,16 @@ chartjs-xy with borders
   ylabel="tlak (mmHg)"
   xlabel="čas (s)"
   convertors="0.00750062,1;0.00750062,1;0.00750062,1"></bdl-chartjs-time> 
+chartjs-fixed
+<bdl-chartjs-fixed
+  id="id11" 
+  width="700" 
+  height="400" 
+  fromid="id4" 
+  refindex="1" 
+  refvalues="3"
+  maxdata="40"
+></bdl-chartjs-fixed>
 
 </div>
 </div>
