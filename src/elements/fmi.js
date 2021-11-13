@@ -194,18 +194,19 @@ export class Fmi {
         if (!window.fmiinst) { window.fmiinst = [];}
         window.fmiinst[that.fminame] = that;
         //console.log('fmi callback from Promise that', that, that.inst);
+        //do one step if mode is oneshot
+        //https://newbedev.com/pass-correct-this-context-to-settimeout-callback
+        if (window.thisfmi.isOneshot) setTimeout(window.thisfmi.step.bind(window.thisfmi),100); //do simulation step after 100 ms
       });
     } else { //older EMSDK compiles directly to api
       that.inst = myinst;
       if (!window.fmiinst) { window.fmiinst = [];}
       window.fmiinst[that.fminame] = that;
       //console.log('fmi callback that, that.inst', that, that.inst);
+      //do one step if mode is oneshot
+      //https://newbedev.com/pass-correct-this-context-to-settimeout-callback
+      if (window.thisfmi.isOneshot) setTimeout(window.thisfmi.step.bind(window.thisfmi),100); //do simulation step after 100 ms
     }
-
-    //do one step if mode is oneshot
-    //https://newbedev.com/pass-correct-this-context-to-settimeout-callback
-    setTimeout(window.thisfmi.step.bind(window.thisfmi),100); //do simulation step after 100 ms
-
   }
 
   bind() {
