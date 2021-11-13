@@ -32,6 +32,9 @@ export class ChartjsFixedXy extends ChartjsFixed {
             let xdata = e.detail.data.slice(this.xrefindex,this.xrefindex+this.xrefvalues)
             //
             let data = [];for (let i=0;i<ydata.length;i++) data.push({x:xdata[i],y:ydata[i]});
+            //set labels to x axis
+            this.chart.data.labels = xdata;
+            //set data xy to chart struct
             if (!this.chart.data.datasets[j]) {
                 //do initialize dataset first
                 this.chart.data.datasets.push({

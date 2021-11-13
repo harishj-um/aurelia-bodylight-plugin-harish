@@ -265,7 +265,9 @@ export class Fmi {
     this.stepSize = (typeof(this.fstepsize) === 'string' ) ? parseFloat(this.fstepsize) : this.fstepsize;
     this.mystep = this.stepSize;
     //console callback ptr, per emsripten create int ptr with signature viiiiii
-    this.inst = window.fmiinst[this.fminame].inst; //if (window.thisfmi) {this.inst = window.thisfmi.inst;}
+    if (window.fmiinst) this.inst = window.fmiinst[this.fminame].inst;
+    //else this.inst = null;//if (window.thisfmi) {this.inst = window.thisfmi.inst;}
+
     console.log('instantiate() this.inst', this.inst);
     //set the fminame and JS WASM function references
     let separator = '_';
