@@ -12,6 +12,18 @@
 
 <div class="w3-row">
 <div class="w3-half">
+chartjs-stacked
+<bdl-chartjs-stacked
+  id="id11" 
+  width="700" 
+  height="300" 
+  fromid="id4" 
+  refindex="1" 
+  refvalues="3"
+  stacks="anionty,anionty,kationty"
+labels="Na+,K+,CL-"
+></bdl-chartjs-stacked>
+
 chartjs-xy with borders 
 <bdl-chartjs-xy id="id10" width="400" 
   height="400" 
@@ -26,7 +38,7 @@ chartjs-xy with borders
 <bdl-chartjs-time   
   id="id10"  
   width="700"  
-  height="400"  
+  height="500"  
   fromid="id4"  
   labels="Pressure in Aorta,Pressure in Left Ventricle,Pressure in Left Atria" 
   initialdata="0,1,2,3,4;2,2,2,2;3,2,4;1,5,3;2,2,3,2"  
@@ -39,7 +51,7 @@ chartjs-fixed
 <bdl-chartjs-fixed
   id="id11" 
   width="700" 
-  height="400" 
+  height="300" 
   fromid="id4" 
   refindex="1" 
   refvalues="3"

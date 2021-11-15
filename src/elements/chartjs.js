@@ -2,6 +2,12 @@ import Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import {bindable} from 'aurelia-framework';
 
+//returns array of numbers if contains comma, or number - int
+function myParseInt(str,raddix) {
+  if (str.lastIndexOf(',') > 0) return str.split(',').map(x => parseInt(x, raddix));
+  else return parseInt(str, raddix);
+}
+
 export class Chartjs {
   @bindable fromid;
   @bindable labels;
@@ -74,12 +80,13 @@ export class Chartjs {
     return `hsl(${hue},${saturation}%,${lightness}%)`;
   }
 
+
   /**
    * process all attributes of <bdl-chart> component and sets appropriate settings of subesquent chartjs
    */
   bind() {
     //console.log('chartjs bind');
-    this.refindex = parseInt(this.refindex, 10);
+    this.refindex = myParseInt(this.refindex, 10);
     this.refvalues = parseInt(this.refvalues, 10);
     this.refendindex = this.refindex + this.refvalues;
     //empty plugins by default
