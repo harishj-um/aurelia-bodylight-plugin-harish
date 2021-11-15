@@ -7,6 +7,9 @@ import {useView} from 'aurelia-templating';
  * shows fixed curve at time -
  * on X is 0,1,2,3,4,5,6,7,8,9
  * on Y is values from FMU variables from refindex to refvalues
+ * convertors for x and y axis separated by ;
+ * refindex, refvalues for y values
+ * xrefindex,xrefvalues for x values
  */
 @useView('./chartjs.html')
 export class ChartjsFixedXy extends ChartjsFixed {
@@ -20,6 +23,7 @@ export class ChartjsFixedXy extends ChartjsFixed {
     @bindable maxdata=3;
     @bindable xrefindex;
     @bindable xrefvalues;
+    @bindable xtofixed = -1;
 
     //@bindable cachesize;
     currentdataset=0;
@@ -31,9 +35,14 @@ export class ChartjsFixedXy extends ChartjsFixed {
             let ydata = e.detail.data.slice(this.refindex,this.refindex+this.refvalues)
             let xdata = e.detail.data.slice(this.xrefindex,this.xrefindex+this.xrefvalues)
             //
-            let data = [];for (let i=0;i<ydata.length;i++) data.push({x:xdata[i],y:ydata[i]});
+            let data = [];for (let i=0;i<ydata.length;i++) {
+                if (this.operation && this.operation[0] && this.operation[1])
+                    data.push({x:this.operation[0](xdata[i]),y:this.operation[1](ydata[i])});
+                else data.push({x:xdata[i],y:ydata[i]});
+            }
             //set labels to x axis
-            this.chart.data.labels = xdata;
+            if (this.xtofixed>=0) this.chart.data.labels = xdata.map(x=> x.toFixed(this.xtofixed));
+
             //set data xy to chart struct
             if (!this.chart.data.datasets[j]) {
                 //do initialize dataset first
@@ -50,8 +59,9 @@ export class ChartjsFixedXy extends ChartjsFixed {
                 this.chart.data.datasets[j].data=data;
             }
             //do apply operation on each element of array
-            if (this.operation && this.operation[0])
+            /*if (this.operation && this.operation[0])
                 this.chart.data.datasets[j].data.map(item => {return {x:item.x,y:this.operation[0](item.y)}}); //operation on y
+             */
             if (this.currentdataset>=this.maxdata) this.currentdataset=0; else this.currentdataset++;
             this.chart.update();
         };

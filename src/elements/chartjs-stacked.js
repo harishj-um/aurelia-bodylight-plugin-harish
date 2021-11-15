@@ -58,8 +58,8 @@ export class ChartjsStacked extends Chartjs {
             this.refindices = [];
             for (let i = 0;i<this.refvalues;i++) this.refindices.push(this.refindex+i);
         }
-        if (this.stacks) this.stack=this.stacks.split(',');
-        else this.stack=new Array(this.refindices.length()).fill('stack 0');
+        if (this.stacks) { this.stack=this.stacks.split(',');}
+        else {this.stack=new Array(this.refindices.length).fill('stack 0');}
         //init dataset data and labels = 0
         this.data.datasets = []
         for (let j = 0; j< this.refindices.length; j++) {
