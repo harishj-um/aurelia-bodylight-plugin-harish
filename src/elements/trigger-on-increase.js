@@ -36,6 +36,7 @@ export class TriggerOnIncrease extends Value {
    */
   trigger() {
     if (this.action) {
+      /*eslint-env browser*/
       eval(this.action);
     } else console.warn('no trigger set');
     //not implemented
