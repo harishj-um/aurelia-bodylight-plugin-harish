@@ -1,4 +1,4 @@
-import * as Plotlyjs from 'plotly.js-dist';
+//import * as Plotlyjs from 'plotly.js-dist';
 import {bindable} from 'aurelia-framework';
 
 export class Plotly {
@@ -87,13 +87,16 @@ export class Plotly {
       });
     }
     this.layout = { autosize: true, margin: { t: 0 },  width: this.width, height: this.height};
-    this.chart = Plotlyjs.newPlot( this.plotlydiv, this.data, this.layout );
-    //listening to custom event fmidata and fmireset
-    const fromel = document.getElementById(this.fromid);
-    if (fromel) {
-      fromel.addEventListener('fmidata', this.handleValueChange);
-      fromel.addEventListener('fmireset', this.handleReset);
-    } else {console.log('chartjs WARNING, null fromid element');}
+    if (window.Plotly) {
+      this.chart = window.Plotly.newPlot( this.plotlydiv, this.data, this.layout );
+      //listening to custom event fmidata and fmireset
+      const fromel = document.getElementById(this.fromid);
+      if (fromel) {
+        fromel.addEventListener('fmidata', this.handleValueChange);
+        fromel.addEventListener('fmireset', this.handleReset);
+      } else {console.warn('plotly element WARNING, null fromid element');}
+    }
+    else (console.warn('plotly.js needs to be loaded externally'))
   }
 
   detached() {
