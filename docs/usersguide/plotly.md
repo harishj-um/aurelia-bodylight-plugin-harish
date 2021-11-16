@@ -21,6 +21,8 @@ Creates Plotly element (by default line chart) and inserts Plotly canvas handled
     * either in form `numerator,denominator` where `visualizedvalue=x * numerator/denominator`
     * or in algebraic form e.g.:`1/x` - note only `x`, numeric, algebraic and parenthesis `+-*/^()` are allowed for security reason.
 
+Plotly is embedded in aurelia-bodylight-plugin till version 2.0.43. Plotly must be referred externally since version 2.0.44 e.g. by `<script src="https://cdn.plot.ly/plotly-2.6.3.min.js"></script>`
+
 Example:
 <bdl-plotly
   fromid="fmiid"
