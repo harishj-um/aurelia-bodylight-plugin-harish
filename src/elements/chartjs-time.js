@@ -46,7 +46,7 @@ export class ChartjsTime extends Chartjs {
       }
       //shift - remove first element if data is too big
       //console.log('chartjs handlevaluechange() chart.data.datasets[0].data', this.chart.data.datasets[0].data);
-      this.chart.update();
+      this.updatechart();
     };
   }
 
@@ -110,6 +110,6 @@ export class ChartjsTime extends Chartjs {
     //super.resetdata();
     for (let j = 0; j < this.refvalues; j++) this.chart.data.datasets[j].data = [];
     this.chart.data.labels = [];
-    this.chart.update();
+    this.updatechart();
   }
 }

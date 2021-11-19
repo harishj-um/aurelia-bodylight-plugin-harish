@@ -1,22 +1,6 @@
 import {ChartjsXy} from './chartjs-xy';
 import {bindable, useView} from 'aurelia-templating';
 import Chart from 'chart.js';
-//import {PLATFORM} from 'aurelia-pal';
-//@useView(PLATFORM.moduleName('./bdl-chartjs.html'))
-
-//modified simple implementation of throttle from https://jsfiddle.net/jonathansampson/m7G64/
-function throttle(callback, limit) {
-  let wait = false;                  // Initially, we're not waiting
-  return function() {               // We return a throttled function
-    if (!wait) {                   // If we're not waiting
-      callback.call();           // Execute users function
-      wait = true;               // Prevent future invocations
-      setTimeout(function() {   // After a period of time
-        wait = false;          // And allow future invocations
-      }, limit);
-    }
-  };
-}
 
 @useView('./chartjs-xy-points.html')
 export class ChartjsXyPoints extends ChartjsXy {
@@ -56,8 +40,7 @@ export class ChartjsXyPoints extends ChartjsXy {
           //increment dataset - if more dataset are available
           j++;
         }
-        //throttle - update values every 1 s only
-        throttle(this.chart.update(), 1000);
+        this.updatechart()
       };
     }
     bind() {

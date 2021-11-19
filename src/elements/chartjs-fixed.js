@@ -1,6 +1,7 @@
 import {bindable} from 'aurelia-templating';
 import {Chartjs} from './chartjs';
 import {useView} from 'aurelia-templating';
+import _ from 'lodash';
 
 /**
  * shows fixed curve at time -
@@ -17,9 +18,12 @@ export class ChartjsFixed extends Chartjs {
     @bindable min;
     @bindable max;
     @bindable maxdata=3;
-
+    @bindable colorindex=0;
+    currentcolor;
+    previouscolor;
     //@bindable cachesize;
     currentdataset=0;
+
     constructor(){
         super();
         this.handleValueChange = e => {
@@ -30,20 +34,37 @@ export class ChartjsFixed extends Chartjs {
                 this.chart.data.datasets.push({
                     data: e.detail.data.slice(this.refindex,this.refindex+this.refvalues),
                     label:"",
-                    backgroundColor: this.selectColor(0),
-                    borderColor: this.selectColor(0),
+                    backgroundColor: this.currentcolor,
+                    borderColor: this.currentcolor,
                     borderWidth: 1,
                     pointRadius: 1,
                     fill: false
                 })
             } else {
                 this.chart.data.datasets[j].data=e.detail.data.slice(this.refindex,this.refindex+this.refvalues);
+                this.chart.data.datasets[j].backgroundColor=this.currentcolor;
+                this.chart.data.datasets[j].borderColor=this.currentcolor;
+
             }
             //do apply operation on each element of array
             if (this.operation && this.operation[0])
                 this.chart.data.datasets[j].data.map(item => {return this.operation[0](item)});
-            if (this.currentdataset>=this.maxdata) this.currentdataset=0; else this.currentdataset++;
-            this.chart.update();
+
+            if (this.currentdataset>0) {
+                this.chart.data.datasets[this.currentdataset-1].backgroundColor=this.previouscolor;
+                this.chart.data.datasets[this.currentdataset-1].borderColor=this.previouscolor;
+            } else {
+                if (this.maxdata>0 && this.chart.data.datasets[this.maxdata]) {
+                    this.chart.data.datasets[this.maxdata].backgroundColor = this.previouscolor;
+                    this.chart.data.datasets[this.maxdata].borderColor = this.previouscolor;
+                }
+            }
+            if (this.currentdataset>=this.maxdata) {
+                this.currentdataset=0;
+            } else {
+                this.currentdataset++;
+            }
+            this.updatechart();
         };
     }
 
@@ -66,7 +87,10 @@ export class ChartjsFixed extends Chartjs {
             labels: Array.from(Array(this.refvalues), (_,x) => x+1), //returns [1,2,3,..,refvalues]
             datasets: dataset
         };
+        if (typeof this.colorindex === 'string') this.colorindex = parseInt(this.colorindex,10);
         //initialize colors for each dataset
+        this.currentcolor =  this.selectColor(this.colorindex,65);
+        this.previouscolor = this.selectColor(this.colorindex,65,95);
     }
 
     attached() {

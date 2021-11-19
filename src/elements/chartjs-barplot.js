@@ -44,7 +44,7 @@ export class ChartjsBarplot extends Chartjs {
           this.options.plugins.datalabels.align = 'right';
           this.options.plugins.datalabels.color = 'black';
         }
-        this.chart.update();
+        this.updatechart();
       };
     }
 

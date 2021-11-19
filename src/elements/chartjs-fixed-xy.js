@@ -49,21 +49,33 @@ export class ChartjsFixedXy extends ChartjsFixed {
                 this.chart.data.datasets.push({
                     data: data,
                     label:"",
-                    backgroundColor: this.selectColor(0),
-                    borderColor: this.selectColor(0),
+                    backgroundColor: this.currentcolor,
+                    borderColor: this.currentcolor,
                     borderWidth: 1,
                     pointRadius: 1,
                     fill: false
                 })
             } else {
                 this.chart.data.datasets[j].data=data;
+                this.chart.data.datasets[j].backgroundColor=this.currentcolor;
+                this.chart.data.datasets[j].borderColor=this.currentcolor;
             }
             //do apply operation on each element of array
             /*if (this.operation && this.operation[0])
                 this.chart.data.datasets[j].data.map(item => {return {x:item.x,y:this.operation[0](item.y)}}); //operation on y
              */
+            if (this.currentdataset>0) {
+                this.chart.data.datasets[this.currentdataset-1].backgroundColor=this.previouscolor;
+                this.chart.data.datasets[this.currentdataset-1].borderColor=this.previouscolor;
+            } else {
+                if (this.maxdata>0 && this.chart.data.datasets[this.maxdata]) {
+                    this.chart.data.datasets[this.maxdata].backgroundColor = this.previouscolor;
+                    this.chart.data.datasets[this.maxdata].borderColor = this.previouscolor;
+                }
+            }
+
             if (this.currentdataset>=this.maxdata) this.currentdataset=0; else this.currentdataset++;
-            this.chart.update();
+            this.updatechart();
         };
     }
 

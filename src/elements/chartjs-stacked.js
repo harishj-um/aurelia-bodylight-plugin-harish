@@ -36,7 +36,7 @@ export class ChartjsStacked extends Chartjs {
                     this.chart.data.datasets[j].data[0]=e.detail.data[this.refindices[j]]; //data is array 0 item
                 }
             }
-            this.chart.update();
+            this.updatechart();
         };
     }
 

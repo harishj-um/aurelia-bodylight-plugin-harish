@@ -1,6 +1,7 @@
 import Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import {bindable} from 'aurelia-framework';
+import _ from 'lodash';
 
 //returns array of numbers if contains comma, or number - int
 function myParseInt(str,raddix) {
@@ -28,6 +29,7 @@ export class Chartjs {
   @bindable sectionid;  //id to listen addsection event
   @bindable responsive = false; //false - to keep width and height, true - to rescale
   @bindable canvasobj;
+  @bindable throttle=200; //time to throttle chart update, if it is too much at once
   indexsection=0;
   datalabels=false; //may be configured by subclasses
 
@@ -47,12 +49,12 @@ export class Chartjs {
         }
       }
       this.chart.data.datasets[0].data = rawdata;
-      this.chart.update();
+      this.updatechart();
     };
     this.handleReset = e => {
       //console.log('handlereset');
       this.resetdata();
-      this.chart.update();
+      this.updatechart();
     };
     this.handleAddSection = e => {
       this.addSection(e.detail.label);
@@ -398,6 +400,14 @@ export class Chartjs {
     if (ctx) this.initChart(ctx); //init chart only if ctx is ready
     else window.lazyInitChart = this;
 
+    //register throttled update function
+    if (typeof this.throttle === 'string') this.throttle = parseInt(this.throttle, 10);
+
+    if (this.throttle>0) {//throttle
+      this.updatechart = _.throttle(this.chart.update.bind(this.chart), this.throttle);
+    } else {//directly call chart update
+      this.updatechart = this.chart.update.bind(this.chart);
+    }
   }
 
   initChart(ctx){

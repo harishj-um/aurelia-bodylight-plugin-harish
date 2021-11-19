@@ -29,7 +29,7 @@ export class ChartjsXy extends ChartjsTime {
         j++;
       }
       //console.log('chartjs-xy handlevaluechange datasets, e.detail.data',this.chart.data.datasets, e.detail.data);
-      this.chart.update();
+      this.updatechart();
     };
   }
 
