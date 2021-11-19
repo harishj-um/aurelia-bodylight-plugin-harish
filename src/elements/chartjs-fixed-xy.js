@@ -27,57 +27,43 @@ export class ChartjsFixedXy extends ChartjsFixed {
 
     //@bindable cachesize;
     currentdataset=0;
-    constructor(){
+    constructor() {
         super();
         this.handleValueChange = e => {
-            let j = this.currentdataset;
+            //let j = this.currentdataset;
             //all values from refindex to one dataset - as one curve
-            let ydata = e.detail.data.slice(this.refindex,this.refindex+this.refvalues)
-            let xdata = e.detail.data.slice(this.xrefindex,this.xrefindex+this.xrefvalues)
+            let ydata = e.detail.data.slice(this.refindex, this.refindex + this.refvalues)
+            let xdata = e.detail.data.slice(this.xrefindex, this.xrefindex + this.xrefvalues)
             //
-            let data = [];for (let i=0;i<ydata.length;i++) {
+            let data = [];
+            for (let i = 0; i < ydata.length; i++) {
                 if (this.operation && this.operation[0] && this.operation[1])
-                    data.push({x:this.operation[0](xdata[i]),y:this.operation[1](ydata[i])});
-                else data.push({x:xdata[i],y:ydata[i]});
+                    data.push({x: this.operation[0](xdata[i]), y: this.operation[1](ydata[i])});
+                else data.push({x: xdata[i], y: ydata[i]});
             }
             //set labels to x axis
-            if (this.xtofixed>=0) this.chart.data.labels = xdata.map(x=> x.toFixed(this.xtofixed));
+            if (this.xtofixed >= 0) this.chart.data.labels = xdata.map(x => x.toFixed(this.xtofixed));
 
             //set data xy to chart struct
-            if (!this.chart.data.datasets[j]) {
-                //do initialize dataset first
-                this.chart.data.datasets.push({
-                    data: data,
-                    label:"",
-                    backgroundColor: this.currentcolor,
-                    borderColor: this.currentcolor,
-                    borderWidth: 1,
-                    pointRadius: 1,
-                    fill: false
-                })
-            } else {
-                this.chart.data.datasets[j].data=data;
-                this.chart.data.datasets[j].backgroundColor=this.currentcolor;
-                this.chart.data.datasets[j].borderColor=this.currentcolor;
+            //do initialize dataset first
+            this.chart.data.datasets.unshift({
+                data: data,
+                label: "",
+                backgroundColor: this.currentcolor,
+                borderColor: this.currentcolor,
+                borderWidth: 1,
+                pointRadius: 1,
+                fill: false
+            });
+            if (this.chart.data.datasets[1]) {
+                this.chart.data.datasets[1].backgroundColor = this.previouscolor;
+                this.chart.data.datasets[1].borderColor = this.previouscolor;
             }
-            //do apply operation on each element of array
-            /*if (this.operation && this.operation[0])
-                this.chart.data.datasets[j].data.map(item => {return {x:item.x,y:this.operation[0](item.y)}}); //operation on y
-             */
-            if (this.currentdataset>0) {
-                this.chart.data.datasets[this.currentdataset-1].backgroundColor=this.previouscolor;
-                this.chart.data.datasets[this.currentdataset-1].borderColor=this.previouscolor;
-            } else {
-                if (this.maxdata>0 && this.chart.data.datasets[this.maxdata]) {
-                    this.chart.data.datasets[this.maxdata].backgroundColor = this.previouscolor;
-                    this.chart.data.datasets[this.maxdata].borderColor = this.previouscolor;
-                }
+                if (this.chart.data.datasets.length > this.maxdata) this.chart.data.datasets.pop();
+                this.updatechart();
             }
+        }
 
-            if (this.currentdataset>=this.maxdata) this.currentdataset=0; else this.currentdataset++;
-            this.updatechart();
-        };
-    }
 
     bind(){
         super.bind();

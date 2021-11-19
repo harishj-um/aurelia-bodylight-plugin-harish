@@ -27,11 +27,11 @@ export class ChartjsFixed extends Chartjs {
     constructor(){
         super();
         this.handleValueChange = e => {
-            let j = this.currentdataset;
+            //let j = this.currentdataset;
             //all values from refindex to one dataset - as one curve
-            if (!this.chart.data.datasets[j]) {
+            //if (!this.chart.data.datasets[j]) {
                 //do initialize dataset first
-                this.chart.data.datasets.push({
+            this.chart.data.datasets.unshift({
                     data: e.detail.data.slice(this.refindex,this.refindex+this.refvalues),
                     label:"",
                     backgroundColor: this.currentcolor,
@@ -40,30 +40,16 @@ export class ChartjsFixed extends Chartjs {
                     pointRadius: 1,
                     fill: false
                 })
-            } else {
-                this.chart.data.datasets[j].data=e.detail.data.slice(this.refindex,this.refindex+this.refvalues);
-                this.chart.data.datasets[j].backgroundColor=this.currentcolor;
-                this.chart.data.datasets[j].borderColor=this.currentcolor;
-
+            if(this.chart.data.datasets[1]) {
+                this.chart.data.datasets[1].backgroundColor = this.previouscolor;
+                this.chart.data.datasets[1].borderColor = this.previouscolor;
             }
             //do apply operation on each element of array
             if (this.operation && this.operation[0])
-                this.chart.data.datasets[j].data.map(item => {return this.operation[0](item)});
+                this.chart.data.datasets[0].data.map(item => {return this.operation[0](item)});
 
-            if (this.currentdataset>0) {
-                this.chart.data.datasets[this.currentdataset-1].backgroundColor=this.previouscolor;
-                this.chart.data.datasets[this.currentdataset-1].borderColor=this.previouscolor;
-            } else {
-                if (this.maxdata>0 && this.chart.data.datasets[this.maxdata]) {
-                    this.chart.data.datasets[this.maxdata].backgroundColor = this.previouscolor;
-                    this.chart.data.datasets[this.maxdata].borderColor = this.previouscolor;
-                }
-            }
-            if (this.currentdataset>=this.maxdata) {
-                this.currentdataset=0;
-            } else {
-                this.currentdataset++;
-            }
+            if (this.chart.data.datasets.length>this.maxdata) { this.chart.data.datasets.pop();}
+
             this.updatechart();
         };
     }

@@ -24,16 +24,19 @@ export class ChartjsStacked extends Chartjs {
         //stacked box contains data, each box in different dataset, group is
         this.handleValueChange = e => {
             for (let j = 0; j< this.refindices.length; j++) {
+                let mydata = e.detail.data[this.refindices[j]];
+                //do conversion if operation is defined
+                if (this.operation && this.operation[j]) mydata = this.operation[j](mydata);
                 if (!this.chart.data.datasets[j]) {
                     //do initialize dataset first
                     this.chart.data.datasets.push({
-                        data: [e.detail.data[this.refindices[j]]], //data is array
+                        data: [mydata], //data is array
                         label:this.chlabels[j],
                         backgroundColor: this.selectColor(j),
                         stack:this.stack[j]
                     })
                 } else {
-                    this.chart.data.datasets[j].data[0]=e.detail.data[this.refindices[j]]; //data is array 0 item
+                    this.chart.data.datasets[j].data[0]=mydata; //data is array 0 item
                 }
             }
             this.updatechart();
