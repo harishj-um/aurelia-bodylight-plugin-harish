@@ -21,6 +21,7 @@ export class ChartjsFixed extends Chartjs {
     @bindable colorindex=0;
     currentcolor;
     previouscolor;
+    previouscolor2;
     //@bindable cachesize;
     currentdataset=0;
 
@@ -43,6 +44,10 @@ export class ChartjsFixed extends Chartjs {
             if(this.chart.data.datasets[1]) {
                 this.chart.data.datasets[1].backgroundColor = this.previouscolor;
                 this.chart.data.datasets[1].borderColor = this.previouscolor;
+            }
+            if(this.chart.data.datasets[2]) {
+                this.chart.data.datasets[2].backgroundColor = this.previouscolor2;
+                this.chart.data.datasets[2].borderColor = this.previouscolor2;
             }
             //do apply operation on each element of array
             if (this.operation && this.operation[0])
@@ -76,7 +81,8 @@ export class ChartjsFixed extends Chartjs {
         if (typeof this.colorindex === 'string') this.colorindex = parseInt(this.colorindex,10);
         //initialize colors for each dataset
         this.currentcolor =  this.selectColor(this.colorindex,65);
-        this.previouscolor = this.selectColor(this.colorindex,65,95);
+        this.previouscolor = this.selectColor(this.colorindex,65,75);
+        this.previouscolor2 = this.selectColor(this.colorindex,65,95);
     }
 
     attached() {

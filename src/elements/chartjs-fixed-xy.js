@@ -59,6 +59,10 @@ export class ChartjsFixedXy extends ChartjsFixed {
                 this.chart.data.datasets[1].backgroundColor = this.previouscolor;
                 this.chart.data.datasets[1].borderColor = this.previouscolor;
             }
+            if (this.chart.data.datasets[2]) {
+                this.chart.data.datasets[2].backgroundColor = this.previouscolor2;
+                this.chart.data.datasets[2].borderColor = this.previouscolor2;
+            }
                 if (this.chart.data.datasets.length > this.maxdata) this.chart.data.datasets.pop();
                 this.updatechart();
             }

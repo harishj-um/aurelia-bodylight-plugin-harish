@@ -5,6 +5,7 @@ import _ from 'lodash';
 
 //returns array of numbers if contains comma, or number - int
 function myParseInt(str,raddix) {
+  if (typeof str !== "string") return str;
   if (str.lastIndexOf(',') > 0) return str.split(',').map(x => parseInt(x, raddix));
   else return parseInt(str, raddix);
 }
