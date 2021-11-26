@@ -2,8 +2,7 @@
 [![Build Status](https://travis-ci.com/creative-connections/aurelia-bodylight-plugin.svg?branch=master)](https://travis-ci.com/creative-connections/aurelia-bodylight-plugin)
  [![Project stage: Development][project-stage-badge: Development]][project-stage-page]
  [![Version](https://img.shields.io/npm/v/aurelia-bodylight-plugin.svg)](https://www.npmjs.com/package/aurelia-bodylight-plugin)
- [![Dependency Status](https://img.shields.io/david/creative-connections/aurelia-bodylight-plugin.svg)](https://david-dm.org/creative-connections/aurelia-bodylight-plugin)
-
+ 
 [project-stage-badge: Development]: https://img.shields.io/badge/Project%20Stage-Development-yellowgreen.svg
 [project-stage-page]: https://blog.pother.ca/project-stages/
 
