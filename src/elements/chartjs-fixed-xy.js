@@ -28,6 +28,7 @@ export class ChartjsFixedXy extends ChartjsFixed {
     @bindable xtofixed = 0;
     @bindable refpointindex;
     @bindable xrefpointindex;
+    @bindable showline=true;
 
     //@bindable cachesize;
     currentdataset=0;
@@ -61,7 +62,11 @@ export class ChartjsFixedXy extends ChartjsFixed {
             let data2 = [{x:xpoint,y:ypoint}];
 
             //set labels to x axis
-            if (this.xtofixed >= 0) this.chart.data.labels = xdata.map(x => x.toFixed(this.xtofixed));
+            if (this.xtofixed >= 0) {
+                let labeldata =xdata.map(x => x.toFixed(this.xtofixed));
+                this.chart.data.labels = labeldata;
+                //console.log('')
+            }
 
             //set data xy to chart struct
             //do initialize dataset first
@@ -72,7 +77,8 @@ export class ChartjsFixedXy extends ChartjsFixed {
                 borderColor: this.currentcolor,
                 borderWidth: 1,
                 pointRadius: 1,
-                fill: false
+                fill: false,
+                showLine:this.showline
             };
             let colorindex = 1;
             if (this.refpointindex) {
@@ -106,12 +112,17 @@ export class ChartjsFixedXy extends ChartjsFixed {
 
     bind(){
         super.bind();
+        this.type = 'scatter';
         this.data.labels = [];
         this.xrefindex = parseInt(this.xrefindex, 10);
         if (!this.xrefindex) console.warn('xrefindex is not specified');
         this.xrefvalues = parseInt(this.xrefvalues, 10);
         if (this.xrefvalues !== this.refvalues) console.warn('the value of "xrefvalues" must be equal to "refvalues"');
         this.xrefpointindex = parseInt(this.xrefpointindex, 10);
+        if (typeof this.showline === 'string') {
+            this.showline = this.showline === 'true';
+        }
+
     }
 
     attached() {
