@@ -43,7 +43,7 @@ export class AnimateAdobe {
           fromel.addEventListener('fmistart', this.startAllAnimation);
           fromel.addEventListener('fmistop', this.disableAnimation);
         } else {
-          console.error('adobe-animate component cannot find control element with id:', this.fromid);
+          console.warn('adobe-animate component configured to listen non-existing element with id:', this.fromid);
         }
       }
     }
@@ -84,6 +84,8 @@ export class AnimateAdobe {
     }
 
     handleResize() {
+      //do not run if ani.lib is not defined - no adobe component is available
+      if (!window.ani.lib) return;
       let w = window.ani.lib.properties.width; let h = window.ani.lib.properties.height;
       let iw = window.innerWidth;
       let ih = window.innerHeight;
