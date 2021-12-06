@@ -31,6 +31,7 @@ export class Chartjs {
   @bindable responsive = false; //false - to keep width and height, true - to rescale
   @bindable canvasobj;
   @bindable throttle=200; //time to throttle chart update, if it is too much at once
+  @bindable precision=4;
   indexsection=0;
   datalabels=false; //may be configured by subclasses
 
@@ -222,10 +223,21 @@ export class Chartjs {
         caretSize: 5,
         cornerRadius: 4,
         xPadding: 3,
-        yPadding: 3
+        yPadding: 3,
+        callbacks: {
+          label: function(tooltipItem, data) {
+            //let label = data.labels[tooltipItem.index];
+            let value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+            console.log('chartjs tooltip, value',tooltipItem,value);
+            if (typeof value === 'object') return value.x.toPrecision(4)+':'+value.y.toPrecision(4)
+            if (typeof value === 'number') return value.toPrecision(4); //TODO this.precision is not accessible from here
+            return value;
+          }
+        }
       },
       hover: {
-        animationDuration: 0 //disable animation on hover - e.g. for tooltips
+        animationDuration: 0, //disable animation on hover - e.g. for tooltips
+        intersect:false
       },
       scales: axisopts
     };
@@ -422,7 +434,19 @@ export class Chartjs {
       tooltipEvents: that.tooltips
     });
     // console.log('chartjs data', this.data);
+/*    //now delay tooltip
+    let originalShowTooltip = that.chart.showTooltip;
+    //let that.timeout;
+    that.timeout=0;
+    that.chart.showTooltip = function (activeElements) {
+      let delay = (activeElements.length === 0) ? 2000 : 0;
+      clearTimeout(that.timeout);
+      that.timeout = setTimeout(function () {
+        originalShowTooltip.call(that.chart, activeElements);
+      }, delay);
+    }
 
+ */
   }
 
   /**

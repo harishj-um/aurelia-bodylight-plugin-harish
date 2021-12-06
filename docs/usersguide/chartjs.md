@@ -14,7 +14,7 @@ Creates a chartjs element controlled by BdlChartjs library.
   fromid="id4" 
   type="doughnut" 
   labels="Intrathoracic Arteries,ExtraThoracic Arteries, Pulmonary Arteries, Intrathoracic Veins, Extrathoracic veins, Pulmonary Veins"
-  initialdata="0,4,2,3" 
+  initialdata="0.51234161,4.3425161234,2.73739567,3.9334217907" 
   refindex="2" 
   refvalues="6"
   xlabel="x axis label"
