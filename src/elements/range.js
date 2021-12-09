@@ -13,6 +13,22 @@ export class Range {
   @bindable listenkey; //true or false
   @bindable activationkey; //if defined - then
   actived = false;
+  @bindable ids; //optional comma separated id to send value change ,e.g. id1,id2,id3
+  @bindable convertors;//comma separated xpression with x as value e.g. (100-2-x)/3,(100-2-x)/3,(100-2-x)/3
+  //optional twoway settings - if set - fmudata may set the value of range
+  @bindable fromid; //id of fmu component
+  @bindable refindex; //index of variable to be listened
+
+  constructor() {
+    this.handleValueChange = e => {
+      //sets data to dataset
+      //apply value convert among all data
+      if (this.fromid) {
+        let rawdata = e.detail.data.slice(this.refindex, 1);
+        this.value=rawdata;
+      }
+    }
+    }
 
   bind() {
     if (this.max) {
@@ -37,6 +53,38 @@ export class Range {
         }
       }
     }
+    if (this.ids) this.ids2send = this.ids.split(',');
+    //configure convertors - used to convert units received from fmi
+    if (this.convertors) {
+      let convertvalues = this.convertors.split(';');
+      let identity = x => x;
+      this.operation = [];
+      for (let i = 0; i < convertvalues.length; i++) {
+        if (convertvalues[i].includes(',')) {
+          //convert values are in form numerator,denominator contains comma ','
+          let convertitems = convertvalues[i].split(',');
+          if (convertitems[0] === '1' && convertitems[1] === '1') this.operation.push(identity);
+          else {
+            let numerator = parseFloat(convertitems[0]);
+            let denominator = parseFloat(convertitems[1]);
+            this.operation.push(x => x * numerator / denominator);
+          }
+        } else {
+          //convert values are in form of expression, do not contain comma
+          if (convertvalues === '1/x') this.operation.push(x=> 1 / x);
+
+          else {
+            // for eval() security filter only allowed characters:
+            // algebraic, digits, e, dot, modulo, parenthesis and 'x' and 'e' is allowed
+            let expression = convertvalues[i].replace(/[^-\d/*+.()%xe]/g, '');
+            console.log('chartjs bind(), evaluating expression:' + convertvalues[i] + ' securely filtered to :' + expression);
+            // eslint-disable-next-line no-eval
+            this.operation.push(x => eval(expression));
+          }
+        }
+      }
+    }
+
   }
 
   setDefault() {
@@ -53,6 +101,26 @@ export class Range {
       bubbles: true,
       cancelable: true
     }));
+  }
+
+  valueChanged(newValue,oldValue) {
+    //if (oldValue !== newValue)
+    if (this.ids) {
+      //semaphore only one change in time is allowed
+      if (!window.rangebinding) {
+        window.rangebinding = true;
+        //sending value converted to other ids
+        //if (this.ids2send.length !== this.values2send.length) {console.log('warning ids and values contain different number of items.', this.ids2send, this.values2send); return;}
+        for (let i = 0; i < this.ids2send.length; i++) {
+          let inputel = document.getElementById(this.ids2send[i]);
+          inputel.value = this.operation[i](newValue);
+          console.log('range valuechange id,converted value:', this.ids2send[i], inputel.value);
+          let event = new Event(this.fireevent);
+          inputel.dispatchEvent(event);
+        }
+        window.rangebinding = false;
+      }
+    }
   }
 }
 
