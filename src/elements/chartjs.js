@@ -228,7 +228,7 @@ export class Chartjs {
           label: function(tooltipItem, data) {
             //let label = data.labels[tooltipItem.index];
             let value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
-            console.log('chartjs tooltip, value',tooltipItem,value);
+            //console.log('chartjs tooltip, value',tooltipItem,value);
             if (typeof value === 'object') return value.x.toPrecision(4)+':'+value.y.toPrecision(4)
             if (typeof value === 'number') return value.toPrecision(4); //TODO this.precision is not accessible from here
             return value;

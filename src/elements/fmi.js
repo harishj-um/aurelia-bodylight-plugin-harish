@@ -1,5 +1,7 @@
 import {bindable} from 'aurelia-framework';
 
+export const thirdpartytimeout = 5000;
+
 export class Fmi {
   @bindable fminame='N/A';
   @bindable tolerance=0.000001;//0.000030517578
@@ -31,7 +33,6 @@ export class Fmi {
   resetBeforeChange = false;
   simulationtime = 0;
   isOneshot = false;
-
 
   constructor() {
     //create lambda function which is added as listener later
@@ -157,7 +158,7 @@ export class Fmi {
           window.editorapi.insertScriptById(source, 'fmiobj');
         }
         //do callback even if isAbort - scripts might be inserted into DOM by another app
-        if (callback) setTimeout(callback, 1000);
+        if (callback) setTimeout(callback, 1200);
       }
     };
 
@@ -196,7 +197,12 @@ export class Fmi {
         //console.log('fmi callback from Promise that', that, that.inst);
         //do one step if mode is oneshot
         //https://newbedev.com/pass-correct-this-context-to-settimeout-callback
-        if (window.thisfmi.isOneshot) setTimeout(window.thisfmi.step.bind(window.thisfmi),100); //do simulation step after 100 ms
+        if (window.thisfmi.isOneshot) {
+          //console.log('oneshot scheduling startevent in promise() to do step()')
+          setTimeout(window.thisfmi.sendStartEvent.bind(window.thisfmi),1000); //TODO may cause problems sync when animation not yet loaded
+          console.log('oneshot scheduling promise() to do step()')
+          setTimeout(window.thisfmi.step.bind(window.thisfmi),1500);
+        } //do simulation step after 100 ms
       });
     } else { //older EMSDK compiles directly to api
       that.inst = myinst;
@@ -205,7 +211,11 @@ export class Fmi {
       //console.log('fmi callback that, that.inst', that, that.inst);
       //do one step if mode is oneshot
       //https://newbedev.com/pass-correct-this-context-to-settimeout-callback
-      if (window.thisfmi.isOneshot) setTimeout(window.thisfmi.step.bind(window.thisfmi),100); //do simulation step after 100 ms
+      if (window.thisfmi.isOneshot) {
+        console.log('oneshot scheduling direct(nopromise) to do step()')
+        setTimeout(window.thisfmi.sendStartEvent.bind(window.thisfmi),1000)
+        setTimeout(window.thisfmi.step.bind(window.thisfmi),1500);
+      } //do simulation step after 100 ms
     }
   }
 
@@ -246,6 +256,7 @@ export class Fmi {
   }
 
   initialize() {
+    console.log('fmi initialize()');
     this.fmiEnterInit(this.fmiinst);
     this.fmiExitInit(this.fmiinst);
   }
@@ -307,7 +318,7 @@ export class Fmi {
   setupExperiment() {
     //setup experiment
     this.fmiSetup(this.fmiinst, 1, this.tolerance, this.starttime, 0);
-    console.log('instantiated fmiinst', this.fmiinst);
+    console.log('setupExperiment() fmiinst', this.fmiinst);
     this.instantiated = true;
   }
 
@@ -401,6 +412,7 @@ export class Fmi {
 
   sendStartEvent() {
     //create custom event
+    console.log('fmi.sendStartEvent(). Sending start event for adobeobj');
     let event = new CustomEvent('fmistart', {detail: {time: this.round(this.stepTime, this.pow)}});
     //dispatch event - it should be listened by some other component
     document.getElementById(this.id).dispatchEvent(event);
@@ -416,6 +428,7 @@ export class Fmi {
     //this = window.thisfmi;
     //primitive semaphore, only one instance can perform this call
     if (!this.doingstep) {
+      console.log('fmu step()');
       this.doingstep = true;
       if (!this.instantiated) {
         this.instantiate();
@@ -437,7 +450,9 @@ export class Fmi {
         this.initialize();
         //make big step from 0 to current stepTime ???
         //const res =
-        this.fmiDoStep(this.fmiinst, 0, this.stepTime, 1);
+        //make big step only if it is not oneshot
+        if (!this.isOneshot) this.fmiDoStep(this.fmiinst, 0, this.stepTime, 1);
+        else this.stepTime=0;
         //reset the signature
         this.resetBeforeChange = false;
       } else {
@@ -452,8 +467,9 @@ export class Fmi {
       this.mystep = this.stepSize; //update correction step to current step
       //console.log('step() res:', res);
       if (res === 1 || res === 2) {
-        console.warn('step() result trying to do fmiReset', res);
+        console.warn('step() returned state<>0, doing reset()', res);
         this.fmiReset(this.fmiinst);
+        this.initialize();
       }
 
       //distribute simulation data to listeners
@@ -504,7 +520,6 @@ export class Fmi {
         console.log('changing inputs', myinputs);
         //set real - reference is in - one input one reference
         //for (let reference of this.inputs[myinputs.id])
-
         //sets individual values - if id is in input, then reference is taken from inputs definition
         console.log('changing inputs,id,value', this.inputreferences, myinputs.id, myinputs.value);
         let normalizedvalue = myinputs.value * this.inputreferences[myinputs.id].numerator / this.inputreferences[myinputs.id].denominator + this.inputreferences[myinputs.id].addconst;
