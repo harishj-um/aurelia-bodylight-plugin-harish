@@ -37,6 +37,7 @@ export class AnimateAdobe {
       if (this.fromid) {
         let fromel = document.getElementById(this.fromid);
         if (fromel) {
+          console.log('adobeobj bind(). Registering listener');
           fromel.addEventListener('animatestart', this.startAllAnimation);
           fromel.addEventListener('animatestop', this.stopAllAnimation);
           fromel.addEventListener('fmidata', this.handleValueChange);
@@ -48,6 +49,9 @@ export class AnimateAdobe {
       }
     }
     attached() {
+      //disable animation if enabled from previous
+      console.log('adobeobj attached()');
+      if (window.ani) this.disableAnimation();
       //this.adobecanvas = document.getElementById("canvas");
       //this.anim_container = document.getElementById("animation_container");
       //this.dom_overlay_container = document.getElementById("dom_overlay_container");
@@ -123,6 +127,7 @@ export class AnimateAdobe {
 
     //handleResize(); // First draw
     detached() {
+      console.log('adobeobj detached()');
       //stop animation
       this.disableAnimation();
       //remove script
@@ -263,10 +268,13 @@ export class AnimateAdobe {
         window.ani.animobjs = window.ani.objs.filter(name => name.includes('_anim'));
         window.ani.textobjs = window.ani.objs.filter(name => name.includes('_text'));
         window.ani.playobjs = window.ani.objs.filter(name => name.includes('_play'));
-        //stop all animation
-        window.ani.stopAllAnimation();
-        //disable animation ticker
-        window.ani.disableAnimation();
+        //stop animation if it is not yet started by other events, adobe automatically starts animation
+        if (!window.ani.animationstarted) {
+          //stop all animation
+          window.ani.stopAllAnimation();
+          //disable animation ticker
+          window.ani.disableAnimation();
+        }
       }, 1000);
     }
 
@@ -351,10 +359,23 @@ export class AnimateAdobe {
      * starts all animation
      */
     startAllAnimation() {
+      console.log('adobeobj startAllAnimation()');
       if (window.ani.stage) {
         //TODO call removeEventListener and refactor adding listener when animation should start
         if (!window.ani.animationstarted) window.ani.enableAnimation();//window.createjs.Ticker.addEventListener('tick', window.ani.stage);
         window.ani.stage.play();
+      } else {
+        console.warn('adobeobj startAllAnimation() window.ani.stage not available, try to reschedule after 1s');
+        //try to reschedule after 1000 ms
+        setTimeout(()=>{
+          if (window.ani.stage) {
+            //TODO call removeEventListener and refactor adding listener when animation should start
+            if (!window.ani.animationstarted) window.ani.enableAnimation();//window.createjs.Ticker.addEventListener('tick', window.ani.stage);
+            window.ani.stage.play();
+          } else {
+            console.error('adobeobj startAllAnimation() window.ani.stage not available after 2nd attemp');
+          }
+        },1000);
       }
     }
 
