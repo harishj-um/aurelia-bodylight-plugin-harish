@@ -33,6 +33,11 @@ chartjs-fixed-xy colorindex=1
 <bdl-chartjs-fixed-xy id="id11" width="300" height="200" fromid="id4" refindex="1" refvalues="3"
 maxdata="40" colorindex="1" xrefindex="5" xrefvalues="3" refpointindex="2" xrefpointindex="6" xtofixed="5" > </bdl-chartjs-fixed>
 
+chartjs-fixed-xy colorindex=1 2 datasets
+
+<bdl-chartjs-fixed-xy id="id11" width="300" height="200" fromid="id4" refindex="1" refvalues="3" refindex2="2" refvalues2="3"
+maxdata="40" colorindex="1" xrefindex="5" xrefvalues="3" refpointindex="2" xrefpointindex="6" xtofixed="5" > </bdl-chartjs-fixed>
+
 </div>
 
 <div class="w3-quarter"> 

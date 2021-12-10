@@ -25,6 +25,9 @@ export class ChartjsFixed extends Chartjs {
     currentcolor;
     previouscolor;
     previouscolor2;
+    currentcolorb;
+    previouscolorb;
+    previouscolorb2;
     //@bindable cachesize;
     currentdataset=0;
 
@@ -114,6 +117,10 @@ export class ChartjsFixed extends Chartjs {
         this.currentcolor =  this.selectColor(this.colorindex,65);
         this.previouscolor = this.selectColor(this.colorindex,65,75);
         this.previouscolor2 = this.selectColor(this.colorindex,65,95);
+        this.currentcolorb =  this.selectColor(this.colorindex+1,65);
+        this.previouscolorb = this.selectColor(this.colorindex+1,65,75);
+        this.previouscolorb2 = this.selectColor(this.colorindex+1,65,95);
+
         this.refpointindex = parseInt(this.refpointindex, 10);
         if (this.refpointindex) {
             this.options.refpointplugin = {index:this.refpointindex-this.refindex};
