@@ -31,9 +31,6 @@ export class Range {
     }
 
   bind() {
-    if (this.max) {
-      this.maxlength = this.max.length + 4;
-    } else this.maxlength = 7;
     if (this.listenkey && this.listenkey === 'true') {
       if (this.activationkey && this.activationkey === 'A') this.actived = true; //first activationkey 'A' is by default actived
       document.onkeypress = function (e) {
@@ -84,7 +81,11 @@ export class Range {
         }
       }
     }
+  }
 
+  attached() {
+    let maxlength = 4 + this.max.length + (this.step.includes('.')? this.step.length:1);
+    this.refnumber.style = 'width:'+maxlength+'ch';
   }
 
   setDefault() {

@@ -8,6 +8,10 @@
 Example:
   * `<bdl-range id="id1" min="10" max="20" step="2" default="12"></bdl-range>` will render range from 10 to 20 with default value 12 and step 2.
   *  <bdl-range id="id1" min="10" max="20" step="2" default="12"></bdl-range>  
+*  <bdl-range id="id1" min="0" max="1" step="0.01" default="12"></bdl-range>
+*  <bdl-range id="id1" min="0" max="1" step="0.001" default="12"></bdl-range>
+*  <bdl-range id="id1" min="0" max="10" step="0.1" default="12"></bdl-range>
+*  <bdl-range id="id1" min="0" max="10" step="1" default="12"></bdl-range>
 
 ### Range 2 range binding value
 E.g. setting range 1 will change range 2 and range 3 so the sum is constant:
