@@ -254,6 +254,7 @@ export class AnimateAdobe {
         window.createjs.Ticker.framerate = window.ani.lib.properties.fps;
         //window.createjs.Ticker.addEventListener('tick', window.ani.stage);
         window.ani.enableAnimation();
+        window.ani.animationstarted = false; //initial animation is not started - will be stopped by following, if another even will set it to started
       };
       //Code to support hidpi screens and responsive scaling.
       //window.AdobeAn.makeResponsive(true, 'both', true, 1, [window.ani.adobecanvas, window.ani.anim_container, window.ani.dom_overlay_container]);
