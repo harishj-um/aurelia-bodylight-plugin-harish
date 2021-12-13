@@ -1,5 +1,85 @@
 # 3. BdlChartjs BdlChartjs-time BdlChartjs-xy
 
+<bdl-chartjs
+id="id9"
+width="300"
+height="500"
+responsive="false"  
+fromid="id4"
+type="doughnut"
+labels="Intrathoracic Arteries,ExtraThoracic Arteries, Pulmonary Arteries, Intrathoracic Veins, Extrathoracic veins, Pulmonary Veins"
+initialdata="0,4,2,3"
+refindex="2"
+refvalues="6"
+animation="true"
+convertors="numerator1,denominator1;numerator2,denominator2"></bdl-chartjs>
+<bdl-chartjs
+id="id9"
+width="300"
+height="500"
+responsive="false"  
+fromid="id4"
+type="line"
+labels="Intrathoracic Arteries,ExtraThoracic Arteries, Pulmonary Arteries, Intrathoracic Veins, Extrathoracic veins, Pulmonary Veins"
+initialdata="0,4,2,3"
+refindex="2"
+refvalues="6"
+animation="true"
+convertors="numerator1,denominator1;numerator2,denominator2"></bdl-chartjs>
+<bdl-chartjs
+id="id9"
+width="300"
+height="500"
+responsive="false"  
+fromid="id4"
+type="bar"
+labels="Intrathoracic Arteries,ExtraThoracic Arteries, Pulmonary Arteries, Intrathoracic Veins, Extrathoracic veins, Pulmonary Veins"
+initialdata="0,4,2,3"
+refindex="2"
+refvalues="6"
+animation="true"
+convertors="numerator1,denominator1;numerator2,denominator2"></bdl-chartjs>  
+<bdl-chartjs
+id="id9"
+width="300"
+height="500"
+responsive="false"  
+fromid="id4"
+type="radar"
+labels="Intrathoracic Arteries,ExtraThoracic Arteries, Pulmonary Arteries, Intrathoracic Veins, Extrathoracic veins, Pulmonary Veins"
+initialdata="0,4,2,3"
+refindex="2"
+refvalues="6"
+animation="true"
+convertors="numerator1,denominator1;numerator2,denominator2"></bdl-chartjs>
+<bdl-chartjs
+id="id9"
+width="300"
+height="500"
+responsive="false"  
+fromid="id4"
+type="pie"
+labels="Intrathoracic Arteries,ExtraThoracic Arteries, Pulmonary Arteries, Intrathoracic Veins, Extrathoracic veins, Pulmonary Veins"
+initialdata="0,4,2,3"
+refindex="2"
+refvalues="6"
+animation="true"
+convertors="numerator1,denominator1;numerator2,denominator2"></bdl-chartjs>
+<bdl-chartjs
+id="id9"
+width="300"
+height="500"
+responsive="false"  
+fromid="id4"
+type="polar"
+labels="Intrathoracic Arteries,ExtraThoracic Arteries, Pulmonary Arteries, Intrathoracic Veins, Extrathoracic veins, Pulmonary Veins"
+initialdata="0,4,2,3"
+refindex="2"
+refvalues="6"
+animation="true"
+convertors="numerator1,denominator1;numerator2,denominator2"></bdl-chartjs>
+
+
 ## ChartJS
 
 <div class="w3-row">
