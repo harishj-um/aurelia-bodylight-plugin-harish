@@ -6,10 +6,6 @@ import {bodylightFootnotePlugin} from './markdown-it-bfootnote';
 import mk from 'markdown-it-katexx'; //math in md, iktakahiro version seems to be most updated - works with latest katex
 import hljs from 'highlight.js'; //highlights in MD source blocks
 import mka from 'markdown-it-abbr';
-
-//npm install markdown-it-toc-done-right markdown-it-anchor
-//import markdownItTocDoneRight from 'markdown-it-toc-done-right'; //TOC on top of the page
-//import markdownItAnchor from 'markdown-it-anchor'; //MD anchors
 import {markdownitbtoc} from './markdown-it-btoc';
 import {bindable, inject} from 'aurelia-framework';
 import {HttpClient} from 'aurelia-fetch-client';
@@ -17,6 +13,7 @@ import {EventAggregator} from 'aurelia-event-aggregator';
 import {I18N} from 'aurelia-i18n';
 import {ContentUpdate} from './messages';
 
+const REGISTEREVENTTIMEOUT = 1000; //timout to sent register event for subsequent fmu to bind to inputs
 /**
  * This is markdownaurelia component to be used in aurelia apps,
  * requires aurelia-dynamic-html plugin to be enabled,
@@ -98,6 +95,7 @@ export class Markdownaurelia {
     //else if (typeof this.ea.ea === 'object')
     //      this.ea.ea.subscribe(ContentUpdate, msg => this.updateContent(msg.content));
     if (this.fromid) {document.getElementById(this.fromid).addEventListener('contentupdate', this.handleContentChange);}
+
   }
 
   changesrc(...args) { //first is src, second is base
@@ -138,6 +136,12 @@ export class Markdownaurelia {
     //if (window.MathJax) window.MathJax.typeset();
     //scroll to top of the page
     window.scrollTo(0, 0);
+    //send fmiregister event for possible shared fmi component to bind to input components
+    setTimeout(() => {
+      let event = new CustomEvent('fmiregister');
+      document.dispatchEvent(event);
+    },REGISTEREVENTTIMEOUT);
+
   }
 
   updateContent(content) {

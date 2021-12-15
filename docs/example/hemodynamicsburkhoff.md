@@ -17,7 +17,7 @@ Tlačítky můžete pustit a zastavit simulaci, krokovat simulaci a resetovat si
          tolerance="0.000001" starttime="0" guid="{b5629132-3ba6-4153-87c2-f3ff108e1920}"
          valuereferences="33554435,637534265,637534241,637534290,16777312,637534466,637534294,637534268,33554438,637534345,33554436,637534290,33554437,637534323,637534348,637534374"
          valuelabels="Left Ventricle Volume,Pressure in Left Ventricle,Pressure in Aorta, Pressure in Left Atria, Heart Rate, LA elastance,MV open, AOV open, RV volume,RV pressure,LA volume, LA pressure, RA volume,RA pressure,TV open,PV open"         
-         inputs="id1,16777312,1,60,1.2;id2,16777312,1,60"></bdl-fmi>
+         inputs="id1,16777312,1,60;id2,16777312,1,60"></bdl-fmi>
 
 range:
 <bdl-range id="id1" min="40" max="180" step="1" default="60" title="Srdeční tep:"></bdl-range>
@@ -25,8 +25,7 @@ barplot: Srdeční tep 2
 <bdl-chartjs-barplot id="id2" extremelimits="20,220" normallimits="40,180" nominal="1" initialdata="60"
   fromid="id4"
   refindex="4"
-  convertors="60,1"
-  twoway="true"></bdl-chartjs-barplot>
+  convertors="60,1"></bdl-chartjs-barplot>
 
 Animace 
 
@@ -39,9 +38,8 @@ Animace
     
 <bdl-bind2a findex="0" aname="ventricles.ventriclesTotal.VentricleLeft_anim" amin="100" amax="0" fmin="0.00007" fmax="0.00015"></bdl-bind2a>
 <bdl-bind2a findex="6" aname="ValveMV_anim" amin="99" amax="0" fmin="0" fmax="1"></bdl-bind2a>
-test:`<bdl-bind2a-play findex="7" aname="ValveAOV_anim" amin="0" amax="99" fmin="0" fmax="1"></bdl-bind2a-play><bdl-bind2a-play findex="14" aname="ValveTV_anim" amin="99" amax="0" fmin="0" fmax="1"></bdl-bind2a-play>`
-<bdl-bind2a-play findex="7" aname="ValveAOV_anim" amin="0" amax="99" fmin="0" fmax="1"></bdl-bind2a-play>
-<bdl-bind2a-play findex="14" aname="ValveTV_anim" amin="99" amax="0" fmin="0" fmax="1"></bdl-bind2a-play>
+<bdl-bind2a findex="7" aname="ValveAOV_anim" amin="0" amax="99" fmin="0" fmax="1"></bdl-bind2a>
+<bdl-bind2a findex="14" aname="ValveTV_anim" amin="99" amax="0" fmin="0" fmax="1"></bdl-bind2a>
 <bdl-bind2a findex="15" aname="ValvePV_anim" amin="0" amax="99" fmin="0" fmax="1"></bdl-bind2a>
 </div>
 <div class="w3-rest">

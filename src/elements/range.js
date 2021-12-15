@@ -84,7 +84,7 @@ export class Range {
   }
 
   attached() {
-    let maxlength = 4 + this.max.length + (this.step.includes('.')? this.step.length:1);
+    let maxlength = 4 + this.max.length + ((this.step && this.step.includes('.')) ? this.step.length : 1);
     this.refnumber.style = 'width:'+maxlength+'ch';
   }
 

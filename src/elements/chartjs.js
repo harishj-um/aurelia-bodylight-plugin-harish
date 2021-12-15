@@ -61,6 +61,16 @@ export class Chartjs {
     this.handleAddSection = e => {
       this.addSection(e.detail.label);
     };
+
+    this.handleFMIAttached = e => {
+      const fromel = document.getElementById(this.fromid);
+      if (fromel) {
+        fromel.addEventListener('fmidata', this.handleValueChange);
+        fromel.addEventListener('fmireset', this.handleReset);
+      } else {
+        console.warn('fmi attached, but no element with id found:',this.fromid);
+      }
+    }
   }
 
   /**
@@ -268,7 +278,10 @@ export class Chartjs {
     if (fromel) {
       fromel.addEventListener('fmidata', this.handleValueChange);
       fromel.addEventListener('fmireset', this.handleReset);
-    } else {console.log('chartjs WARNING, null fromid element');}
+    } else {
+      console.warn('chartjs, null fromid element, waiting to be attached');
+      document.addEventListener('fmiattached',this.handleFMIAttached);
+    }
 
     if (this.sectionid) {
       const sectionel = document.getElementById(this.sectionid);
@@ -371,6 +384,7 @@ export class Chartjs {
 
     if (this.datalabels) {
       console.log('datalabels true ,setting plugin', this.datalabels);
+      console.log('datalabels true ,setting plugin', this.datalabels);
       Chart.pluginService.register({
         afterDatasetsDraw: function(chartInstance, easing) {
           // To only draw at the end of animation, check for easing === 1
@@ -456,8 +470,13 @@ export class Chartjs {
     if (document.getElementById(this.fromid)) {
       document.getElementById(this.fromid).removeEventListener('fmidata', this.handleValueChange);
       document.getElementById(this.fromid).removeEventListener('fmireset', this.handleReset);
-      if (this.sectionid) {document.getElementById(this.sectionid).removeEventListener('addsection', this.handleAddSection);}
+    } else {
+      console.log('chartjs WARNING, null fromid element,removing from global');
+      document.removeEventListener('fmidata', this.handleValueChange);
+      document.removeEventListener('fmireset', this.handleReset);
     }
+    if (this.sectionid) {document.getElementById(this.sectionid).removeEventListener('addsection', this.handleAddSection);}
+    document.removeEventListener('fmiattached',this.handleFMIAttached)
   }
 
   /**

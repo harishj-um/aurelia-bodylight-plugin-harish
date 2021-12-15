@@ -1,4 +1,4 @@
-<template bindable="base,summary,index">
+<template bindable="base,summary,index,model">
     <require from="./w3.css"></require>
     <require from="./w3-theme-amber.css"></require>
     <require from="./markdown-top-nav"></require>
@@ -21,6 +21,9 @@
                 <div class="w3-hide-small w3-hide-medium w3-small w3-sans-serif w3-border-left w3-right" show.bind="showtoc">
                     <div ref="mytoc"></div>
                 </div>
+                <span if.bind="model">
+                <markdown base="${base}" src.bind="model"></markdown>
+                </span>
                 <markdown class="w3-padding  w3-palatino" base="${base}" src="${index}" watchhash="index,0;base,3" toc.two-way="toc"></markdown>
                 <markdown-bottom-nav class="w3-padding  w3-palatino" base="${base}" index="${index}" src="${summary}"></markdown-bottom-nav>
             </div>

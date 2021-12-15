@@ -16,6 +16,7 @@ export class AnimateAdobe {
     @bindable name;//="ZelezoCelek"
     @bindable cid;//="3CC81150E735AE4485D4B0DF526EB8B4";
     @bindable fromid;
+    @bindable responsive;
     animationstarted = false;
 
     constructor() {
@@ -23,8 +24,22 @@ export class AnimateAdobe {
       //fix issue - some bindings not detached
       //window.animatebindings = [];
       this.handleValueChange = e => {
+        //set animation started when data comes - in case of fmu started in shared model.md page and fmu continues to send data
+        if (!this.animationstarted) this.animationstarted = true;
         this.handleData(e);
       };
+      this.handleFMIAttached = e => {
+        let fromel = document.getElementById(this.fromid);
+        if (fromel) {
+          fromel.addEventListener('animatestart', this.startAllAnimation);
+          fromel.addEventListener('animatestop', this.stopAllAnimation);
+          fromel.addEventListener('fmidata', this.handleValueChange);
+          fromel.addEventListener('fmistart', this.startAllAnimation);
+          fromel.addEventListener('fmistop', this.disableAnimation);
+        } else {
+          console.warn('adobe-animate component configured to listen non-existing element with id:', this.fromid);
+        }
+      }
     }
 
     /**
@@ -37,14 +52,14 @@ export class AnimateAdobe {
       if (this.fromid) {
         let fromel = document.getElementById(this.fromid);
         if (fromel) {
-          console.log('adobeobj bind(). Registering listener');
           fromel.addEventListener('animatestart', this.startAllAnimation);
           fromel.addEventListener('animatestop', this.stopAllAnimation);
           fromel.addEventListener('fmidata', this.handleValueChange);
           fromel.addEventListener('fmistart', this.startAllAnimation);
           fromel.addEventListener('fmistop', this.disableAnimation);
         } else {
-          console.warn('adobe-animate component configured to listen non-existing element with id:', this.fromid);
+          console.warn('adobe-animate waitning for fmi component to be attached');
+          document.addEventListener('fmiattached',this.handleFMIAttached);
         }
       }
     }
@@ -52,6 +67,7 @@ export class AnimateAdobe {
       //disable animation if enabled from previous
       console.log('adobeobj attached()');
       if (window.ani) this.disableAnimation();
+      if (this.responsive && (typeof this.responsive === 'string')) this.responsive = this.responsive==='true';
       //this.adobecanvas = document.getElementById("canvas");
       //this.anim_container = document.getElementById("animation_container");
       //this.dom_overlay_container = document.getElementById("dom_overlay_container");
@@ -144,6 +160,7 @@ export class AnimateAdobe {
         fromel.removeEventListener('fmistop', this.disableAnimation);
       }
       this.destroyAdobe();
+      document.removeEventListener('fmiattached',this.handleFMIAttached);
     }
 
     destroyAdobe() {
@@ -258,7 +275,7 @@ export class AnimateAdobe {
       };
       //Code to support hidpi screens and responsive scaling.
       //window.AdobeAn.makeResponsive(true, 'both', true, 1, [window.ani.adobecanvas, window.ani.anim_container, window.ani.dom_overlay_container]);
-      window.ani.makeResponsive(true, 'both', true, 1, [window.ani.adobecanvas, window.ani.anim_container, window.ani.dom_overlay_container]);
+      if (window.ani.responsive) window.ani.makeResponsive(true, 'both', true, 1, [window.ani.adobecanvas, window.ani.anim_container, window.ani.dom_overlay_container]);
       window.AdobeAn.compositionLoaded(window.ani.lib.properties.id);
       //window.ani.handleResize();
       fnStartAnimation();

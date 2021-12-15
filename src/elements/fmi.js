@@ -69,19 +69,15 @@ export class Fmi {
       //console.log('handlestop');
       this.stopevent(e);
     };
+    //this handles event to register inputs - may be sent by subsequent component which change inputs/outputs communicating with fmi
+    this.handleRegister = e=> {
+      this.deregisterInputs();
+      this.registerInputs();
+    }
     this.inst = {};
   }
 
-  attached() {
-    console.log('fmi attached');
-    this.mydata = [0, 0];
-    //split references by ,
-    this.references = this.valuereferences.split(',');
-
-    //parse inputs id,ref1;id2,ref2 ...
-    //id,ref,numerator?,denominator?,add?,fixed? 'f' or other char e.g.
-    //id1,13123141,1,60,10,f => y = x/60-10 and parameter is fixed - reinit on every change
-    //bug - some elements not yet in DOM tree - wait some time or put those elements (components) before fmi component
+  registerInputs(){
     if (this.inputs) { //register DOM elements to listen to their 'change' event directly
       let inputparts = this.inputs.split(';'); //splits groups delimited by ;
       this.inputreferences = [];
@@ -105,13 +101,43 @@ export class Fmi {
         console.log('registering input, ref, num,den,add,fixed', myinputs[0], myinputs[1], numerator, denominator, addconst, fixedsignature);
       }
     }
-
     if (this.otherinputs) {
       let otherinputtargets = this.otherinputs.split(';');
       for (let target of otherinputtargets) {
         document.getElementById(target).addEventListener('fmiinput', this.handleDetailChange);
       }
     }
+  }
+
+  deregisterInputs() {
+    //do removeListeners()
+    if (this.inputs) {
+      let inputparts = this.inputs.split(';');
+      for (let inputpart of inputparts) {
+        let myinputs = inputpart.split(',');
+        try {
+          document.getElementById(inputpart[0]).removeEventListener(this.eventlisten, this.handleValueChange);
+        } catch (e) { }
+
+      }
+    }
+    if (this.otherinputs) {
+      let otherinputtargets = this.otherinputs.split(';');
+      for (let target of otherinputtargets) {
+        try {
+          document.getElementById(target).removeEventListener('fmiinput', this.handleDetailChange);
+        } catch (e) { }
+      }
+    }
+  }
+
+  attached() {
+    console.log('fmi attached');
+    this.mydata = [0, 0];
+    //split references by ,
+    this.references = this.valuereferences.split(',');
+
+    this.registerInputs();
 
     //if src is not specified - then expects that fmi scripts is loaded in HTML page prior thus should be available
     if (this.src && this.src.length > 0) {
@@ -132,6 +158,10 @@ export class Fmi {
     if (typeof this.showcontrols === 'string') {
       this.showcontrols = (this.showcontrols === 'true');
     }
+    document.addEventListener('fmiregister',this.handleRegister);
+    //send FMIattached event
+    let event = new CustomEvent('fmiattached');
+    document.dispatchEvent(event);
   }
 
   //get script element and registers 'onload' callback to be called when the script is loaded
@@ -227,7 +257,13 @@ export class Fmi {
   }
 
   detached() {
+    document.removeEventListener('fmiregister',this.handleRegister);
     if (this.animationstarted) {this.startstop();}
+    this.deregisterInputs();
+    if (this.controlid) {
+      document.getElementById(this.controlid).removeEventListener('fmistart', this.handleStart);
+      document.getElementById(this.controlid).removeEventListener('fmistop', this.handleStop);
+    }
   }
   /**
    * Implements a rudimentary browser console logger for the FMU.
