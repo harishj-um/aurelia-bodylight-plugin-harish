@@ -73,6 +73,7 @@ export class Fmi {
     this.handleRegister = e=> {
       this.deregisterInputs();
       this.registerInputs();
+      if (this.isOneshot) this.step(); //do simulation step after 100 ms
     }
     this.inst = {};
   }
