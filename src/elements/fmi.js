@@ -467,11 +467,12 @@ export class Fmi {
     if (!this.doingstep) {
       console.log('fmu step()');
       this.doingstep = true;
+
+      try {
       if (!this.instantiated) {
         this.instantiate();
         this.initialize();
       }
-      //TODO now demo data, get real data from simulation
       //console.log('step()1 fmiinst', this.fmiinst);
       this.stepi++;
 
@@ -489,7 +490,7 @@ export class Fmi {
         //const res =
         //make big step only if it is not oneshot
         if (!this.isOneshot) this.fmiDoStep(this.fmiinst, 0, this.stepTime, 1);
-        else this.stepTime=0;
+        else this.stepTime = 0;
         //reset the signature
         this.resetBeforeChange = false;
       } else {
@@ -517,10 +518,12 @@ export class Fmi {
       //dispatch event - it should be listened by some other component
       document.getElementById(this.id).dispatchEvent(event);
       //compute showtime
-      if (this.showtime)  this.simulationtime = this.secondsToTime(this.stepTime, this.showtimemultiply);
+      if (this.showtime) this.simulationtime = this.secondsToTime(this.stepTime, this.showtimemultiply);
       //do computation only every tickstoupdate tick
       if (this.measurefps) {
-        if (this.fpstick === 0) {this.startfpstime = window.performance.now(); }
+        if (this.fpstick === 0) {
+          this.startfpstime = window.performance.now();
+        }
         this.fpstick++;
         if (this.fpstick >= this.ticksToUpdate) {
           this.fpsInterval = 1000 / (isNaN(this.fpslimit) ? parseInt(this.fpslimit, 10) : this.fpslimit);
@@ -530,7 +533,7 @@ export class Fmi {
           //do correction step calculation
           //this.pow = 0;
           if (this.stepSize < 1) {
-            this.pow = - Math.ceil(- Math.log10(this.stepSize));
+            this.pow = -Math.ceil(-Math.log10(this.stepSize));
           } else {
             this.pow = Math.ceil(Math.log10(this.stepSize));
           }
@@ -541,7 +544,12 @@ export class Fmi {
           this.fpstick = 0;
         }
       }
-      this.doingstep = false;
+    } catch (err) {
+        console.error('error catched during fmu step',err);
+      }
+      finally {
+        this.doingstep = false;
+      }
     }
   }
 
