@@ -142,7 +142,7 @@
     "markdown-it-abbr": "^1.0.4",
     "markdown-it-for-inline": "^0.1.1",
     "markdown-it-katexx": "^3.2.0",
-    "pdbe-molstar": "^1.2.0"
+    "pdbe-molstar": "git+https://github.com/TomasKulhanek/pdbe-molstar.git"
   },
   "bugs": {
     "url": "https://github.com/creative-connections/aurelia-bodylight-plugin/issues"

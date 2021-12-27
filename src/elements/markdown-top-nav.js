@@ -36,7 +36,11 @@ export class MarkdownTopNav {
       console.log('top nav links:', this.links);
     }
 
-    updatetitles(hashstruct) {
+  /**
+   * Update titles, opens parent nav if it is not opened
+   * @param hashstruct
+   */
+  updatetitles(hashstruct) {
       //this.currentlink
       console.log('top nav hash:', hashstruct);
       if (window.markdownnav) {
@@ -59,8 +63,17 @@ export class MarkdownTopNav {
           }
           //show parent ul if hidden
           if (currentnavitem.parentNode.className === 'w3-hide') {
-            //do open/hide as defined in markdownnav
+            //do open parent as defined in markdownnav
             if (window.bodylightnavopenhide) window.bodylightnavopenhide(currentnavitem.parentNode.previousSibling);
+          } else {
+            //do open parent of parent
+            if (currentnavitem.parentNode.parentNode && currentnavitem.parentNode.parentNode.className === 'w3-hide') {
+              if (window.bodylightnavopenhide) window.bodylightnavopenhide(currentnavitem.parentNode.parentNode.previousSibling);
+            } else {
+              //do open parent of parent of parent
+              if (currentnavitem.parentNode.parentNode && currentnavitem.parentNode.parentNode.parentNode && currentnavitem.parentNode.parentNode.parentNode.className === 'w3-hide')
+                if (window.bodylightnavopenhide) window.bodylightnavopenhide(currentnavitem.parentNode.parentNode.parentNode.previousSibling);
+            }
           }
         }
       }
