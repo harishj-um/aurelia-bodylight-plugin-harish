@@ -13,6 +13,7 @@ export class Bind2aText extends Bind2a {
   @bindable precision;
   @bindable fixed;
   @bindable suffix;
+  @bindable prefix;
 
   constructor() {
     super();
@@ -27,7 +28,8 @@ export class Bind2aText extends Bind2a {
       this.parseConvertors(),
       this.precision ? parseInt(this.precision, 10) : 0,
       this.fixed ? parseInt(this.fixed, 10) : 2,
-      this.suffix ? this.suffix: ''
+      this.suffix ? this.suffix: '',
+      this.prefix ? this.prefix : ''
     );
     this.addbinding(binding);
   }
