@@ -265,13 +265,14 @@ export class AnimateAdobe {
         ss[ssMetadata[i].name] = new createjs.SpriteSheet( {"images": [queue.getResult(ssMetadata[i].name)], "frames": ssMetadata[i].frames} )
       }*/
       //window.ani.ssMetadata = window.ani.lib.ssMetadata;
-      if (window.ani.lib.ssMetadata.length>0) {
+      //TODO add support for spreadsheat
+      /*if (window.ani.lib.ssMetadata.length>0) {
         let ssMetadata = window.ani.lib.ssMetadata;
         let queue = evt.target;
         for(let i=0; i<ssMetadata.length; i++) {
           window.ani.ss[ssMetadata[i].name] = new window.createjs.SpriteSheet( {"images": [queue.getResult(ssMetadata[i].name)], "frames": ssMetadata[i].frames} )
         }
-      }
+      }*
       window.ani.exportRoot = new window.ani.lib[window.ani.name]();
       //set stage to be bind into ref='adobecanvas' DOM element of this component
       window.ani.stage = new window.ani.lib.Stage(window.ani.adobecanvas);
