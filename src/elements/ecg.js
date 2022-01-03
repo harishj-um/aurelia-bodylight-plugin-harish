@@ -62,7 +62,10 @@ export class Ecg extends ChartjsTime {
 
   attached() {
     super.attached();
-    document.getElementById(this.fromid).addEventListener('animatedata', this.handleValueChange);
+    let fromidel = document.getElementById(this.fromid)
+    if (fromidel) {
+      fromidel.addEventListener('animatedata', this.handleValueChange);
+    }
     //instantiate datalabels
     if (!this.chart.data.datasets[0].datalabels) this.chart.data.datasets[0].datalabels = [];
   }

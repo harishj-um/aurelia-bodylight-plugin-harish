@@ -48,7 +48,7 @@ describe('chartjs element', () => {
       const view = component.element;
       const canvas = view.getElementsByTagName('canvas');
       expect(canvas.length).toBe(1); //1 canvas
-      const divs = view.getElementsByTagName('span');
+      const divs = view.getElementsByTagName('div');
       //console.log('divs length',divs.length)
       expect(divs.length).toBe(3); //2 chartjs monitor1
       //console.log('divs[0] class')

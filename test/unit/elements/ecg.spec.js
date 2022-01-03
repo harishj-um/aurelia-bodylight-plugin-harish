@@ -1,7 +1,7 @@
 import {StageComponent} from 'aurelia-testing';
 import {bootstrap} from 'aurelia-bootstrapper';
 
-describe('chartjs-time element', () => {
+describe('chartjs element', () => {
   let component;
 
   /*beforeEach(() => {
@@ -27,19 +27,16 @@ describe('chartjs-time element', () => {
     }
   });
 
-  it('creates chartjs-time canvas', done => {
+  it('creates ecg canvas', done => {
 
     component = StageComponent
-      .withResources('elements/chartjs-time')
-      .inView('<chartjs-time \n' +
-          '  id="id9" \n' +
-          '  width="300" \n' +
-          '  height="500" \n' +
-          '  fromid="id4" \n' +
-          '  labels="Intrathoracic Arteries,ExtraThoracic Arteries, Pulmonary Arteries, Intrathoracic Veins, Extrathoracic veins, Pulmonary Veins"\n' +
-          '  initialdata="0,4,2,3" \n' +
-          '  refindex="2" \n' +
-          '  refvalues="6"></chartjs-time>');
+      .withResources('elements/ecg')
+      .inView('<ecg \n' +
+        '  id="id11" \n' +
+        '  fromid="id4" \n' +
+        '  labels="ECG I (mV)"\n' +
+        '  width="300"\n' +
+        '  height="50"></ecg>');
 
 
     component.create(bootstrap).then(() => {
