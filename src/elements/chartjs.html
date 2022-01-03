@@ -1,5 +1,5 @@
 <template bindable="width,height">
-    <div id="canvas-holder" style="display:inline-block">
+    <div id="canvas-holder" style.bind="responsive ? '':'display:inline-block'">
         <div class="w3-small">
             <i class="fa fa-download fa-flip-horizontal" title="download csv data, row=data in time point"
                click.delegate="download()"> </i>
