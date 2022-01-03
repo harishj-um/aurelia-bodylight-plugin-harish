@@ -1,4 +1,4 @@
-# 3. BdlChartjs BdlChartjs-time BdlChartjs-xy
+# BdlChartjs BdlChartjs-time BdlChartjs-xy
 
 <bdl-chartjs
 id="id9"
@@ -71,7 +71,7 @@ width="300"
 height="500"
 responsive="false"  
 fromid="id4"
-type="polar"
+type="polarArea"
 labels="Intrathoracic Arteries,ExtraThoracic Arteries, Pulmonary Arteries, Intrathoracic Veins, Extrathoracic veins, Pulmonary Veins"
 initialdata="0,4,2,3"
 refindex="2"

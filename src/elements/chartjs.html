@@ -1,13 +1,13 @@
 <template bindable="width,height">
-    <span id="canvas-holder">
-        <span class="w3-small">
+    <div id="canvas-holder" style="display:inline-block">
+        <div class="w3-small">
             <i class="fa fa-download fa-flip-horizontal" title="download csv data, row=data in time point"
                click.delegate="download()"> </i>
             <i class="fa fa-download fa-rotate-270" title="download flat csv data, row=all data for variable"
                click.delegate="downloadflat()"> </i>
-        </span>
-        <span style="margin-top: -1.5em">
+        </div>
+        <div style="margin-top: -1.5em">
             <canvas id="${id}-canvas" ref="chartcanvas" width="${width}" height="${height}"></canvas>
-        </span>
-    </span>
+        </div>
+    </div>
 </template>

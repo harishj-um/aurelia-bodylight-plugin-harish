@@ -59,6 +59,7 @@ export class Ecg extends ChartjsTime {
     //disable labels on xaxes
     this.options.scales.xAxes = [{ticks: { display: false}}];
   }
+
   attached() {
     super.attached();
     document.getElementById(this.fromid).addEventListener('animatedata', this.handleValueChange);
