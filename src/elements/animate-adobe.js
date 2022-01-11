@@ -85,7 +85,7 @@ export class AnimateAdobe {
         //window.addEventListener('resize', this.handleResize);
       };
 
-      //check global instance of createjs
+      //check global instance of createjs - if not present wait 500 ms
       if (typeof createjs === 'undefined') {
         //console.log('INFO: waiting 500ms for createjs ');
         setTimeout(() => continueAfter, 500);
@@ -306,6 +306,9 @@ export class AnimateAdobe {
           window.ani.stopAllAnimation();
           //disable animation ticker
           window.ani.disableAnimation();
+          //sent ready signal - fmu may make step if oneshot
+          let event = new CustomEvent('fmiregister');
+          document.dispatchEvent(event);
         }
       }, 1000);
     }

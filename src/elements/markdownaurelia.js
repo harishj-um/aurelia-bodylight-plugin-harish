@@ -38,7 +38,7 @@ export class Markdownaurelia {
     //console.log('bdlmarkdownaurelia eventaggregator:', ea);
     //option function to be called when customevent retrieved
     this.handleContentChange = e => {
-      this.updateContent(e.detail.content);
+      this.updateContent(e.detail.content,e.detail.keepanimation);
     };
   }
 
@@ -144,15 +144,15 @@ export class Markdownaurelia {
 
   }
 
-  updateContent(content) {
+  updateContent(content, keepanimation = false) {
     //console.log('markdownaurelia updatecontent:', content);
     //fix remove older animation objects
-    if (window.ani) {
+    if (!keepanimation && window.ani) {
       window.ani.detached();
-      window.ani.destroyAdobe();
+      //window.ani.destroyAdobe();
+      window.animatebindings = [];
     }
     //fix remove global binding
-    window.animatebindings = [];
     //continue with rendering
     this.text = content;
     this.html = this.md.render(this.text);
