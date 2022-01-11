@@ -27,7 +27,7 @@ export class Bind2aText extends Bind2a {
       this.aname,
       this.parseConvertors(),
       this.precision ? parseInt(this.precision, 10) : 0,
-      this.fixed ? parseInt(this.fixed, 10) : 2,
+      this.fixed ? parseInt(this.fixed, 10) : 1,
       this.suffix ? this.suffix: '',
       this.prefix ? this.prefix : ''
     );

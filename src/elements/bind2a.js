@@ -42,13 +42,14 @@ export class Bind2a {
         let operations = [];
         for (let i = 0; i < convertvalues.length; i++) {
           if (convertvalues[i].includes(',')) {
-            //convert values are in form numerator,denominator contains comma ','
+            //convert values are in form numerator,denominator,addend contains comma ','
             let convertitems = convertvalues[i].split(',');
-            if (convertitems[0] === '1' && convertitems[1] === '1') operations.push(identity);
+            if (convertitems[0] === '1' && convertitems[1] === '1' && (convertitems.length<=2 || (convertitems[2]==='0'))) operations.push(identity);
             else {
               let numerator = parseFloat(convertitems[0]);
               let denominator = parseFloat(convertitems[1]);
-              operations.push(x => x * numerator / denominator);
+              let addend = convertitems.length>2 ? parseFloat(convertitems[2]) : 0;
+              operations.push(x => x * numerator / denominator + addend);
             }
           } else {
             //convert values are in form of expression, do not contain comma
@@ -57,7 +58,7 @@ export class Bind2a {
             else {
               //filter only allowed characters: algebraic, digits, e, dot, modulo, parenthesis and 'x' is allowed
               let expression = convertvalues[i].replace(/[^-\d/*+.\^()%xeMathsincopw]/g, '');
-              console.log('bind2a bind(), evaluating expression:' + convertvalues[i] + ' securely filtered to :' + expression);
+              //console.log('bind2a bind(), evaluating expression:' + convertvalues[i] + ' securely filtered to :' + expression);
               // eslint-disable-next-line no-eval
               operations.push(x => eval(expression));
             }
