@@ -146,6 +146,11 @@ export class Markdownaurelia {
 
   updateContent(content) {
     //console.log('markdownaurelia updatecontent:', content);
+    //fix remove older animation objects
+    if (window.ani) {
+      window.ani.detached();
+      window.ani.destroyAdobe();
+    }
     //fix remove global binding
     window.animatebindings = [];
     //continue with rendering
