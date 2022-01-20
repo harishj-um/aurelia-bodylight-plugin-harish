@@ -9,6 +9,7 @@ import {bindable} from 'aurelia-framework';
  */
 export class Bind2previous {
   @bindable fromid;
+  @bindable event = 'input'
   @bindable toid;
   @bindable toattribute;
 
@@ -19,13 +20,22 @@ export class Bind2previous {
    }*/
     this.handleValueChange = e => {
       //console.log('handleValueChange, e,fromid,toid', e);
-      if (this.toattribute) document.getElementById(this.toid)[this.toattribute] = e.target.value;
-      else document.getElementById(this.toid).value = e.target.value;
+      let value = e.detail ? e.detail.value : e.target.value;
+      if (this.toattribute) {
+        let el = document.getElementById(this.toid);
+        el.setAttribute(this.toattribute, value);
+        //fix setting depended input attributes -e.g. in <range>
+        let inputs = el.getElementsByTagName('input');
+        if (inputs.length > 0) {
+          for (let input of inputs) input.setAttribute(this.toattribute,value);
+        }
+      }
+      else document.getElementById(this.toid).value = value;
     };
   }
 
   attached() {
-    document.getElementById(this.fromid).addEventListener('input', this.handleValueChange);
+    document.getElementById(this.fromid).addEventListener(this.event, this.handleValueChange);
   }
   detached() {
     if (document.getElementById(this.fromid)) document.getElementById(this.fromid).removeEventListener('input', this.handleValueChange);

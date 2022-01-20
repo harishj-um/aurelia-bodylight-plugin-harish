@@ -87,23 +87,7 @@ export class ChartjsTime extends Chartjs {
     };
     if (this.verticalline) this.type = 'LineWithLine';
     else this.type = 'line';
-    if (this.min) {
-      //sets yscale min
-      if (!this.options) this.options = {};
-      if (!this.options.scales) this.options.scales = {};
-      if (!this.options.scales.yAxes) this.options.scales.yAxes = [{}]; //chartjs 2.9.4
-      if (!this.options.scales.yAxes[0].ticks) this.options.scales.yAxes[0].ticks = {}; //chartjs 2.9.4
-      this.options.scales.yAxes[0].ticks.min = parseFloat(this.min);
-    }
-    if (this.max) {
-      //sets yscale max
-      if (!this.options) this.options = {};
-      if (!this.options.scales) this.options.scales = {};
-      if (!this.options.scales.yAxes) this.options.scales.yAxes = [{}]; //chartjs 2.9.4
-      if (!this.options.scales.yAxes[0].ticks) this.options.scales.yAxes[0].ticks = {}; //chartjs 2.9.4
-      this.options.scales.yAxes[0].ticks.max = parseFloat(this.max);
-      //if (this.min) this.options.scales.yAxes[0].ticks.stepSize = (this.options.scales.yAxes[0].ticks.max - this.options.scales.yAxes[0].ticks.min) / 10;
-    }
+
   }
 
   resetdata() {

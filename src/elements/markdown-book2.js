@@ -13,12 +13,13 @@ export class MarkdownBook2 extends MarkdownBook {
 
     constructor() {
       super();
+      this.params = 'shownav,1;showmenu,2;base,3';
+      this.shownav = true;
+      this.showtoc = true;
     }
 
     bind() {
       super.bind();
-      this.shownav = true;
-      this.showtoc = true;
       //console.log('markdownbook bind shownav', this.shownav);
     }
 
@@ -37,5 +38,9 @@ export class MarkdownBook2 extends MarkdownBook {
       console.log('markdownbook2 scrollto() id,el', id, el);
       el.scrollIntoView();
       //        document.getElementById(id).scrollIntoView();
+    }
+
+    changesrc(...args) {
+      super.changesrc(...args);
     }
 }

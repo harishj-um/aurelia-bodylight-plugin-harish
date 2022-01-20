@@ -1,14 +1,18 @@
 import {bindable} from 'aurelia-templating';
 import _ from 'lodash';
+import {inject} from 'aurelia-framework';
 
+@inject(Element)
 export class Value {
   @bindable fromid;
   @bindable refindex;
-  @bindable convertors;
+  @bindable convertor;
   @bindable precision=4;
   @bindable throttle=500;
+  @bindable dataevent=false;
 
-  constructor() {
+  constructor(element) {
+    this.element = element;
     //create lambda function which is added as listener later
     this.handleValueChange = e => {
       //e.detail do not reallocate - using same buffer, thus slicing to append to data array
@@ -18,17 +22,31 @@ export class Value {
       // _.throttle(()=> this.updateValue(e.detail.data[this.refindex]), this.throttle)();
       //call throttled function with args
       this.myupdatevalue(e.detail.data[this.refindex])
+
+
     };
+    this.handleFMIAttached = e => {
+      const fromel = document.getElementById(this.fromid);
+      if (fromel) {
+        fromel.addEventListener('fmidata', this.handleValueChange);
+      } else {
+        console.warn('fmi attached, but no element with id found:',this.fromid);
+      }
+    }
+
   }
 
   bind() {
     //register throttled update function
     if (typeof this.throttle === 'string') this.throttle = parseInt(this.throttle, 10);
+    if (typeof this.dataevent === 'string') this.dataevent = this.dataevent === 'true';
     if (typeof this.precision === 'string') this.precision = parseInt(this.precision, 10);
     this.myupdatevalue = _.throttle(this.updateValue, this.throttle);
     //configure convertors - used to convert units received from fmi
-    if (this.convertors) {
-      let convertvalues = this.convertors.split(';');
+    if (this.convertor) {
+      //used code from fmi component
+      //TODO change to custom attribute
+      let convertvalues = [this.convertor];
       let identity = x => x;
       this.operation = [];
       for (let i = 0; i < convertvalues.length; i++) {
@@ -48,7 +66,7 @@ export class Value {
           else {
             // for eval() security filter only allowed characters:
             // algebraic, digits, e, dot, modulo, parenthesis and 'x' and 'e' is allowed
-            let expression = convertvalues[i].replace(/[^-\d/*+.()%xe]/g, '');
+            let expression = convertvalues[i].replace(/[^-\d/*+.()%xeMathroundsic]/g, '');
             console.log('chartjs bind(), evaluating expression:' + convertvalues[i] + ' securely filtered to :' + expression);
             // eslint-disable-next-line no-eval
             this.operation.push(x => eval(expression));
@@ -60,7 +78,14 @@ export class Value {
 
   attached() {
     //listening to custom event fmidata
-    document.getElementById(this.fromid).addEventListener('fmidata', this.handleValueChange);
+    //listening to custom event fmidata and fmireset
+    const fromel = document.getElementById(this.fromid);
+    if (fromel) {
+      fromel.addEventListener('fmidata', this.handleValueChange);
+    } else {
+      console.warn('chartjs, null fromid element, waiting to be attached');
+      document.addEventListener('fmiattached',this.handleFMIAttached);
+    }
 
   }
 
@@ -71,5 +96,9 @@ export class Value {
   updateValue(rawvalue) {
     if (this.operation) this.value = this.operation[0](rawvalue).toPrecision(this.precision); // * this.numerator / this.denominator + this.addconst;
     else this.value = rawvalue.toPrecision(this.precision);
+    if (this.dataevent) {
+      let c = new CustomEvent('fmivalue', {detail: {value: this.value}});
+      this.element.dispatchEvent(c);
+    }
   }
 }

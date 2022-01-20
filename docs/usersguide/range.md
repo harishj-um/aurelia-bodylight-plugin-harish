@@ -17,12 +17,26 @@ Example:
 E.g. setting range 1 will change range 2 and range 3 so the sum is constant:
 
 ```xml
-O2: <bdl-range id="id3" min="0" max="100" step="1" default="21" ids="id4,id5" convertors="100-2-x;2"></bdl-range>
-N:<bdl-range id="id4" min="0" max="100" step="1" default="77" ids="id3,id5" convertors="100-2-x;2"></bdl-range>
-other:<bdl-range id="id5" min="0" max="100" step="1" default="2" ids="id3,id4" convertors="21;100-21-x"></bdl-range>
+tkan1: <bdl-range id="id3" min="0" max="100" step="1" default="20" ids="id4,id5,id6,id7" convertors="20-x/5;20-x/5;20-x/5;20-x/5"></bdl-range>
+
+        tkan2:<bdl-range id="id4" min="0" max="100" step="1" default="20" ids="id3,id5" convertors="100-2-x;2"></bdl-range>
+
+        tkan3:<bdl-range id="id5" min="0" max="100" step="1" default="20" ids="id3,id4" convertors="21;100-21-x"></bdl-range>
+
+        tkan4:<bdl-range id="id6" min="0" max="100" step="1" default="20" ids="id3,id4" convertors="21;100-21-x"></bdl-range>
+
+        tkan5:<bdl-range id="id7" min="0" max="100" step="1" default="20" ids="id3,id4" convertors="21;100-21-x"></bdl-range>
 
 ```
 
-O2: <bdl-range id="id3" min="0" max="100" step="1" default="21" ids="id4,id5" convertors="100-2-x;2"></bdl-range>
-N:<bdl-range id="id4" min="0" max="100" step="1" default="77" ids="id3,id5" convertors="100-2-x;2"></bdl-range>
-other:<bdl-range id="id5" min="0" max="100" step="1" default="2" ids="id3,id4" convertors="21;100-21-x"></bdl-range>
+tkan1: <bdl-range id="id3" min="0" max="100" step="1" default="20" ids="id4,id5,id6,id7" convertors="20-(x-20)/4;20-(x-20)/4;20-(x-20)/4;20-(x-20)/4"></bdl-range>
+
+tkan2:<bdl-range id="id4" min="0" max="100" step="1" default="20" ids="id3,id5" convertors="100-2-x;2"></bdl-range>
+
+tkan3:<bdl-range id="id5" min="0" max="100" step="1" default="20" ids="id3,id4" convertors="21;100-21-x"></bdl-range>
+
+tkan4:<bdl-range id="id6" min="0" max="100" step="1" default="20" ids="id3,id4" convertors="21;100-21-x"></bdl-range>
+
+tkan5:<bdl-range id="id7" min="0" max="100" step="1" default="20" ids="id3,id4" convertors="21;100-21-x"></bdl-range>
+
+

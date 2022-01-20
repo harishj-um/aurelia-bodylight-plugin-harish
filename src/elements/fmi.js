@@ -108,6 +108,13 @@ export class Fmi {
         document.getElementById(target).addEventListener('fmiinput', this.handleDetailChange);
       }
     }
+    //if oneshot - do step
+    if (this.isOneshot) {
+      //console.log('oneshot scheduling startevent in promise() to do step()')
+      setTimeout(this.sendStartEvent.bind(this),1000); //TODO may cause problems sync when animation not yet loaded
+      console.log('oneshot scheduling promise() to do step()')
+      setTimeout(this.step.bind(this),1500);
+    } //do simulation step after 100 ms
   }
 
   deregisterInputs() {

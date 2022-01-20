@@ -32,6 +32,8 @@ export class Chartjs {
   @bindable canvasobj;
   @bindable throttle=200; //time to throttle chart update, if it is too much at once
   @bindable precision=4;
+  @bindable min; //min for y axis - if chart has this axis
+  @bindable max; //max for y axis - if chart has this axis
   indexsection=0;
   datalabels=false; //may be configured by subclasses
 
@@ -263,6 +265,24 @@ export class Chartjs {
     //if sections are requested - define chartjs plugin to draw it in background
     if (this.sectionid) {
       this.options.section = [];
+    }
+
+    if (this.min) {
+      //sets yscale min
+      if (!this.options) this.options = {};
+      if (!this.options.scales) this.options.scales = {};
+      if (!this.options.scales.yAxes) this.options.scales.yAxes = [{}]; //chartjs 2.9.4
+      if (!this.options.scales.yAxes[0].ticks) this.options.scales.yAxes[0].ticks = {}; //chartjs 2.9.4
+      this.options.scales.yAxes[0].ticks.min = parseFloat(this.min);
+    }
+    if (this.max) {
+      //sets yscale max
+      if (!this.options) this.options = {};
+      if (!this.options.scales) this.options.scales = {};
+      if (!this.options.scales.yAxes) this.options.scales.yAxes = [{}]; //chartjs 2.9.4
+      if (!this.options.scales.yAxes[0].ticks) this.options.scales.yAxes[0].ticks = {}; //chartjs 2.9.4
+      this.options.scales.yAxes[0].ticks.max = parseFloat(this.max);
+      //if (this.min) this.options.scales.yAxes[0].ticks.stepSize = (this.options.scales.yAxes[0].ticks.max - this.options.scales.yAxes[0].ticks.min) / 10;
     }
 
     this.tooltips = ['mousemove', 'touchstart', 'touchmove', 'click'];

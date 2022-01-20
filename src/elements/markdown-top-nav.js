@@ -81,6 +81,19 @@ export class MarkdownTopNav {
 
     showhidenav() {
       this.nav = ! this.nav;
+      if (! this.nav) {
+        if (document.documentElement.requestFullscreen) {
+          document.documentElement.requestFullscreen();
+        } else if (document.documentElement.webkitRequestFullscreen) { /* Safari */
+          document.documentElement.webkitRequestFullscreen();
+        }
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) { /* Safari */
+          document.webkitExitFullscreen();
+        }
+      }
     }
 
     showhidetoc() {

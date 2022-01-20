@@ -104,6 +104,7 @@ export class AnimateAdobe {
     }
 
     handleResize() {
+      console.log('animateadobe handleResize()');
       //do not run if ani.lib is not defined - no adobe component is available
       if (!window.ani.lib) return;
       let w = window.ani.lib.properties.width; let h = window.ani.lib.properties.height;
@@ -164,7 +165,7 @@ export class AnimateAdobe {
     }
 
     destroyAdobe() {
-      //console.log('animate adobe destroy()');
+      console.log('animate adobe destroy()');
       if (window.stage) {
         window.stage.enableMouseOver(-1);
         window.stage.enableDOMEvents(false);
@@ -249,6 +250,7 @@ export class AnimateAdobe {
 
     //this is called after animate script is loaded into DOM, so global AdobeAn is available
     initAdobe() {
+      console.log('animateadobe initAdobe()');
       //take the first composition
       if (!window.ani.cid) {
         window.ani.cid = Object.keys(window.AdobeAn.compositions)[0]; //get the first composition
@@ -306,9 +308,12 @@ export class AnimateAdobe {
           window.ani.stopAllAnimation();
           //disable animation ticker
           window.ani.disableAnimation();
+          //TODO fix bug - model in different md not
           //sent ready signal - fmu may make step if oneshot
           let event = new CustomEvent('fmiregister');
           document.dispatchEvent(event);
+          //workaround after resize the artifacts are updated
+          //window.ani.handleResize();
         }
       }, 1000);
     }
@@ -318,6 +323,7 @@ export class AnimateAdobe {
      * @param objname
      */
     startAnimation(objname) {
+      console.log('animateadobe startAnimation() of object');
       const resolvePath = (object, path, defaultValue) => path
         .split('.')
         .reduce((o, p) => o ? o[p] : defaultValue, object);
@@ -336,6 +342,7 @@ export class AnimateAdobe {
      * @param objname
      */
     stopAnimation(objname) {
+      console.log('animateadobe stopAnimation() of object');
       const resolvePath = (object, path, defaultValue) => path
         .split('.')
         .reduce((o, p) => o ? o[p] : defaultValue, object);
@@ -352,6 +359,7 @@ export class AnimateAdobe {
      */
 
     setAnimationValue(objname, value) {
+      console.log('animateadobe setAnimationValue',value);
       //console.log('adobe-animate() setting window.ani.exportRoot.children[0][' + objname + '].gotoAndStop(' + value + ')');
       if (window.ani.exportRoot) {
         //resolve path from string
@@ -371,12 +379,14 @@ export class AnimateAdobe {
      * stops all animation
      */
     stopAllAnimation() {
+      console.log('animateadobe stopAllAnimation');
       if (window.ani.stage) {
         window.ani.stage.stop();
       }
     }
 
     disableAnimation() {
+      console.log('animateadobe disableAnimation');
       if (window.ani) {
         window.ani.animationstarted = false;
         if (window.ani.stage) {
@@ -386,6 +396,7 @@ export class AnimateAdobe {
     }
 
     enableAnimation() {
+      console.log('animateadobe enableAnimation');
       if (window.ani.stage) {window.createjs.Ticker.addEventListener('tick', window.ani.stage);}
       window.ani.animationstarted = true;
     }
@@ -418,6 +429,7 @@ export class AnimateAdobe {
      * starts animation for 20 ms and stops it again
      */
     stepAllAnimation() {
+      console.log('animateadobe stepAnimation, stop after 20ms');
       if (window.ani.stage) {
         window.ani.stage.play();
         setTimeout(()=>{window.ani.stage.stop();}, 20);
@@ -430,6 +442,7 @@ export class AnimateAdobe {
      * @param textvalue
      */
     setText(objname, textvalue) {
+      console.log('animateadobe set text:',textvalue);
       if (window.ani.exportRoot) {
         const resolvePath = (object, path, defaultValue) => path
           .split('.')
@@ -447,6 +460,8 @@ export class AnimateAdobe {
      * @param e
      */
     handleData(e) {
+      //disable fix, fmi sends startevent if oneshot after registering input again issue when one shot mode sends data - but no animation is performed e.g. in editor (oneshot do not send start signal)
+      //if (window.ani && !window.ani.animationstarted) window.ani.enableAnimation()
       let bindings = window.animatebindings;
       //const eps = 1e-12;
       if (!bindings) return;
