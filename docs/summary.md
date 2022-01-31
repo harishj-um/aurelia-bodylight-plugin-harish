@@ -38,4 +38,5 @@
     * [Animation segments<br />continuous](#example/animationsegmentscont.md)
     * [Animation segments<br /> sync with simulation](#example/animationsimulation.md)
     * [Animation with ECG](#example/animationecg.md)
+    * [Performance](#example/performance.md)
   * [About](#about.md) 
