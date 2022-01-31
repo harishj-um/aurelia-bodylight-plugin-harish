@@ -337,8 +337,8 @@ export class Fmi {
     let separator = '_';
     let prefix = this.fminame;
     //console.log('attached fminame:', that.fminame);
-    // OpenModelica exported function names
-    if (typeof window._fmi2GetVersion === 'function') {
+    // OpenModelica exports function names without prefix
+    if (typeof this.inst._fmi2GetVersion === 'function') {
       prefix = '';
       separator = '';
     }
@@ -359,9 +359,13 @@ export class Fmi {
     this.instantiated = false;
     //calculate pow, power of stepsize
     this.pow = this.stepSize < 1 ? -Math.ceil(-Math.log10(this.stepSize)) : Math.ceil(Math.log10(this.stepSize)); //use Math.trunc ??
-    console.log('instantiate() this.inst', this.inst);
+    console.log('instantiate() this', this);
     this.consoleLoggerPtr = this.inst.addFunction(this.consoleLogger.bind(this), 'viiiiii');
     this.callbackptr = this.fmiCreateCallback(this.consoleLoggerPtr);
+    console.log('fminame',this.fminame);
+    console.log('guid',this.guid);
+    console.log('callbackptr',this.callbackptr);
+    console.log('fmiinstantiate fnc:',this.fmiInstantiate);
     //create instance of model simulation
     this.fmiinst = this.fmiInstantiate(this.fminame, this.cosimulation, this.guid, '', this.callbackptr, 0, 0); //last 1 debug, 0 nodebug
     this.setupExperiment();
