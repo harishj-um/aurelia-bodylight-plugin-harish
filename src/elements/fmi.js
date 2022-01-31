@@ -6,6 +6,7 @@ export class Fmi {
   @bindable fminame='N/A';
   @bindable tolerance=0.000001;//0.000030517578
   @bindable starttime=0;
+  @bindable stoptime=0; //if >0 then fmi will stop at stoptime
   @bindable guid='N/A';
   @bindable id;
   @bindable inputs;
@@ -21,6 +22,7 @@ export class Fmi {
   @bindable showtimemultiply = 1;
   @bindable eventlisten = 'input';//input==continuous/change==when user drops the value
   @bindable mode="continuous"; //continuous or oneshot
+  @bindable stepsperframe = 1;
 
   cosimulation=1;
   stepSize=0.01;//0.0078125;
@@ -262,6 +264,12 @@ export class Fmi {
     if (this.isOneshot) {
       this.showcontrols = false;
     }
+    if (typeof this.stoptime === 'string') {
+      this.stoptime=parseInt(this.stoptime);
+    }
+    if (typeof this.stepsperframee === 'string') {
+      this.stepsperframe=parseInt(this.stepsperframe);
+    }
   }
 
   detached() {
@@ -407,7 +415,9 @@ export class Fmi {
     if (this.animationstarted) {
       this.stopSimulation();
       this.sendStopEvent();
+      this.perfend();
     } else {
+      this.perfstart();
       this.sendStartEvent();
       this.startSimulation();
     }
@@ -434,7 +444,9 @@ export class Fmi {
           this.then = this.now - (this.elapsed % this.fpsInterval);
           this.step();
         }
-      } else this.step();
+      } else {
+        for (let i =0;i<this.stepsperframe;i++) this.step();
+      }
     };
     performAnimation();
   }
@@ -551,6 +563,10 @@ export class Fmi {
           this.fpstick = 0;
         }
       }
+      //stop simulation when stoptime is defined and reached
+      if (this.stoptime>0 && this.animationstarted && this.stoptime<this.stepTime) {
+          this.startstop();
+        }
     } catch (err) {
         console.error('error catched during fmu step',err);
       }
@@ -755,5 +771,23 @@ export class Fmi {
     x /= 24;
     let days = Math.floor(x);
     return ' ' + days + ' ' + hours + ':' + minutes + ':' + seconds;
+  }
+
+  perfstartTime;
+  perfendTime;
+
+  perfstart() {
+    this.perfstartTime = new Date();
+  };
+
+  perfend() {
+    this.perfendTime = new Date();
+    var timeDiff = this.perfendTime - this.perfstartTime; //in ms
+    // strip the ms
+    timeDiff /= 1000;
+
+    // get seconds
+    //var seconds = Math.round(timeDiff);
+    console.warn("Simulation took "+ timeDiff + " seconds");
   }
 }

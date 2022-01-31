@@ -5,6 +5,8 @@
   * `src` (optional) specifies script with FMU JS to be loaded.  If not specified, it is expected that some `<script src='bdl-fmi.js'>` is already included in HTML head. FMU JS is output of FMU compiler.
   * `tolerance` tolerance of the solver (default 0.001)
   * `starttime` start time of the simulation (default 0)
+  * `stoptime` if defined, then simulation stops after the time is reached
+  * `stepsperframe`(default 1), to achieve better performance, you may increase number of steps per frame, otherwise 1 step is performed, maximum 60FPS are offered by browser.
   * `guid` guid as it appears in FMU model description
   * `valuereferences` references to variables, custom event 'fmidata' with `event.detail` set to  `{time: number , data:[number,...]}` where time is timepoint of the current simulation step and data is array of values in same order as in 
   valuereferences
