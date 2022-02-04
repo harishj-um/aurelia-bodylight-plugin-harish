@@ -41,8 +41,6 @@ export class Fmi {
     this.changeinputs = [];
     this.handleValueChange = e => {
       //e.target; //triggered the event
-      //console.log('handlevaluechange', e, e.target);
-      //detail.id or target.id (button) if not empty string either parent of parent (range)
       let targetid;
       if (e.detail && e.detail.id) targetid = e.detail.id;
       else if (e.target.id.length > 0) targetid = e.target.id;
@@ -55,27 +53,22 @@ export class Fmi {
       if (this.isOneshot) setTimeout(this.step.bind(this),100); //do simulation step after 100 ms
     };
     this.handleDetailChange = e => {
-      //e.target; //triggered the event
-      //let targetid = e.target.parent().parent().id;
-      //let targetvalue = e.target.value;
       this.changeinputs.push({valuereference: e.detail.valuereference, value: e.detail.value, fromid: e.detail.id}); //detail will hold the value being changed
       console.log('fmi handle detail change', this.changeinputs);
       //do step if mode is oneshot
       if (this.isOneshot) setTimeout(this.step.bind(this),100); //do simulation step after 100 ms
     };
     this.handleStart = e => {
-      //console.log('handlestart');
       this.startevent(e);
     };
     this.handleStop = e=> {
-      //console.log('handlestop');
       this.stopevent(e);
     };
     //this handles event to register inputs - may be sent by subsequent component which change inputs/outputs communicating with fmi
-    this.handleRegister = e=> {
+    this.handleRegister = ()=> {
       this.deregisterInputs();
       this.registerInputs();
-      if (this.isOneshot) this.step(); //do simulation step after 100 ms
+      if (this.isOneshot) this.step(); //do simulation step immediately;
     }
     this.inst = {};
   }
@@ -113,7 +106,7 @@ export class Fmi {
     //if oneshot - do step
     if (this.isOneshot) {
       //console.log('oneshot scheduling startevent in promise() to do step()')
-      setTimeout(this.sendStartEvent.bind(this),1000); //TODO may cause problems sync when animation not yet loaded
+      setTimeout(this.sendStartEvent.bind(this),1000);
       console.log('oneshot scheduling promise() to do step()')
       setTimeout(this.step.bind(this),1500);
     } //do simulation step after 100 ms
@@ -126,7 +119,7 @@ export class Fmi {
       for (let inputpart of inputparts) {
         let myinputs = inputpart.split(',');
         try {
-          document.getElementById(inputpart[0]).removeEventListener(this.eventlisten, this.handleValueChange);
+          document.getElementById(myinputs[0]).removeEventListener(this.eventlisten, this.handleValueChange);
         } catch (e) { }
 
       }
@@ -169,11 +162,12 @@ export class Fmi {
       this.showcontrols = (this.showcontrols === 'true');
     }
     document.addEventListener('fmiregister',this.handleRegister);
-    //send FMIattached event
+    //sending attached event - some may detect it to register it's outpu listener if attached before
     let event = new CustomEvent('fmiattached');
     document.dispatchEvent(event);
   }
 
+  //detects whether script with FMU is already loaded, if not it adds it to DOM and loads
   //get script element and registers 'onload' callback to be called when the script is loaded
   getScript(source, callback) {
     //check whether the script is not already there
@@ -228,7 +222,7 @@ export class Fmi {
 
     //create instance
     let myinst = window[that.fminame]();
-    //EMSDK v x.x compiles fmu to Promise based api
+    //EMSDK v 3.x compiles fmu to Promise based api
     if (myinst instanceof Promise) {
       myinst.then(inst => {
         that.inst = inst;
@@ -239,12 +233,12 @@ export class Fmi {
         //https://newbedev.com/pass-correct-this-context-to-settimeout-callback
         if (window.thisfmi.isOneshot) {
           //console.log('oneshot scheduling startevent in promise() to do step()')
-          setTimeout(window.thisfmi.sendStartEvent.bind(window.thisfmi),1000); //TODO may cause problems sync when animation not yet loaded
+          setTimeout(window.thisfmi.sendStartEvent.bind(window.thisfmi),1000);
           console.log('oneshot scheduling promise() to do step()')
           setTimeout(window.thisfmi.step.bind(window.thisfmi),1500);
         } //do simulation step after 100 ms
       });
-    } else { //older EMSDK compiles directly to api
+    } else { //older EMSDK prior 3.x compiles directly to api, keep compatibility
       that.inst = myinst;
       if (!window.fmiinst) { window.fmiinst = [];}
       window.fmiinst[that.fminame] = that;
@@ -281,6 +275,7 @@ export class Fmi {
       document.getElementById(this.controlid).removeEventListener('fmistop', this.handleStop);
     }
   }
+
   /**
    * Implements a rudimentary browser console logger for the FMU.
    */
@@ -303,7 +298,6 @@ export class Fmi {
     // eslint-disable-next-line new-cap
     console.log('FMU(' + this.inst.UTF8ToString(instanceName) +  ':' + status + ':' + this.inst.UTF8ToString(category) + ') msg: ' + this.inst.UTF8ToString(formatMessage(message, other))
     );
-
     this.inst._free(formatMessage);
   }
 
@@ -314,6 +308,7 @@ export class Fmi {
   }
 
   instantiate() {
+    //first define FMI API function names;
     const sReset = 'fmi2Reset';
     const sInstantiate = 'fmi2Instantiate';
     const sSetup = 'fmi2SetupExperiment';
@@ -342,6 +337,7 @@ export class Fmi {
       prefix = '';
       separator = '';
     }
+    //now use a 'cwrap' delivered by emscripten to facilitate calling C functions with C primitives (string,number) from Javascript
     this.fmiCreateCallback = this.inst.cwrap(sCreateCallback, 'number', ['number']);
     this.fmiReset = this.inst.cwrap(prefix + separator + sReset, 'number', ['number']);
     this.fmiInstantiate = this.inst.cwrap(prefix + separator + sInstantiate, 'number', ['string', 'number', 'string', 'string', 'number', 'number', 'number']);
@@ -359,13 +355,13 @@ export class Fmi {
     this.instantiated = false;
     //calculate pow, power of stepsize
     this.pow = this.stepSize < 1 ? -Math.ceil(-Math.log10(this.stepSize)) : Math.ceil(Math.log10(this.stepSize)); //use Math.trunc ??
-    console.log('instantiate() this', this);
+    //console.log('instantiate() this', this);
     this.consoleLoggerPtr = this.inst.addFunction(this.consoleLogger.bind(this), 'viiiiii');
     this.callbackptr = this.fmiCreateCallback(this.consoleLoggerPtr);
-    console.log('fminame',this.fminame);
-    console.log('guid',this.guid);
-    console.log('callbackptr',this.callbackptr);
-    console.log('fmiinstantiate fnc:',this.fmiInstantiate);
+    //console.log('fminame',this.fminame);
+    //console.log('guid',this.guid);
+    //console.log('callbackptr',this.callbackptr);
+    //console.log('fmiinstantiate fnc:',this.fmiInstantiate);
     //create instance of model simulation
     this.fmiinst = this.fmiInstantiate(this.fminame, this.cosimulation, this.guid, '', this.callbackptr, 0, 0); //last 1 debug, 0 nodebug
     this.setupExperiment();
@@ -404,12 +400,12 @@ export class Fmi {
   }
 
   startevent(e) {
-    //console.log('fmi startevent', e);
+    console.log('fmi startevent recieved', e);
     if (!this.animationstarted) this.startSimulation();
   }
 
   stopevent(e) {
-    //console.log('fmi stopevent', e);
+    console.log('fmi stopevent recieved', e);
     if (this.animationstarted) this.stopSimulation();
   }
 
@@ -430,11 +426,8 @@ export class Fmi {
   //defines action to be done during browser animationframe and starts
   startSimulation() {
     this.animationstarted = true;
-    //if (this.fpslimit && (this.fpslimit < 60)) {
     this.fpsInterval = 1000 / (isNaN(this.fpslimit) ? parseInt(this.fpslimit, 10) : this.fpslimit);
     this.then = window.performance.now();
-    //this.startTime = this.then;
-    //}
     const performAnimation = (newtime) => {
       if (!this.animationstarted) return;
       this.request = requestAnimationFrame(performAnimation);
@@ -496,7 +489,6 @@ export class Fmi {
         this.instantiate();
         this.initialize();
       }
-      //console.log('step()1 fmiinst', this.fmiinst);
       this.stepi++;
 
       //changeinputs
@@ -522,11 +514,9 @@ export class Fmi {
       }
       //dostep
       //compute step to round the desired time
-      //const res = this.fmiDoStep(this.fmiinst, this.stepTime, this.stepSize, 1);
       const res = this.fmiDoStep(this.fmiinst, this.stepTime, this.mystep, 1);
       this.stepTime = this.stepTime + this.mystep;
       this.mystep = this.stepSize; //update correction step to current step
-      //console.log('step() res:', res);
       if (res === 1 || res === 2) {
         console.warn('step() returned state<>0, doing reset()', res);
         this.fmiReset(this.fmiinst);
@@ -552,9 +542,7 @@ export class Fmi {
           this.fpsInterval = 1000 / (isNaN(this.fpslimit) ? parseInt(this.fpslimit, 10) : this.fpslimit);
           //update ticks - so it will be every 3 seconds
           this.ticksToUpdate = Math.round(3000 / this.fpsInterval);
-          //console.log('corrected fpsInterval', this.fpsInterval);
           //do correction step calculation
-          //this.pow = 0;
           if (this.stepSize < 1) {
             this.pow = -Math.ceil(-Math.log10(this.stepSize));
           } else {
@@ -562,7 +550,6 @@ export class Fmi {
           }
           this.mystep = this.round(this.stepTime + this.stepSize, this.pow) - this.stepTime;
           //do fps calculation
-          //console.log(this.ticksToUpdate,this.startfpstime,this.fpstick);
           this.fps = (1000 * this.ticksToUpdate / (window.performance.now() - this.startfpstime)).toPrecision(4);
           this.fpstick = 0;
         }
@@ -582,16 +569,10 @@ export class Fmi {
 
   setInputVariables() {
     if (this.changeinputs.length > 0) {
-      //TODO 1. stop simulation
-      //TODO 2. get fmu statte
-      //TODO 3. set fmu state
-      //TODO 4. initialize
-      //TODO 5. set parameter values
       while (this.changeinputs.length > 0) {
         let myinputs = this.changeinputs.shift(); //remove first item
         console.log('changing inputs', myinputs);
         //set real - reference is in - one input one reference
-        //for (let reference of this.inputs[myinputs.id])
         //sets individual values - if id is in input, then reference is taken from inputs definition
         console.log('changing inputs,id,value', this.inputreferences, myinputs.id, myinputs.value);
         let normalizedvalue = myinputs.value * this.inputreferences[myinputs.id].numerator / this.inputreferences[myinputs.id].denominator + this.inputreferences[myinputs.id].addconst;
@@ -784,14 +765,13 @@ export class Fmi {
     this.perfstartTime = new Date();
   };
 
+  //outputs how many s the simulation was performed - at the end of simulation, good to measure performance
   perfend() {
     this.perfendTime = new Date();
     var timeDiff = this.perfendTime - this.perfstartTime; //in ms
     // strip the ms
     timeDiff /= 1000;
-
     // get seconds
-    //var seconds = Math.round(timeDiff);
     console.warn("Simulation took "+ timeDiff + " seconds");
   }
 }
