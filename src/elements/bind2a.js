@@ -12,10 +12,12 @@ export class Bind2a {
     @bindable findex; //index of variable in fmu array
     @bindable amin = 0; //minimal value in animate component
     @bindable amax = 100; //maximal value in animate component
-    @bindable fmin = 0; //minimal value of variable from fmu model
-    @bindable fmax = 100; //maximal value of variable from fmu model
+    @bindable fmin; //optional minimal value of variable from fmu model
+    @bindable fmax; //optional maximal value of variable from fmu model
     @bindable convertor;
     index=0;
+    autofmin = false;
+    autofmax = false;
 
     constructor() {
 
@@ -23,14 +25,14 @@ export class Bind2a {
 
     //it is called when all bindable properties are set to class instance;
     bind() {
-      //push into array
       this.amin = parseFloat(this.amin);
       this.amax = parseFloat(this.amax);
-      this.fmin = parseFloat(this.fmin);
-      this.fmax = parseFloat(this.fmax);
+      //optional fmin,fmax - if not set then autofmin fmax is triggered
+      if (this.fmin) this.fmin = parseFloat(this.fmin); else this.autofmin = true;
+      if (this.fmax) this.fmax = parseFloat(this.fmax); else this.autofmax = true;
       //create bind2animation structure
       let operation = this.parseConvertors();
-      let binding = new Bind2animation(this.findex, this.aname, this.amin, this.amax, this.fmin, this.fmax, operation);
+      let binding = new Bind2animation(this.findex, this.aname, this.amin, this.amax, this.fmin, this.fmax, operation,this.autofmin, this.autofmax);
       this.addbinding(binding);
     }
 

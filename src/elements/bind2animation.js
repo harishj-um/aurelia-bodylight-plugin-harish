@@ -10,14 +10,22 @@ export class Bind2animation {
     fmin;fmax; //min and max values from FMU model simulation
     k1;k2;k3; //internal koefficients
     operation; //converting operation - function (x) -> return some_algebraic_operation_on(x)
+    autofmin = false;
+    autofmax = false;
+    afmin = Number.MAX_SAFE_INTEGER;
+    afmax = Number.MIN_SAFE_INTEGER;
+    afminset = false;
+    afmaxset = false;
 
-    constructor(_findex, _aname, _amin, _amax, _fmin, _fmax, _operation) {
+    constructor(_findex, _aname, _amin, _amax, _fmin, _fmax, _operation,_autofmin,_autofmax) {
       this.findex = _findex;
       this.aname = _aname; //can be obtained by Object.keys(window.ani.lib).filter(name => name.endsWith('Celek'))
       this.amin = _amin;
       this.amax = _amax;
       this.fmin = _fmin;
       this.fmax = _fmax;
+      this.autofmin = _autofmin;
+      this.autofmax = _autofmax;
       this.operation = _operation;
       this.k1 = (this.fmax !== this.fmin) ? (1 / (this.fmax - this.fmin)) : 0;
       this.k2 = (this.fmax !== this.fmin) ? (this.fmin / (this.fmax - this.fmin)) : 0;
@@ -31,7 +39,26 @@ export class Bind2animation {
     convertf2a(x) {
       //do conversion if operation is defined
       if (this.operation) x = this.operation(x);
+
+      if (this.autofmin) {
+        //initially sets minimum as 1/2 of current value, otherwise update it
+        if (!this.afminset) {
+          this.fmin = x/2;
+        } else {
+          this.fmin = Math.min(this.fmin,x);
+        }
+      }
       if (x < this.fmin) return this.amin;
+
+      if (this.autofmax) {
+        //initially sets maximum as 2x of current value, otherwise update it
+        if (!this.afmaxset) {
+          this.fmax = x*2;
+        } else {
+          this.fmax = Math.max(this.fmax,x);
+        }
+      }
+
       if (x < this.fmax) return this.amin + (x * this.k1 - this.k2) * this.k3;
       return this.amax;
     }
