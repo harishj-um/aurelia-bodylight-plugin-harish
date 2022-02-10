@@ -1,11 +1,9 @@
 # Aurelia plugin with Bodylight web components 
 [![Build Status](https://travis-ci.com/creative-connections/aurelia-bodylight-plugin.svg?branch=master)](https://travis-ci.com/creative-connections/aurelia-bodylight-plugin)
-[![Project stage: Development][project-stage-badge: Development]][project-stage-page]
+[![stability-beta](https://img.shields.io/badge/stability-beta-33bbff.svg)](https://github.com/mkenney/software-guides/blob/master/STABILITY-BADGES.md#beta)
 [![Version](https://img.shields.io/npm/v/aurelia-bodylight-plugin.svg)](https://www.npmjs.com/package/aurelia-bodylight-plugin)
 [![Maintainability](https://api.codeclimate.com/v1/badges/3b493506de72a23d92b7/maintainability)](https://codeclimate.com/github/creative-connections/aurelia-bodylight-plugin/maintainability)
- 
-[project-stage-badge: Development]: https://img.shields.io/badge/Project%20Stage-Development-yellowgreen.svg
-[project-stage-page]: https://blog.pother.ca/project-stages/ 
+
 
 
 Web components of the Bodylight library is a suite of custom elements enhancing HTML.
