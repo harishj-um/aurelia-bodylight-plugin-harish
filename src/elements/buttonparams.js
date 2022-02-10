@@ -8,6 +8,8 @@ export class Buttonparams {
     @bindable ticks2reset = 1;
     @bindable fromid;
     @bindable fireevent='input'; //name of the event to be fired
+    @bindable findex; //optional index of variables which will be set to values array
+    @bindable convertors; //optional convertor??
     showinputs=false; //debug to show inputs true, otherwise false
     values2send=[];
     ids2send=[];
@@ -20,7 +22,7 @@ export class Buttonparams {
         if (this.currenttick >= this.ticks2reset) {
           //do reset values
           if (this.ids2send.length !== this.resetvalues2send.length) {
-            console.log('warning ids and values contain different number of items.', this.ids2send, this.resetvalues2send);
+            console.warn('warning ids and values contain different number of items.', this.ids2send, this.resetvalues2send);
             return;
           }
           //set reset values
@@ -67,7 +69,7 @@ export class Buttonparams {
     dispatch the event and if resetvalues is set - then listen fmidata event
      */
     switchvalues() {
-      if (this.ids2send.length !== this.values2send.length) {console.log('warning ids and values contain different number of items.', this.ids2send, this.values2send); return;}
+      if (this.ids2send.length !== this.values2send.length) {console.warn('warning ids and values contain different number of items.',this.ids2send, this.values2send); return;}
       for (let i = 0; i < this.ids2send.length; i++) {
         let inputel = document.getElementById(this.ids2send[i]);
         inputel.value = this.values2send[i];

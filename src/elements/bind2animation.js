@@ -27,8 +27,7 @@ export class Bind2animation {
       this.autofmin = _autofmin;
       this.autofmax = _autofmax;
       this.operation = _operation;
-      this.k1 = (this.fmax !== this.fmin) ? (1 / (this.fmax - this.fmin)) : 0;
-      this.k2 = (this.fmax !== this.fmin) ? (this.fmin / (this.fmax - this.fmin)) : 0;
+      this.updateK();
       this.k3 = (this.amax - this.amin);
     }
 
@@ -44,23 +43,39 @@ export class Bind2animation {
         //initially sets minimum as 1/2 of current value, otherwise update it
         if (!this.afminset) {
           this.fmin = x/2;
+          this.afminset = true;
+          this.updateK();
         } else {
-          this.fmin = Math.min(this.fmin,x);
+          if (x<this.fmin) {
+            this.fmin=x;
+            this.updateK();
+          }
         }
       }
-      if (x < this.fmin) return this.amin;
+
+      if (x <= this.fmin) return this.amin;
 
       if (this.autofmax) {
         //initially sets maximum as 2x of current value, otherwise update it
         if (!this.afmaxset) {
           this.fmax = x*2;
+          this.afmaxset = true;
+          this.updateK();
         } else {
-          this.fmax = Math.max(this.fmax,x);
+          if (x>this.fmax) {
+            this.fmax= x;
+            this.updateK();
+          }
         }
       }
 
       if (x < this.fmax) return this.amin + (x * this.k1 - this.k2) * this.k3;
       return this.amax;
+    }
+
+    updateK() {
+      this.k1 = (this.fmax !== this.fmin) ? (1 / (this.fmax - this.fmin)) : 0;
+      this.k2 = (this.fmax !== this.fmin) ? (this.fmin / (this.fmax - this.fmin)) : 0;
     }
 
     handleValue(animobj, value) {
