@@ -359,7 +359,7 @@ export class AnimateAdobe {
      */
 
     setAnimationValue(objname, value) {
-      console.log('animateadobe setAnimationValue',value);
+      //console.log('animateadobe setAnimationValue',value);
       //console.log('adobe-animate() setting window.ani.exportRoot.children[0][' + objname + '].gotoAndStop(' + value + ')');
       if (window.ani.exportRoot) {
         //resolve path from string
@@ -442,7 +442,7 @@ export class AnimateAdobe {
      * @param textvalue
      */
     setText(objname, textvalue) {
-      console.log('animateadobe set text:',textvalue);
+      //console.log('animateadobe set text:',textvalue);
       if (window.ani.exportRoot) {
         const resolvePath = (object, path, defaultValue) => path
           .split('.')
