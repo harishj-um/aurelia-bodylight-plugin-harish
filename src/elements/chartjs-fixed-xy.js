@@ -158,6 +158,7 @@ export class ChartjsFixedXy extends ChartjsFixed {
         this.type = 'scatter';
         this.data.labels = [];
         this.xrefindex = parseInt(this.xrefindex, 10);
+        if (typeof this.maxdata === 'string') this.maxdata = parseInt(this.maxdata);
         if (!this.xrefindex) console.warn('xrefindex is not specified');
         this.xrefvalues = parseInt(this.xrefvalues, 10);
         if (this.xrefvalues !== this.refvalues) console.warn('the value of "xrefvalues" must be equal to "refvalues"');
