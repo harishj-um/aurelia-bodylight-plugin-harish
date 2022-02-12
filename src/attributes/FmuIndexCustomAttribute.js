@@ -2,6 +2,7 @@ import {inject,DOM} from 'aurelia-framework';
 //@customAttribute('fmu-index')
 @inject(DOM.Element)
 export class FmuIndexCustomAttribute {
+
   constructor(element) {
     this.element = element;
     this.handleValueChange = e => {

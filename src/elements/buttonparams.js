@@ -8,8 +8,8 @@ export class Buttonparams {
     @bindable ticks2reset = 1;
     @bindable fromid;
     @bindable fireevent='input'; //name of the event to be fired
-    @bindable findex; //optional index of variables which will be set to values array
-    @bindable convertors; //optional convertor??
+    //@bindable findex; //optional index of variables which will be set to values array fmu-index
+    //@bindable convertors; //optional convertor?? value-convertor
     showinputs=false; //debug to show inputs true, otherwise false
     values2send=[];
     ids2send=[];
