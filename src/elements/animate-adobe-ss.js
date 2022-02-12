@@ -65,19 +65,23 @@ export class AnimateAdobeSs {
     console.log('animate adobe ss lib keys:',keys);
     console.log('animate adobe ss name to be initialized:',this.name);
     //fix '_' before object name
-    let exportRoot = new this.lib['_'+this.name]();//new lib._04_Fe_výskyt_HTML5Canvas();
-    let stage = new this.lib.Stage(this.canvas);
+    this.exportRoot = new this.lib['_'+this.name]();//new lib._04_Fe_výskyt_HTML5Canvas();
+    this.stage = new this.lib.Stage(this.canvas);
     //Registers the "tick" event listener.
-    let fnStartAnimation = function() {
-      stage.addChild(exportRoot);
-      createjs.Ticker.setFPS(this.lib.properties.fps);
-      createjs.Ticker.addEventListener("tick", stage);
-    }
     //Code to support hidpi screens and responsive scaling.
-    AdobeAn.makeResponsive(false,'both',false,1,[this.canvas,this.anim_container,this.dom_overlay_container]);
+    //AdobeAn.makeResponsive(false,'both',false,1,[this.canvas,this.anim_container,this.dom_overlay_container]);
+    this.makeResponsive(true, 'both', true, 1, [this.canvas, this.anim_container, this.dom_overlay_container]);
+
     AdobeAn.compositionLoaded(this.lib.properties.id);
-    fnStartAnimation();
+    this.fnStartAnimation();
   }
+
+  fnStartAnimation() {
+    this.stage.addChild(this.exportRoot);
+    createjs.Ticker.setFPS(this.lib.properties.fps);
+    createjs.Ticker.addEventListener("tick", this.stage);
+  }
+
 
   playSound(id, loop) {
     return createjs.Sound.play(id, createjs.Sound.INTERRUPT_EARLY, 0, 0, loop);
@@ -104,7 +108,7 @@ export class AnimateAdobeSs {
         // try to insert script by other app for previewing - scripts might be inserted into DOM
         if (window.editorapi && (typeof window.editorapi.insertScriptById === 'function')) {
           //disable previoues definition
-          window.ani.destroyAdobe();
+          this.destroyAdobe();
           //enable current def
           //console.log('inserting script by thirdparty api');
           window.editorapi.insertScriptById(source, 'adobeobj')
@@ -136,5 +140,56 @@ export class AnimateAdobeSs {
     //add custom animate script into DOM - the onload will be called then
     prior.parentNode.insertBefore(script, prior);
   }
+
+  makeResponsive(isResp, respDim, isScale, scaleType, domContainers) {
+    //let lastW; let lastH; let lastS = 1;
+    window.addEventListener('resize', this.handleResize.bind(this));
+    this.isResp = isResp;
+    this.respDim = respDim;
+    this.isScale = isScale;
+    this.scaleType = scaleType;
+    this.domContainers = domContainers;
+    this.handleResize();
+  }
+
+  handleResize() {
+    console.log('animateadobe handleResize()');
+    //do not run if ani.lib is not defined - no adobe component is available
+    if (!this.lib) return;
+    let w = this.lib.properties.width; let h = this.lib.properties.height;
+    let iw = window.innerWidth;
+    let ih = window.innerHeight;
+    if (this.canvas && this.canvas.parentElement && this.canvas.parentElement.parentElement && this.canvas.parentElement.parentElement.parentElement) {
+      iw = this.canvas.parentElement.parentElement.parentElement.offsetWidth;
+      ih = this.canvas.parentElement.parentElement.parentElement.offsetHeight;
+    }
+    ih = iw / ( w / h );
+    //let iw = window.innerWidth; let ih = window.innerHeight;
+    let pRatio = window.devicePixelRatio || 1; let xRatio = iw / w; let yRatio = ih / h; let sRatio = 1;
+    if (this.isResp) {
+      if ((this.respDim === 'width' && this.lastW === iw) || (this.respDim === 'height' && this.lastH === ih)) {
+        sRatio = this.lastS;
+      } else if (!this.isScale) {
+        if (iw < w || ih < h) {sRatio = Math.min(xRatio, yRatio);}
+      } else if (this.scaleType === 1) {
+        sRatio = Math.min(xRatio, yRatio);
+      } else if (this.scaleType === 2) {
+        sRatio = Math.max(xRatio, yRatio);
+      }
+    }
+    this.domContainers[0].width = w * pRatio * sRatio;
+    this.domContainers[0].height = h * pRatio * sRatio;
+    this.domContainers.forEach(function(container) {
+      container.style.width = w * sRatio + 'px';
+      container.style.height = h * sRatio + 'px';
+    });
+    this.stage.scaleX = pRatio * sRatio;
+    this.stage.scaleY = pRatio * sRatio;
+    this.lastW = iw; this.lastH = ih; this.lastS = sRatio;
+    this.stage.tickOnUpdate = false;
+    this.stage.update();
+    this.stage.tickOnUpdate = true;
+  }
+
 
 }
