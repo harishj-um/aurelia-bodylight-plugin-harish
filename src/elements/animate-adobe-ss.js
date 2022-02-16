@@ -10,6 +10,7 @@ export class AnimateAdobeSs {
 
   constructor(){}
   bind(){}
+
   attached(){
     //let that = this;
     let continueAfter = () => {
@@ -31,19 +32,75 @@ export class AnimateAdobeSs {
       console.log('INFO: waiting 1000ms for createjs ');
       setTimeout(() => continueAfter.bind(this), 1000);
     } else continueAfter();
-
   }
+
+  //handleResize(); // First draw
+  detached() {
+    console.log('adobeobj detached()');
+    //stop animation
+    //this.disableAnimation();
+    //remove script
+    this.removeScript(this.src);
+    //destroy bindings
+    this.bindings = [];
+    //remove listeners
+    /*let fromel = document.getElementById(this.fromid);
+    if (fromel) {
+      fromel.removeEventListener('animatestart', this.startAllAnimation);
+      fromel.removeEventListener('animatestop', this.stopAllAnimation);
+      fromel.removeEventListener('fmidata', this.handleValueChange);
+      fromel.removeEventListener('fmistart', this.enableAnimation);
+      fromel.removeEventListener('fmistop', this.disableAnimation);
+    }*/
+    this.destroyAdobe();
+    //document.removeEventListener('fmiattached',this.handleFMIAttached);
+  }
+
+  destroyAdobe() {
+    console.log('animate adobe ss destroy()');
+    if (this.stage) {
+      this.stage.enableMouseOver(-1);
+      this.stage.enableDOMEvents(false);
+      this.stage.removeAllEventListeners();
+      this.stage.removeAllChildren();
+      this.stage.canvas = null;
+      this.stage = null;
+    }
+    if (this.exportRoot) this.exportRoot = null;
+    if (this.ss) this.ss = null;
+    if (this.lib) this.lib = null;
+    if (this.comp) this.comp = null;
+    if (this.cid) this.cid = null;
+    if (this.objs) this.objs = null;
+    if (this.animobjs) this.animobjs = null;
+    if (this.textobjs) this.textobjs = null;
+    if (this.playobjs) this.playobjs = null;
+    if (this.AdobeAn) this.AdobeAn = null;
+  }
+
+
   init(){
     //canvas = document.getElementById("canvas");
     //anim_container = document.getElementById("animation_container");
     //dom_overlay_container = document.getElementById("dom_overlay_container");
-    let cid = Object.keys(AdobeAn.compositions)[0];
+    //find the right composition
+    this.lib = null; this.comp = null;
+    for (let cid of Object.keys(AdobeAn.compositions)) {
+      let comp = AdobeAn.getComposition(cid);
+      let lib = comp.getLibrary();
+      if (lib[this.name] || lib['_'+this.name]) {
+        this.lib = lib;
+        this.comp = comp;
+        break;
+      }
+    }
+    /*let cid = Object.keys(AdobeAn.compositions).at(-1); //TODO last composition is the one needed??
     let comp=AdobeAn.getComposition(cid);
-    this.lib=comp.getLibrary();
+    this.lib=comp.getLibrary();*/
     let loader = new createjs.LoadQueue(false);
     loader.installPlugin(createjs.Sound);
-    loader.addEventListener("fileload", function(evt){this.handleFileLoad(evt,comp)}.bind(this));
-    loader.addEventListener("complete", function(evt){this.handleComplete(evt,comp)}.bind(this));
+    loader.addEventListener("fileload", function(evt){this.handleFileLoad(evt,this.comp)}.bind(this));
+    loader.addEventListener("complete", function(evt){this.handleComplete(evt,this.comp)}.bind(this));
     //var lib=comp.getLibrary();
     loader.loadManifest(this.lib.properties.manifest);
   }
@@ -65,7 +122,9 @@ export class AnimateAdobeSs {
     console.log('animate adobe ss lib keys:',keys);
     console.log('animate adobe ss name to be initialized:',this.name);
     //fix '_' before object name
-    this.exportRoot = new this.lib['_'+this.name]();//new lib._04_Fe_výskyt_HTML5Canvas();
+    if (typeof this.lib[this.name] == 'function') this.exportRoot = new this.lib[this.name]
+    else if (typeof this.lib['_'+this.name] == 'function') this.exportRoot = new this.lib['_'+this.name]();//new lib._04_Fe_výskyt_HTML5Canvas();
+    else { console.warn('cannot instantiate animation',this.name); return;}
     this.stage = new this.lib.Stage(this.canvas);
     //Registers the "tick" event listener.
     //Code to support hidpi screens and responsive scaling.
@@ -189,6 +248,14 @@ export class AnimateAdobeSs {
     this.stage.tickOnUpdate = false;
     this.stage.update();
     this.stage.tickOnUpdate = true;
+  }
+
+  removeScript(source) {
+    let src = window.bdlBaseHref ? window.bdlBaseHref + source : source;
+    let tags = document.getElementsByTagName('script');
+    for (let i = tags.length; i >= 0; i--) { //search backwards within nodelist for matching elements to remove
+      if (tags[i] && tags[i].getAttribute('src') !== null && tags[i].getAttribute('src').indexOf(src) !== -1) {tags[i].parentNode.removeChild(tags[i]);} //remove element by calling parentNode.removeChild()
+    }
   }
 
 
