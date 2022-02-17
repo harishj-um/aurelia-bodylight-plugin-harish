@@ -1,9 +1,15 @@
-import {bindable} from 'aurelia-framework';
+import {bindable,bindingMode} from 'aurelia-framework';
 export class Buttonparams {
     //@bindable value;
     @bindable title;
     @bindable ids;
-    @bindable values;
+    @bindable values; /*({
+      name:'values',
+      attribute:'values',
+      changeHandler:'valuesChanged',
+      defaultBindingMode: bindingMode.twoWay,
+      defaultValue: undefined
+    })*/
     @bindable resetvalues;
     @bindable ticks2reset = 1;
     @bindable fromid;
@@ -85,5 +91,9 @@ export class Buttonparams {
           fromel.addEventListener('fmidata', this.handleTick);
         }
       }
+    }
+
+    valuesChanged() {
+      this.values2send = this.values.split(',');
     }
 }

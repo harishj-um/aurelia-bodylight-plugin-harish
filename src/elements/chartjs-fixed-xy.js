@@ -24,7 +24,7 @@ export class ChartjsFixedXy extends ChartjsFixed {
     @bindable type;
     @bindable min;
     @bindable max;
-    @bindable maxdata=3;
+    @bindable maxdata=8;
     @bindable xrefindex;
     @bindable xrefvalues;
     @bindable xtofixed = 0;
