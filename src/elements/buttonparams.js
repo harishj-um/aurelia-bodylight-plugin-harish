@@ -1,6 +1,6 @@
 import {bindable} from 'aurelia-framework';
 export class Buttonparams {
-    @bindable value;
+    //@bindable value;
     @bindable title;
     @bindable ids;
     @bindable values;
@@ -17,7 +17,7 @@ export class Buttonparams {
     currenttick = 0;
 
     constructor() {
-      this.handleValueChange = e => {
+      this.handleTick = e => {
         this.currenttick++;
         if (this.currenttick >= this.ticks2reset) {
           //do reset values
@@ -32,10 +32,10 @@ export class Buttonparams {
             let event = new Event('change');
             inputel.dispatchEvent(event);
           }
-          //remove event listener
+          //remove event listener - do not need to listen the event anymore
           const fromel = document.getElementById(this.fromid);
           if (fromel) {
-            fromel.removeEventListener('fmidata', this.handleValueChange);
+            fromel.removeEventListener('fmidata', this.handleTick);
           }
         }
       };
@@ -76,12 +76,13 @@ export class Buttonparams {
         let event = new Event(this.fireevent);
         inputel.dispatchEvent(event);
       }
-      //listen to ticks - fmidata event
+
+      //if resetvalues are set, listen to ticks - fmidata event and after defined ticks2reset the values are set to resetvalues
       if (this.resetvalues) {
         this.currenttick = 0;
         const fromel = document.getElementById(this.fromid);
         if (fromel) {
-          fromel.addEventListener('fmidata', this.handleValueChange);
+          fromel.addEventListener('fmidata', this.handleTick);
         }
       }
     }
