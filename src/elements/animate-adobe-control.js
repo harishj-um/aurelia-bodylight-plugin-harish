@@ -8,7 +8,10 @@ export class AnimateAdobeControl {
       console.log('animateadobecontrol startstop()', this);
       this.animationstarted = ! this.animationstarted;
       let eventname;
-      if (this.animationstarted) eventname = 'animatestart';
+      if (this.animationstarted) {
+        if (window.ani) window.ani.enableAnimation();
+        eventname = 'animatestart';
+      }
       else  eventname = 'animatestop';
       let event = new CustomEvent(eventname, {detail: {time: this.frame}}); //send start signal on frame 0
       //dispatch event - it should be listened by some other component

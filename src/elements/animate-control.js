@@ -104,6 +104,7 @@ export class AnimateControl {
       document.getElementById(this.id).dispatchEvent(event);
     } else {
       //this.animationstarted = true;
+      if (window.ani) window.ani.enableAnimation();
       let that = this;
       //console.log('startstop() animate using requestAnimationFrame');
       //animate using requestAnimationFrame
@@ -188,6 +189,7 @@ export class AnimateControl {
         this.astep = adif / sdif;
       }
       //console.log('BdlAnimateControl segment() astep', this.astep);
+      if (window.ani) window.ani.enableAnimation();
       let event = new CustomEvent(this.eventprefix + 'start', {detail: {time: this.frame}});
       document.getElementById(this.id).dispatchEvent(event);
     }

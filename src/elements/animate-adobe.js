@@ -183,7 +183,7 @@ export class AnimateAdobe {
       if (window.ani && window.ani.animobjs) window.ani.animobjs = null;
       if (window.ani && window.ani.textobjs) window.ani.textobjs = null;
       if (window.ani && window.ani.playobjs) window.ani.playobjs = null;
-      if (window.AdobeAn) window.AdobeAn = null;
+      //if (window.AdobeAn) window.AdobeAn = null;
     }
 
     removeScript(source) {

@@ -42,7 +42,7 @@ export class Bind2animation {
       if (this.autofmin) {
         //initially sets minimum as 1/2 of current value, otherwise update it
         if (!this.afminset) {
-          this.fmin = x/2;
+          this.fmin = x*0.9;
           this.afminset = true;
           this.updateK();
         } else {
@@ -58,7 +58,7 @@ export class Bind2animation {
       if (this.autofmax) {
         //initially sets maximum as 2x of current value, otherwise update it
         if (!this.afmaxset) {
-          this.fmax = x*2;
+          this.fmax = x*1.1;
           this.afmaxset = true;
           this.updateK();
         } else {
@@ -74,6 +74,7 @@ export class Bind2animation {
     }
 
     updateK() {
+      console.log('bind2animation updateK() aname'+this.aname+' min:'+ this.fmin+ ' max:'+this.fmax);
       this.k1 = (this.fmax !== this.fmin) ? (1 / (this.fmax - this.fmin)) : 0;
       this.k2 = (this.fmax !== this.fmin) ? (this.fmin / (this.fmax - this.fmin)) : 0;
     }
