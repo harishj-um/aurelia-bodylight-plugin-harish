@@ -104,7 +104,7 @@ export class AnimateControl {
       document.getElementById(this.id).dispatchEvent(event);
     } else {
       //this.animationstarted = true;
-      if (window.ani) window.ani.enableAnimation();
+      //if (window.ani) window.ani.enableAnimation();
       let that = this;
       //console.log('startstop() animate using requestAnimationFrame');
       //animate using requestAnimationFrame

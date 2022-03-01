@@ -16,6 +16,7 @@ export class AnimateAdobe {
     @bindable name;//="ZelezoCelek"
     @bindable cid;//="3CC81150E735AE4485D4B0DF526EB8B4";
     @bindable fromid;
+    @bindable fmuid; //optional -if not defined fromid is taken, fmu event is listened by fromid element
     @bindable responsive;
     animationstarted = false;
 
@@ -31,17 +32,25 @@ export class AnimateAdobe {
       this.handleFMIAttached = e => {
         let fromel = document.getElementById(this.fromid);
         if (fromel) {
-          fromel.addEventListener('animatestart', this.startAllAnimation);
-          fromel.addEventListener('animatestop', this.stopAllAnimation);
-          fromel.addEventListener('fmidata', this.handleValueChange);
-          fromel.addEventListener('fmistart', this.startAllAnimation);
-          fromel.addEventListener('fmistop', this.disableAnimation);
+          this.registerAnimateEvents(fromel);
+          if (this.fmuid) {this.registerFMUEvents(document.getElementById(this.fmuid))}
+          else this.registerFMUEvents(fromel);
         } else {
           console.warn('adobe-animate component configured to listen non-existing element with id:', this.fromid);
         }
       }
     }
 
+    registerAnimateEvents(fromel)        {
+      fromel.addEventListener('animatestart', this.startAllAnimation);
+      fromel.addEventListener('animatestop', this.stopAllAnimation);
+    }
+
+    registerFMUEvents(fromel)         {
+      fromel.addEventListener('fmidata', this.handleValueChange);
+      fromel.addEventListener('fmistart', this.enableAnimation);
+      fromel.addEventListener('fmistop', this.disableAnimation);
+    }
     /**
      * adds listeners to the component 'fromid' and listens to following
      * 'animatestart' starts all animation
@@ -52,17 +61,16 @@ export class AnimateAdobe {
       if (this.fromid) {
         let fromel = document.getElementById(this.fromid);
         if (fromel) {
-          fromel.addEventListener('animatestart', this.startAllAnimation);
-          fromel.addEventListener('animatestop', this.stopAllAnimation);
-          fromel.addEventListener('fmidata', this.handleValueChange);
-          fromel.addEventListener('fmistart', this.startAllAnimation);
-          fromel.addEventListener('fmistop', this.disableAnimation);
+          this.registerAnimateEvents(fromel);
+          if (this.fmuid) {this.registerFMUEvents(document.getElementById(this.fmuid))}
+          else this.registerFMUEvents(fromel);
         } else {
-          console.warn('adobe-animate waitning for fmi component to be attached');
+          console.warn('adobe-animate waiting for fmi component to be attached');
           document.addEventListener('fmiattached',this.handleFMIAttached);
         }
       }
     }
+
     attached() {
       //disable animation if enabled from previous
       console.log('adobeobj attached()');
