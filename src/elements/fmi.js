@@ -87,8 +87,13 @@ export class Fmi {
           addconst = 0;
           fixedsignature = myinputs[4] === 'f';
         } //fixes bug, setting  instead of NaN, when 4th param is omited and instead 'f' or 't' is specified
-
-        this.inputreferences[myinputs[0]] = {ref: myinputs[1], numerator: numerator, denominator: denominator, addconst: addconst, fixed: fixedsignature}; //first is id second is reference
+        let inputref = {ref: myinputs[1], numerator: numerator, denominator: denominator, addconst: addconst, fixed: fixedsignature};
+        if (this.inputreferences[myinputs[0]]) {
+          this.inputreferences[myinputs[0]].fixed = this.inputreferences[myinputs[0]].fixed || fixedsignature;
+          this.inputreferences[myinputs[0]].refs.push(inputref); //first is id second is reference
+        }
+          else
+            this.inputreferences[myinputs[0]] = {fixed:fixedsignature,refs:[inputref]}; //first is id second is reference
         //register change event - the alteration is commited
         let dependentEl = document.getElementById(myinputs[0]);
         //now register 'change' event or eventlisten
@@ -571,14 +576,16 @@ export class Fmi {
     if (this.changeinputs.length > 0) {
       while (this.changeinputs.length > 0) {
         let myinputs = this.changeinputs.shift(); //remove first item
-        console.log('changing inputs', myinputs);
+        //console.log('changing inputs', myinputs);
         //set real - reference is in - one input one reference
         //sets individual values - if id is in input, then reference is taken from inputs definition
         console.log('changing inputs,id,value', this.inputreferences, myinputs.id, myinputs.value);
-        let normalizedvalue = myinputs.value * this.inputreferences[myinputs.id].numerator / this.inputreferences[myinputs.id].denominator + this.inputreferences[myinputs.id].addconst;
-        if (myinputs.id) this.setSingleReal(this.inputreferences[myinputs.id].ref, normalizedvalue);
-        // if reference is in input, then it is set directly
-        else if (myinputs.valuereference) this.setSingleReal(myinputs.valuereference, normalizedvalue);
+        for (let iref of this.inputreferences[myinputs.id].refs) {
+          let normalizedvalue = myinputs.value * iref.numerator / iref.denominator + iref.addconst;
+          if (myinputs.id) this.setSingleReal(iref.ref, normalizedvalue);
+          // if reference is in input, then it is set directly
+          else if (myinputs.valuereference) this.setSingleReal(myinputs.valuereference, normalizedvalue);
+        }
       }
       //flush all in one call to fmi
       this.flushRealQueue();
