@@ -79,7 +79,7 @@ export class MarkdownTopNav {
       }
     }
 
-    showhidenav() {
+    showhidefull() {
       this.nav = ! this.nav;
       if (! this.nav) {
         if (document.documentElement.requestFullscreen) {
@@ -95,6 +95,10 @@ export class MarkdownTopNav {
         }
       }
     }
+
+  showhidenav() {
+    this.nav = ! this.nav;
+  }
 
     showhidetoc() {
       this.toc = ! this.toc;
