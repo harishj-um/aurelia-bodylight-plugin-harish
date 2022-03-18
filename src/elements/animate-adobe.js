@@ -259,8 +259,18 @@ export class AnimateAdobe {
     //this is called after animate script is loaded into DOM, so global AdobeAn is available
     initAdobe() {
       console.log('animateadobe initAdobe()');
+      //search for composition which has the 'name' in library
+      for (let cid of Object.keys(window.AdobeAn.compositions)) {
+        let comp = window.AdobeAn.getComposition(cid);
+        let lib = comp.getLibrary();
+        if (lib[window.ani.name] || lib['_'+window.ani.name]) {
+          window.ani.lib = lib;
+          window.ani.comp = comp;
+          break;
+        }
+      }
       //take the first composition
-      if (!window.ani.cid) {
+      /*if (!window.ani.cid) {
         window.ani.cid = Object.keys(window.AdobeAn.compositions)[0]; //get the first composition
       }
       window.ani.comp = window.AdobeAn.getComposition(window.ani.cid);
@@ -268,6 +278,8 @@ export class AnimateAdobe {
 
       //get library to manipulate and other components
       window.ani.lib = window.ani.comp.getLibrary();
+
+       */
       window.ani.ss = window.ani.comp.getSpriteSheet();
       //do initialize Spreadsheet if exists
       /*var ssMetadata = lib.ssMetadata;
