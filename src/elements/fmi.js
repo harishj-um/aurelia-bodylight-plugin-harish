@@ -216,6 +216,7 @@ export class Fmi {
 
   //make inst object globally - in case of globals (non-src) declaration
   initfmi() {
+    console.log('fmi initfmi()');
     let that = {};
     if (window.thisfmi) {
       that.fminame = window.thisfmi.fminame;
@@ -329,7 +330,10 @@ export class Fmi {
     this.stepSize = (typeof(this.fstepsize) === 'string' ) ? parseFloat(this.fstepsize) : this.fstepsize;
     this.mystep = this.stepSize;
     //console callback ptr, per emsripten create int ptr with signature viiiiii
-    if (window.fmiinst) this.inst = window.fmiinst[this.fminame].inst;
+    if (window.fmiinst && window.fmiinst[this.fminame]) this.inst = window.fmiinst[this.fminame].inst;
+    else {
+      console.warn('fmi instantiate() error initfmi() prabably not called')
+    }
     //else this.inst = null;//if (window.thisfmi) {this.inst = window.thisfmi.inst;}
 
     console.log('instantiate() this.inst', this.inst);
