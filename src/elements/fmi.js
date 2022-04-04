@@ -29,7 +29,7 @@ export class Fmi {
 
   doingstep=false;
   animationstarted=false;
-  measurefps=false;
+  measurefps=false;d
   fpstick=0;
   stepi=0;
   resetBeforeChange = false;

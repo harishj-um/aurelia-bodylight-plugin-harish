@@ -39,4 +39,10 @@ tkan4:<bdl-range id="id6" min="0" max="100" step="1" default="20" ids="id3,id4" 
 
 tkan5:<bdl-range id="id7" min="0" max="100" step="1" default="20" ids="id3,id4" convertors="21;100-21-x"></bdl-range>
 
+### range 3 smooth
 
+```xml
+<bdl-range-smooth id="id10" min="0" max="100" step="0.1" default="12"></bdl-range-smooth>
+```
+
+<bdl-range-smooth id="id10" min="0" max="100" step="0.1" default="12"></bdl-range-smooth>

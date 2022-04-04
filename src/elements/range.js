@@ -89,10 +89,7 @@ export class Range {
   }
 
   setDefault() {
-    this.refinput.value = this.default;
-    this.refnumber.value = this.default;
-    this.refinput.dispatchEvent(new Event(this.fireevent, {bubbles: true, cancelable: true}));
-    //return true;
+    this.setValue(this.default);
   }
 
   setValue(value) {

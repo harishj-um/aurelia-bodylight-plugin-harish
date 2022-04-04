@@ -50,6 +50,7 @@ export function configure(config) {
     PLATFORM.moduleName('./elements/chartjs-fixed-xy'),
     PLATFORM.moduleName('./elements/chartjs-stacked'),
     PLATFORM.moduleName('./elements/value-store'),
-    PLATFORM.moduleName('./elements/animate-adobe-ss')
+    PLATFORM.moduleName('./elements/animate-adobe-ss'),
+    PLATFORM.moduleName('./elements/range-smooth'),
   ]);
 }
