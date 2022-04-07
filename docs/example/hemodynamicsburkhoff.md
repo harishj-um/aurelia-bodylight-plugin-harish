@@ -57,8 +57,8 @@ Animace
     width="700"  
     height="400"  
     fromid="id4"  
-    labels="Pressure in Aorta,Pressure in Left Ventricle, Left Ventricle Volume" 
-    refindex="1"  
+    labels="Aorta pressure, left ventricle pressure, left atria pressure,right atria pressure" 
+    refindex="1,2,3,9"  
     refvalues="3"></bdl-chartjs-time> 
 
 </div>

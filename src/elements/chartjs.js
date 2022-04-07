@@ -36,6 +36,7 @@ export class Chartjs {
   @bindable max; //max for y axis - if chart has this axis
   indexsection=0;
   datalabels=false; //may be configured by subclasses
+  refindices;
 
   /**
    * initializes handlers for event processing - this is recommended way
@@ -44,7 +45,11 @@ export class Chartjs {
     this.handleValueChange = e => {
       //sets data to dataset
       //apply value convert among all data
-      let rawdata = e.detail.data.slice(this.refindex, this.refendindex);
+      let rawdata;
+      if (this.refindices) {
+        rawdata = this.refindices.map(x => e.detail.data[x]);
+      } else
+        rawdata = e.detail.data.slice(this.refindex, this.refendindex);
       //if convert operation is defined as array
       if (this.operation) {
         for (let i = 0; i < rawdata.length; i++) {
@@ -102,9 +107,13 @@ export class Chartjs {
    */
   bind() {
     //console.log('chartjs bind');
-    this.refindex = myParseInt(this.refindex, 10);
-    this.refvalues = parseInt(this.refvalues, 10);
-    this.refendindex = this.refindex + this.refvalues;
+    if ((typeof this.refindex == 'string') && (this.refindex.indexOf(',')>0)) { this.refindices = this.refindex.split(',')}
+    else {
+      this.refindex = myParseInt(this.refindex, 10);
+      this.refvalues = parseInt(this.refvalues, 10);
+      this.refendindex = this.refindex + this.refvalues;
+    }
+
     //empty plugins by default
     this.plugins = [];
 
@@ -161,6 +170,7 @@ export class Chartjs {
     this.colors = [];
     let mydatastr = this.initialdata.split(',');
     this.mydata = mydatastr.map(x => {return parseFloat(x);});
+    if (this.refindices) this.refvalues = this.refindices.length;
     for (let i = 0; i < this.refvalues; i++) {
       if (!this.mydata[i]) {
         //this.mydata.push(0);

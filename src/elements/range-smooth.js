@@ -39,6 +39,12 @@ export class RangeSmooth extends Range {
     bind(){
         super.bind();
         this.myvalue = this.default;
+        if (typeof this.number === 'string') {
+            this.number = parseInt(this.number);
+        }
+        if (typeof this.time === 'string') {
+            this.time = parseInt(this.time);
+        }
     }
 
     attached(){
@@ -62,18 +68,20 @@ export class RangeSmooth extends Range {
             for (let i = 1; i < this.number; i++) {
                 setTimeout(() => {
                     this.value += this.valuestep;
-                    let event = new CustomEvent('input', {detail: {value: this.value}});
+                    let event = new Event('input', {bubbles:true});
+                    this.refsmooth.value = this.value;
                     this.refsmooth.dispatchEvent(event);
                     console.log('sending value:', this.value);
-                }, 500 * i);
+                }, this.time * i);
             }
             setTimeout(() => {
                 this.value = this.targetvalue;
-                let event = new CustomEvent('input', {detail: {value: this.value}});
+                let event = new Event('input', {bubbles:true});
+                this.refsmooth.value = this.value;
                 this.refsmooth.dispatchEvent(event);
                 this.smoothing = false;
                 console.log('sending value:', this.value);
-            }, 500 * this.number);
+            }, this.time * this.number);
         } else {
             //only set target value
             this.targetvalue = parseFloat(e.target.value);

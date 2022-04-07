@@ -8,11 +8,12 @@ import {useView} from 'aurelia-templating';
 export class ChartjsTime extends Chartjs {
   @bindable fromid;
   @bindable labels;
-  @bindable refindex;
-  @bindable refvalues;
+  @bindable refindex;// starting  index - if moooor indices, separate by comma
+  @bindable refvalues; //number of values from refindex - only if one refindex is   defined
   @bindable type;
   @bindable min;
   @bindable max;
+  refindices;
 
   constructor() {
     super();
@@ -21,19 +22,24 @@ export class ChartjsTime extends Chartjs {
       //e.detail do not reallocate - using same buffer, thus slicing to append to data array
       //let datapoints =e.detail.data.slice(this.refindex, this.refendindex);
       let j = 0;
-      for (let i = this.refindex; i < this.refindex + this.refvalues; i++) {
-        //adds data to datasets
 
-        //if convert operation is defined as array then convert
-        if (this.operation && this.operation[j]) this.chart.data.datasets[j].data.push(this.operation[j](e.detail.data[i]));
-        //else push data directly
-        else this.chart.data.datasets[j].data.push(e.detail.data[i]);
-        if (this.chart.data.datasets[j].data.length > this.maxdata) {
-          //console.log('shifting dataset chartjs-time', this.chart.data.datasets[j].data);
-          this.chart.data.datasets[j].data.shift();
+      function handleIndex(i) {
+        {
+          //adds data to datasets
+
+          //if convert operation is defined as array then convert
+          if (this.operation && this.operation[j]) this.chart.data.datasets[j].data.push(this.operation[j](e.detail.data[i]));
+          //else push data directly
+          else this.chart.data.datasets[j].data.push(e.detail.data[i]);
+          if (this.chart.data.datasets[j].data.length > this.maxdata) {
+            //console.log('shifting dataset chartjs-time', this.chart.data.datasets[j].data);
+            this.chart.data.datasets[j].data.shift();
+          }
+          j++;
         }
-        j++;
       }
+      if (this.refindices) for (let i of this.refindices) handleIndex.call(this, i);
+      else for (let i = this.refindex; i < this.refindex + this.refvalues; i++) handleIndex.call(this, i);
       this.chart.data.labels.push(e.detail.time);
       if (this.chart.data.labels.length > this.maxdata) {
         this.chart.data.labels.shift();
@@ -55,6 +61,7 @@ export class ChartjsTime extends Chartjs {
    */
   bind() {
     super.bind();
+
     //done in super
     //this.chlabels = this.labels.split(','); //labels for each dataset
     //this.colors = [];
