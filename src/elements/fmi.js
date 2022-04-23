@@ -69,6 +69,9 @@ export class Fmi {
       this.deregisterInputs();
       this.registerInputs();
       if (this.isOneshot) this.step(); //do simulation step immediately;
+    };
+    this.handleStep = ()=> {
+      this.step();
     }
     this.inst = {};
   }
@@ -167,6 +170,7 @@ export class Fmi {
       this.showcontrols = (this.showcontrols === 'true');
     }
     document.addEventListener('fmiregister',this.handleRegister);
+    document.addEventListener('dostep',this.handleStep);
     //sending attached event - some may detect it to register it's outpu listener if attached before
     let event = new CustomEvent('fmiattached');
     document.dispatchEvent(event);

@@ -29,11 +29,13 @@ export class Chartjs {
   @bindable generatelabels=false;
   @bindable sectionid;  //id to listen addsection event
   @bindable responsive = false; //false - to keep width and height, true - to rescale
-  @bindable canvasobj;
+
   @bindable throttle=200; //time to throttle chart update, if it is too much at once
   @bindable precision=4;
   @bindable min; //min for y axis - if chart has this axis
   @bindable max; //max for y axis - if chart has this axis
+  @bindable babylonjs; //whether to integrate with 3d babylonjs
+  @bindable canvasobj; //canvas obj name -
   indexsection=0;
   datalabels=false; //may be configured by subclasses
   refindices;
@@ -261,7 +263,8 @@ export class Chartjs {
         animationDuration: 0, //disable animation on hover - e.g. for tooltips
         intersect:false
       },
-      scales: axisopts
+      scales: axisopts,
+      babylondynamictexture : ""// name of global dynamictextureobj to call update()
     };
     //sets boolean value - if verticalline attribute is set
     if (typeof this.verticalline === 'string') {
@@ -450,13 +453,61 @@ export class Chartjs {
       });
     }
 
+    //babylonjs bind
+    /*if (typeof this.babylonjs === 'string') {
+      //this.babylonjs = this.babylonjs === 'true';
+    } else this.babylonjs = false;*/
+    if (this.babylonjs) {
+      this.options.babylondynamictexture = this.babylonjs
+      Chart.plugins.register({
+        beforeDraw: function(chartInstance) {
+          var ctx = chartInstance.chart.ctx;
+          //console.log('ctx before draw:')
+          ctx.fillStyle = "white";
+          ctx.fillRect(0, 0, chartInstance.chart.width, chartInstance.chart.height);
+        },
+        afterDraw: function(chartInstance) {
+          var ctx = chartInstance.chart.ctx;
+          //console.log('ctx after draw:')
+          if (window[chartInstance.options.babylondynamictexture]) window[chartInstance.options.babylondynamictexture].update();
+        }
+      });
+    }
+
     //canvasobj - if defined then use this object name to get canvas object -  otherwise the one from template
 
     let ctx = (this.canvasobj)? window[this.canvasobj] : this.chartcanvas.getContext('2d');
     //ctx may be null if canvasobj is not yet initialized.
     if (ctx) this.initChart(ctx); //init chart only if ctx is ready
-    else window.lazyInitChart = this;
+    else {
+      //add myself to lazyinitchart array
+      if (!window.lazyInitChart) window.lazyInitChart = [];
+      window.lazyInitChart.push(this);
+    }
+    /*
+        //do lazy init of charts after third party canvas initialization
+        if (window.lazyInitChart) {
+            for (let obj in window.lazyInitChart) obj.initChart().bind(obj);
+        }
+     */
 
+  }
+
+  initChart(){
+    let ctx = (this.canvasobj)? window[this.canvasobj] : this.chartcanvas.getContext('2d');
+    initChart(ctx);
+  }
+
+  initChart(ctx){
+    /*let that = this;
+    if (window.lazyInitChart) {let that = window.lazyInitChart;}*/
+    this.chart = new Chart(ctx, {
+      plugins: this.plugins,
+      type: this.type,
+      data: this.data,
+      options: this.options,
+      tooltipEvents: this.tooltips
+    });
     //register throttled update function
     if (typeof this.throttle === 'string') this.throttle = parseInt(this.throttle, 10);
 
@@ -465,18 +516,6 @@ export class Chartjs {
     } else {//directly call chart update
       this.updatechart = this.chart.update.bind(this.chart);
     }
-  }
-
-  initChart(ctx){
-    let that = this;
-    if (window.lazyInitChart) {let that = window.lazyInitChart;}
-    that.chart = new Chart(ctx, {
-      plugins: that.plugins,
-      type: that.type,
-      data: that.data,
-      options: that.options,
-      tooltipEvents: that.tooltips
-    });
     // console.log('chartjs data', this.data);
 /*    //now delay tooltip
     let originalShowTooltip = that.chart.showTooltip;
