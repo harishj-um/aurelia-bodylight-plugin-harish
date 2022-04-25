@@ -118,6 +118,9 @@ export class Range {
         }
         window.rangebinding = false;
       }
+    } else {
+      //single value is change e.g. externally
+      this.setValue(newValue);
     }
   }
 }
