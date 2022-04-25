@@ -27,9 +27,9 @@ describe('markdown element',  () => {
   it('creates div and section with md content', done => {
     //await delay(500);
     component = StageComponent
-      .withResources('elements/markdownaurelia')
-      .inView('<markdownaurelia content="# title\n## title 2"></markdownaurelia>');
-
+        .withResources('elements/markdownaurelia')
+        .inView('<markdownaurelia content="# title\n## title 2"></markdownaurelia>');
+    //await delay(500);
 
     component.create(bootstrap).then(() => {
       const view = component.element;
