@@ -2,24 +2,38 @@ import {bindable} from 'aurelia-templating';
 export class AnimateAdobeControl {
     @bindable id;
     animationstarted = false;
-    frame = 0;
+    //frame = 0;
+    onetime = false;
+
+    attached(){
+        if (window.ani) {
+            //window.ani.startAllAnimation();
+            //try to set animationstarted to true -
+            window.ani.animationstarted=true;
+            this.animationstarted = window.ani.animationstarted;
+        }
+    }
 
     startstop() {
       console.log('animateadobecontrol startstop()', this);
-      this.animationstarted = ! this.animationstarted;
-      let eventname;
-      if (this.animationstarted) {
-        if (window.ani) window.ani.enableAnimation();
-        eventname = 'animatestart';
+      if (!this.onetime && !this.animationstarted) {
+          //animate-adobe component playafterstart=false - start it once
+          window.ani.startAllAnimation();
+          this.onetime = true;
+      } else {
+          if (window.ani && window.ani.animationstarted) window.ani.disableAnimation();
+          else if (window.ani && !window.ani.animationstarted) {
+              window.ani.enableAnimation();
+          }
+          this.animationstarted = window.ani.animationstarted;
+          //let event = new CustomEvent(eventname, {detail: {time: this.frame}}); //send start signal on frame 0
+          //dispatch event - it should be listened by some other component
+          //document.getElementById(this.id).dispatchEvent(event);
       }
-      else  eventname = 'animatestop';
-      let event = new CustomEvent(eventname, {detail: {time: this.frame}}); //send start signal on frame 0
-      //dispatch event - it should be listened by some other component
-      document.getElementById(this.id).dispatchEvent(event);
     }
 
     step() {
       if (!this.animationstarted) this.startstop();
-      setTimeout(()=>{this.startstop();}, 50);
+      setTimeout(()=>{this.startstop();}, 100);
     }
 }

@@ -18,6 +18,7 @@ export class AnimateAdobe {
     @bindable fromid;
     @bindable fmuid; //optional -if not defined fromid is taken, fmu event is listened by fromid element
     @bindable responsive;
+    @bindable playafterstart;
     animationstarted = false;
 
     constructor() {
@@ -76,6 +77,7 @@ export class AnimateAdobe {
       console.log('adobeobj attached()');
       if (window.ani) this.disableAnimation();
       if (this.responsive && (typeof this.responsive === 'string')) this.responsive = this.responsive==='true';
+      if (this.playafterstart && (typeof this.playafterstart === 'string')) this.playafterstart = this.playafterstart ==='true';
       //this.adobecanvas = document.getElementById("canvas");
       //this.anim_container = document.getElementById("animation_container");
       //this.dom_overlay_container = document.getElementById("dom_overlay_container");
@@ -307,7 +309,7 @@ export class AnimateAdobe {
         window.createjs.Ticker.framerate = window.ani.lib.properties.fps;
         //window.createjs.Ticker.addEventListener('tick', window.ani.stage);
         window.ani.enableAnimation();
-        window.ani.animationstarted = false; //initial animation is not started - will be stopped by following, if another even will set it to started
+        if (!window.ani.playafterstart) window.ani.animationstarted = false; //initial animation is not started - will be stopped by following, if another event will set it to started
       };
       //Code to support hidpi screens and responsive scaling.
       //window.AdobeAn.makeResponsive(true, 'both', true, 1, [window.ani.adobecanvas, window.ani.anim_container, window.ani.dom_overlay_container]);
@@ -330,11 +332,12 @@ export class AnimateAdobe {
           window.ani.disableAnimation();
           //TODO fix bug - model in different md not
           //sent ready signal - fmu may make step if oneshot
-          let event = new CustomEvent('fmiregister');
-          document.dispatchEvent(event);
           //workaround after resize the artifacts are updated
           //window.ani.handleResize();
         }
+        let event = new CustomEvent('fmiregister');
+        document.dispatchEvent(event);
+
       }, 1000);
     }
 
