@@ -8,6 +8,7 @@ export class AnimateAdobeControl {
     attached(){
         if (window.ani) {
             //window.ani.startAllAnimation();
+            //window.ani.startAllAnimation();
             //try to set animationstarted to true -
             window.ani.animationstarted=true;
             this.animationstarted = window.ani.animationstarted;

@@ -93,12 +93,14 @@ export class Range {
   }
 
   setValue(value) {
-    this.refinput.value = value;
-    this.refnumber.value = value;
-    this.refinput.dispatchEvent(new Event(this.fireevent, {
-      bubbles: true,
-      cancelable: true
-    }));
+    if (this.refnumber) this.refnumber.value = value;
+    if (this.refinput) {
+      this.refinput.value = value;
+      this.refinput.dispatchEvent(new Event(this.fireevent, {
+        bubbles: true,
+        cancelable: true
+      }));
+    }
   }
 
   valueChanged(newValue,oldValue) {
