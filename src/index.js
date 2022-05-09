@@ -52,5 +52,6 @@ export function configure(config) {
     PLATFORM.moduleName('./elements/value-store'),
     PLATFORM.moduleName('./elements/animate-adobe-ss'),
     PLATFORM.moduleName('./elements/range-smooth'),
+    PLATFORM.moduleName('./elements/remote-value')
   ]);
 }
