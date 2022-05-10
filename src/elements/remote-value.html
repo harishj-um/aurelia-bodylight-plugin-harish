@@ -1,11 +1,12 @@
 <template>
     <div class="w3-border w3-row">
         <div class="w3-half">
-            URL: <input class="w3-input" value.bind="remoteurl"/>
-            Header name: <input class="w3-input" value.bind="remoteheader"/>
-            Header value: <input class="w3-input" value.bind="remoteheadervalue"/>
-            GET interval: <input class="w3-input" value.bind="getinterval"/>
-            <button class="w3-button" click.delegate="start()">START periodic GET</button> <input value.bind="postvalue" /><button class="w3-button" click.delegate="post()">POST</button>
+            URL: <input value.bind="remoteurl"/>
+            Header name: <input  value.bind="remoteheader"/>
+            Header value: <input  value.bind="remoteheadervalue"/>
+            GET interval: <input  value.bind="interval"/>
+            <button class="w3-button" click.delegate="start()"><i class="fa fa-play" show.bind="!started"></i><i class="fa fa-stop" show.bind="started"></i></button><br/>
+            <input value.bind="postvalue" /><button class="w3-button" click.delegate="post()">POST</button>
         </div>
         <div class="w3-half">
             <span class="w3-tiny"><pre style="white-space:pre-wrap;line-height: 0.9">${remotevalueformatted}</pre></span>
