@@ -40,11 +40,15 @@ export class AnimateAdobe {
           console.warn('adobe-animate component configured to listen non-existing element with id:', this.fromid);
         }
       }
+      this.animateData = e => {
+
+      }
     }
 
     registerAnimateEvents(fromel)        {
       fromel.addEventListener('animatestart', this.startAllAnimation);
       fromel.addEventListener('animatestop', this.stopAllAnimation);
+      fromel.addEventListener('animatedata',this.animateData);
     }
 
     registerFMUEvents(fromel)         {

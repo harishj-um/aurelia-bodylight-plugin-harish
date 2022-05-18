@@ -42,9 +42,7 @@ export class Markdownnav {
   bind() {
     //console.log('bdlmarkdownnav src:', this.src);
     if (this.notinitread && this.src && this.src.length > 0 && this.mdtoc) this.fetchMDSrc();
-  }
-
-  attached() {
+    //bind navigation first - get src before content - to solve navigation hide open issue at the beginning
     //console.log('bdlmakrdownnav src:', this.src);
     window.markdownnav = this;
     let iterator = MarkdownItForInline;
@@ -89,6 +87,8 @@ export class Markdownnav {
     this.fetchMDSrc();
   }
 
+  attached() {}
+
   fetchMDSrc() {
     let url = (this.src.startsWith('http')) ? this.src : this.base + this.src;
     //console.log('fetchmd src:', this.src);
@@ -104,8 +104,8 @@ export class Markdownnav {
           this.links = [];
           this.html = this.mdtoc.render(this.text);
           //console.log('markdownnow fetchmd src links:', this.html);
-          this.ea.publish('navchange', {links: this.links, text: this.text, html: this.html});
           this.update();
+          this.ea.publish('navchange', {links: this.links, text: this.text, html: this.html});
         });
     }
   }

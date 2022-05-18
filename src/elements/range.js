@@ -7,6 +7,9 @@ export class Range {
   @bindable step;
   @bindable value;
   @bindable title;
+  @bindable showicons = true;
+  @bindable globalanim = false;
+  //@bindable firedata = false; //'position'
   @bindable fireevent='input'; //name of the event to be dispatched - should be same as fmi eventlisten
   refinput;
   refnumber;
@@ -31,6 +34,8 @@ export class Range {
     }
 
   bind() {
+    if (typeof(this.showicons) === 'string') this.showicons = this.showicons === 'true';
+    if (typeof(this.globalanim) === 'string') this.globalanim = this.globalanim === 'true';
     if (this.listenkey && this.listenkey === 'true') {
       if (this.activationkey && this.activationkey === 'A') this.actived = true; //first activationkey 'A' is by default actived
       document.onkeypress = function (e) {
@@ -123,6 +128,10 @@ export class Range {
     } else {
       //single value is change e.g. externally
       this.setValue(newValue);
+      if (this.globalanim) {
+        if (window.ani && window.ani.exportRoot)
+          window.ani.exportRoot.children[0].gotoAndStop(newValue);
+      }
     }
   }
 }
