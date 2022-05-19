@@ -40,4 +40,5 @@
     * [Animation with ECG](#example/animationecg.md)
     * [Performance](#example/performance.md)
     * [Remote Value](#example/remotevaluedemo.md)
+    * [Manequin Demo](#example/manequindemo.md)
   * [About](#about.md)

@@ -21,6 +21,7 @@ export class Range {
   //optional twoway settings - if set - fmudata may set the value of range
   @bindable fromid; //id of fmu component
   @bindable refindex; //index of variable to be listened
+  @bindable id;
 
   constructor() {
     this.handleValueChange = e => {

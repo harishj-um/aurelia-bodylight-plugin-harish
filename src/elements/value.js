@@ -94,8 +94,10 @@ export class Value {
   }
 
   updateValue(rawvalue) {
-    if (this.operation) this.value = this.operation[0](rawvalue).toPrecision(this.precision); // * this.numerator / this.denominator + this.addconst;
-    else this.value = rawvalue.toPrecision(this.precision);
+    if (rawvalue.toPrecision) {
+      if (this.operation) this.value = this.operation[0](rawvalue).toPrecision(this.precision); // * this.numerator / this.denominator + this.addconst;
+      else this.value = rawvalue.toPrecision(this.precision);
+    } else this.value = rawvalue;
     if (this.dataevent) {
       let c = new CustomEvent('fmivalue', {detail: {value: this.value}});
       this.element.dispatchEvent(c);

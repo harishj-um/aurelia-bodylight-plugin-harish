@@ -10,9 +10,12 @@ export class RemoteValue {
     @bindable remoteheader='x-api-key';
     @bindable remoteheadervalue='';
     postvalue='';
-    @bindable interval = 0;
+    @bindable interval = 500;
     @bindable id;
     starttime;
+    showsettings = false;
+    @bindable inputs;
+    inputids = [];
 
     constructor(httpclient) {
         this.client = httpclient;
@@ -21,6 +24,16 @@ export class RemoteValue {
             this.get();
             //schedule next tick
             if (this.fetchinterval>0) setTimeout(this.handleTick.bind(this),this.fetchinterval);
+        }
+        this.handleValueChange = (e) => {
+            //handle value changed from e.g. range component - post it
+            this.postvalue = (e.detail && e.detail.value) ? e.detail.value : e.target.value;
+            let targetid;
+            if (e.detail && e.detail.id) targetid = e.detail.id;
+            else if (e.target.id.length > 0) targetid = e.target.id;
+            else targetid = e.target.parentElement.parentElement.id;
+            //post it - add targetid to URL
+            this.post(targetid);
         }
     }
 
@@ -31,16 +44,26 @@ export class RemoteValue {
         if (typeof this.started === 'string') {
             this.started = this.started === 'true';
         }
+        if (this.inputs) {
+            this.inputids = this.inputs.split(';'); //array of id1;id2;id3 ...
+        }
+
     }
 
     attached() {
         this.time = new Date();
         this.starttime = Math.round(this.time.getTime() /1000);
-        this.remoteurl =         localStorage.getItem('bdl-fhir-url');
-        this.remoteheadervalue = localStorage.getItem('bdl-fhir-api-key');
+        //this.remoteurl =         localStorage.getItem('bdl-fhir-url');
+        //this.remoteheadervalue = localStorage.getItem('bdl-fhir-api-key');
         if (typeof(interval) === 'string'){
             this.interval = parseInt(this.interval)
-
+        }
+        //now start
+        this.start();
+        if (this.inputids.length>0){
+            for (let myid of this.inputids) {
+                document.getElementById(myid).addEventListener('input',this.handleValueChange)
+            }
         }
     }
 
@@ -63,10 +86,10 @@ export class RemoteValue {
     get() {
         //sends GET request to
         let myheaders = new Headers();
-        localStorage.setItem('bdl-fhir-url',this.remoteurl);
+        //localStorage.setItem('bdl-fhir-url',this.remoteurl);
         if(this.remoteheadervalue && this.remoteheadervalue.length >0 ) {
             myheaders.append(this.remoteheader,this.remoteheadervalue);
-            localStorage.setItem('bdl-fhir-api-key',this.remoteheadervalue);
+            //localStorage.setItem('bdl-fhir-api-key',this.remoteheadervalue);
         }
         this.client.fetch(this.remoteurl, {headers: myheaders})
             .then(response => response.json())// do response.json() for json result
@@ -86,7 +109,7 @@ export class RemoteValue {
                     document.getElementById(this.id).dispatchEvent(event);
                 }
             })
-            .catch(err =>{console.log('error',err);this.fetchinterval=0;});
+            .catch(err =>{console.log('error',err);this.fetchinterval=0;}); //stops on error
         /*this.client.get(this.remoteurl)
             .then(response => response.json())// do response.json() for json result
             .then(data => {
@@ -102,18 +125,19 @@ export class RemoteValue {
     }
 
 
-    post() {
+    post(id) {
         //sends GET request to
         let myheaders = new Headers();
         myheaders.append('Accept','application/json');
         myheaders.append('Content-Type','application/json')
-        localStorage.setItem('bdl-fhir-url',this.remoteurl);
+        //localStorage.setItem('bdl-fhir-url',this.remoteurl);
         if(this.remoteheadervalue && this.remoteheadervalue.length >0 ) {
             myheaders.append(this.remoteheader,this.remoteheadervalue);
 
-            localStorage.setItem('bdl-fhir-api-key',this.remoteheadervalue);
+            //localStorage.setItem('bdl-fhir-api-key',this.remoteheadervalue);
         }
-        this.client.fetch(this.remoteurl, { method: 'post',headers: myheaders, body:this.postvalue})
+        let url = this.remoteurl + (id ? '/' + id : '');
+        this.client.fetch(url, { method: 'post',headers: myheaders, body:this.postvalue})
             .then(response => response.json())// do response.json() for json result
             .then(data => {
                 //console.log('markdownaurelia fetched md:', data)
@@ -128,4 +152,6 @@ export class RemoteValue {
                 this.remotevalueformatted = JSON.stringify(this.remotevalue,null,4)
             });*/
     }
+
+    showhidesettings(){this.showsettings = ! this.showsettings;}
 }
