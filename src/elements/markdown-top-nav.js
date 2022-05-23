@@ -13,7 +13,7 @@ export class MarkdownTopNav {
     @bindable base='';
     @bindable nav=false;
     @bindable index;
-    @bindable toc=true;
+    @bindable toc=false;
     notinitread=true;
     previoustitle='';//Introduction';
     nexttitle='';//Hemodynamics in Left Ventricle'
