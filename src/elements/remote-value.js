@@ -20,10 +20,12 @@ export class RemoteValue {
     constructor(httpclient) {
         this.client = httpclient;
         this.handleTick = () => {
-            //do periodic stuff
-            this.get();
-            //schedule next tick
-            if (this.fetchinterval>0) setTimeout(this.handleTick.bind(this),this.fetchinterval);
+            if (this.started) {
+                //do periodic stuff
+                this.get();
+                //schedule next tick
+                if (this.fetchinterval > 0) setTimeout(this.handleTick.bind(this), this.fetchinterval);
+            } //else do nothing - stopped between ticks
         }
         this.handleValueChange = (e) => {
             //handle value changed from e.g. range component - post it
@@ -67,11 +69,25 @@ export class RemoteValue {
         }
     }
 
+    detached() {
+        this.stop();
+        if (this.inputids.length>0){
+            for (let myid of this.inputids) {
+                document.getElementById(myid).removeEventListener('input',this.handleValueChange)
+            }
+        }
+    }
+
     intervalChanged(newValue,oldValue) {
         //triggered by aurelia fw when getinterval is changed
         if (typeof(this.interval) === 'string'){
             this.interval = parseInt(this.interval)
         }
+    }
+
+    stop() {
+        this.started = false;
+        this.fetchinterval =0;
     }
 
     start(){
