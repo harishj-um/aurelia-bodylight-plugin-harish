@@ -1,5 +1,5 @@
 import {HttpClient} from 'aurelia-fetch-client';
-import {inject,bindable} from "aurelia-framework";
+import {inject, bindable} from "aurelia-framework";
 
 @inject(HttpClient)
 export class RemoteValue {
@@ -7,9 +7,9 @@ export class RemoteValue {
     @bindable remoteurl;
     @bindable started = false;
     remotevalue;
-    @bindable remoteheader='';
-    @bindable remoteheadervalue='';
-    postvalue='';
+    @bindable remoteheader = '';
+    @bindable remoteheadervalue = '';
+    postvalue = '';
     @bindable interval = 500;
     @bindable id;
     starttime;
@@ -39,7 +39,7 @@ export class RemoteValue {
         }
     }
 
-    bind(){
+    bind() {
         if (this.id) {
             //will generate fmidata event
         }
@@ -54,57 +54,59 @@ export class RemoteValue {
 
     attached() {
         this.time = new Date();
-        this.starttime = Math.round(this.time.getTime() /1000);
+        this.starttime = Math.round(this.time.getTime() / 1000);
         //this.remoteurl =         localStorage.getItem('bdl-fhir-url');
         //this.remoteheadervalue = localStorage.getItem('bdl-fhir-api-key');
-        if (typeof(interval) === 'string'){
+        if (typeof (interval) === 'string') {
             this.interval = parseInt(this.interval)
         }
         //now start
         this.start();
-        if (this.inputids.length>0){
+        if (this.inputids.length > 0) {
             for (let myid of this.inputids) {
-                document.getElementById(myid).addEventListener('input',this.handleValueChange)
+                document.getElementById(myid).addEventListener('input', this.handleValueChange)
             }
         }
     }
 
     detached() {
         this.stop();
-        if (this.inputids.length>0){
+        if (this.inputids.length > 0) {
             for (let myid of this.inputids) {
-                document.getElementById(myid).removeEventListener('input',this.handleValueChange)
+                document.getElementById(myid).removeEventListener('input', this.handleValueChange)
             }
         }
     }
 
-    intervalChanged(newValue,oldValue) {
+    intervalChanged(newValue, oldValue) {
         //triggered by aurelia fw when getinterval is changed
-        if (typeof(this.interval) === 'string'){
+        if (typeof (this.interval) === 'string') {
             this.interval = parseInt(this.interval)
         }
     }
 
     stop() {
         this.started = false;
-        this.fetchinterval =0;
+        this.fetchinterval = 0;
     }
 
-    start(){
+    start() {
         //this.get();
-        this.started = ! this.started;
+        this.started = !this.started;
         if (this.started) {
             this.fetchinterval = this.interval;
             setTimeout(this.handleTick.bind(this), this.fetchinterval);
-        } else  {this.fetchinterval = 0;}
+        } else {
+            this.fetchinterval = 0;
+        }
     }
 
     get() {
         //sends GET request to
         let myheaders = new Headers();
         //localStorage.setItem('bdl-fhir-url',this.remoteurl);
-        if(this.remoteheadervalue && this.remoteheadervalue.length >0 ) {
-            myheaders.append(this.remoteheader,this.remoteheadervalue);
+        if (this.remoteheadervalue && this.remoteheadervalue.length > 0) {
+            myheaders.append(this.remoteheader, this.remoteheadervalue);
             //localStorage.setItem('bdl-fhir-api-key',this.remoteheadervalue);
         }
         this.client.fetch(this.remoteurl, {headers: myheaders})
@@ -112,20 +114,24 @@ export class RemoteValue {
             .then(data => {
                 //console.log('markdownaurelia fetched md:', data)
                 this.remotevalue = data;
-                this.remotevalueformatted = JSON.stringify(this.remotevalue,null,4)
+                this.remotevalueformatted = JSON.stringify(this.remotevalue, null, 4)
                 if (this.id) {
                     //generatefmidata event
-                    let mydata =[];
-                    let mytime = (Math.round((new Date()).getTime() /100) - (this.starttime*10))/10;
+                    let mydata = [];
+                    let mytime = (Math.round((new Date()).getTime() / 100) - (this.starttime * 10)) / 10;
                     if (typeof this.remotevalue === 'object') {
                         for (let key of Object.keys(this.remotevalue)) mydata.push(this.remotevalue[key]);
+                    } else if (typeof this.remotevalue === 'number') {
+                        mydata.push(this.remotevalue)
                     }
-                    else if (typeof this.remotevalue === 'number') {mydata.push(this.remotevalue)}
                     let event = new CustomEvent('fmidata', {detail: {time: mytime, data: mydata}});
                     document.getElementById(this.id).dispatchEvent(event);
                 }
             })
-            .catch(err =>{console.log('error',err);this.fetchinterval=0;}); //stops on error
+            .catch(err => {
+                console.log('error', err);
+                this.fetchinterval = 0;
+            }); //stops on error
         /*this.client.get(this.remoteurl)
             .then(response => response.json())// do response.json() for json result
             .then(data => {
@@ -136,7 +142,10 @@ export class RemoteValue {
     }
 
     round(value, decimals) {
-        if (decimals < 0) {let posdecimals = -decimals; return Number(Math.round(value + 'e' + posdecimals) + 'e-' + posdecimals);}
+        if (decimals < 0) {
+            let posdecimals = -decimals;
+            return Number(Math.round(value + 'e' + posdecimals) + 'e-' + posdecimals);
+        }
         return Number(Math.round(value + 'e-' + decimals) + 'e+' + decimals);
     }
 
@@ -144,21 +153,21 @@ export class RemoteValue {
     post(id) {
         //sends GET request to
         let myheaders = new Headers();
-        myheaders.append('Accept','application/json');
-        myheaders.append('Content-Type','application/json')
+        myheaders.append('Accept', 'application/json');
+        myheaders.append('Content-Type', 'application/json')
         //localStorage.setItem('bdl-fhir-url',this.remoteurl);
-        if(this.remoteheadervalue && this.remoteheadervalue.length >0 ) {
-            myheaders.append(this.remoteheader,this.remoteheadervalue);
+        if (this.remoteheadervalue && this.remoteheadervalue.length > 0) {
+            myheaders.append(this.remoteheader, this.remoteheadervalue);
 
             //localStorage.setItem('bdl-fhir-api-key',this.remoteheadervalue);
         }
         let url = this.remoteurl + (id ? '/' + id : '');
-        this.client.fetch(url, { method: 'post',headers: myheaders, body:this.postvalue})
+        this.client.fetch(url, {method: 'post', headers: myheaders, body: this.postvalue})
             .then(response => response.json())// do response.json() for json result
             .then(data => {
                 //console.log('markdownaurelia fetched md:', data)
                 this.remotevalue = data;
-                this.remotevalueformatted = JSON.stringify(this.remotevalue,null,4)
+                this.remotevalueformatted = JSON.stringify(this.remotevalue, null, 4)
             });
         /*this.client.get(this.remoteurl)
             .then(response => response.json())// do response.json() for json result
@@ -169,5 +178,7 @@ export class RemoteValue {
             });*/
     }
 
-    showhidesettings(){this.showsettings = ! this.showsettings;}
+    showhidesettings() {
+        this.showsettings = !this.showsettings;
+    }
 }
