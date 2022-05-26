@@ -1,4 +1,4 @@
-import {bindable} from 'aurelia-framework';
+import {bindable,observable} from 'aurelia-framework';
 
 export const thirdpartytimeout = 5000;
 
@@ -23,6 +23,7 @@ export class Fmi {
   @bindable eventlisten = 'input';//input==continuous/change==when user drops the value
   @bindable mode="continuous"; //continuous or oneshot
   @bindable stepsperframe = 1;
+  @observable fmuspeed = 1;
 
   cosimulation=1;
   stepSize=0.01;//0.0078125;
@@ -788,5 +789,8 @@ export class Fmi {
     timeDiff /= 1000;
     // get seconds
     console.warn("Simulation took "+ timeDiff + " seconds");
+  }
+  fmuspeedChanged(newValue) {
+    this.stepSize = this.fmuspeed * ((typeof(this.fstepsize) === 'string' ) ? parseFloat(this.fstepsize) : this.fstepsize);
   }
 }

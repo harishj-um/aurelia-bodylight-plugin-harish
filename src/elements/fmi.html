@@ -20,8 +20,16 @@
           <table>
             <tr><td><input type="checkbox" checked.bind="measurefps"/>
               <i show.bind="measurefps" title="FMI: ${fminame}">FPS:${fps}</i></td>
+              <td show.bind="measurefps">
+                <label><input type="radio" name="fmuspeed" checked.bind="fmuspeed" model.bind="0.1"/>0.1 x</label>
+                <label><input type="radio" name="fmuspeed" checked.bind="fmuspeed" model.bind="1"/>1.0 x</label>
+              </td>
             </tr>
             <tr><td show.bind="measurefps"><input type="number" min="1" max="60" value.bind="fpslimit" style="width:8ch" /></td>
+              <td show.bind="measurefps">
+                <label><input type="radio" name="fmuspeed" checked.bind="fmuspeed" model.bind="10"/>10 x</label>
+                <label><input type="radio" name="fmuspeed" checked.bind="fmuspeed" model.bind="100"/>100 x</label>
+              </td>
             </tr>
           </table>
         </td>
