@@ -7,7 +7,7 @@ export class RemoteValue {
     @bindable remoteurl;
     @bindable started = false;
     remotevalue;
-    @bindable remoteheader='x-api-key';
+    @bindable remoteheader='';
     @bindable remoteheadervalue='';
     postvalue='';
     @bindable interval = 500;
