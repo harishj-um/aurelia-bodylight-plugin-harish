@@ -1,4 +1,5 @@
 import {bindable} from 'aurelia-framework';
+import _ from "lodash";
 
 export class Range {
   @bindable min;
@@ -22,14 +23,16 @@ export class Range {
   @bindable fromid; //id of fmu component
   @bindable refindex; //index of variable to be listened
   @bindable id;
+  @bindable throttle=1000; //throttle update value from fromid, default every 1s
 
   constructor() {
     this.handleValueChange = e => {
       //sets data to dataset
       //apply value convert among all data
       if (this.fromid) {
-        let rawdata = e.detail.data.slice(this.refindex, 1);
+        let rawdata = e.detail.data[this.refindex];
         this.value=rawdata;
+        this.updatevalue(); //either it is throttled, or
       }
     }
     }
@@ -88,11 +91,24 @@ export class Range {
         }
       }
     }
+
+    //register throttled update function
+    if (typeof this.throttle === 'string') this.throttle = parseInt(this.throttle, 10);
+    if (this.throttle>0) {//throttle
+      this.updatevalue = _.throttle(this.setCurrentValue.bind(this), this.throttle);
+    } else {//directly call update
+      this.updatevalue = this.setCurrentValue.bind(this);
+    }
+
   }
 
   attached() {
     let maxlength = 4 + this.max.length + ((this.step && this.step.includes('.')) ? this.step.length : 1);
     this.refnumber.style = 'width:'+maxlength+'ch';
+    if (this.fromid) {
+      //add event listener
+      document.getElementById(this.fromid).addEventListener('fmidata',this.handleValueChange)
+    }
   }
 
   setDefault() {
@@ -108,6 +124,10 @@ export class Range {
         cancelable: true
       }));
     }
+  }
+
+  setCurrentValue() {
+    this.setValue(this.value);
   }
 
   valueChanged(newValue,oldValue) {
