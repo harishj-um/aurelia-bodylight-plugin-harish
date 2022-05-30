@@ -11,6 +11,8 @@ export class Value {
   @bindable throttle=500;
   @bindable dataevent=false;
 
+  //constructor(){}
+
   constructor(element) {
     this.element = element;
     //create lambda function which is added as listener later
@@ -33,7 +35,6 @@ export class Value {
         console.warn('fmi attached, but no element with id found:',this.fromid);
       }
     }
-
   }
 
   bind() {
