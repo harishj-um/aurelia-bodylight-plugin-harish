@@ -57,7 +57,7 @@ export class Value {
           else {
             let numerator = parseFloat(convertitems[0]);
             let denominator = parseFloat(convertitems[1]);
-            let addend = (convertitems.length>1)?parseFloat(convertitems[2]):0;
+            let addend = (convertitems.length>2)?parseFloat(convertitems[2]):0;
             this.operation.push(x => ((x * numerator / denominator) + addend));
           }
         } else {
