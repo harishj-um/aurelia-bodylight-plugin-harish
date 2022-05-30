@@ -130,7 +130,7 @@ export class RemoteValue {
             })
             .catch(err => {
                 console.log('error', err);
-                this.fetchinterval = 0;
+                this.stop();
             }); //stops on error
         /*this.client.get(this.remoteurl)
             .then(response => response.json())// do response.json() for json result
@@ -180,5 +180,10 @@ export class RemoteValue {
 
     showhidesettings() {
         this.showsettings = !this.showsettings;
+    }
+
+    remoteurlChanged(newValue,oldValue) {
+        //in case of change restart
+        if (!this.started) this.start();
     }
 }
