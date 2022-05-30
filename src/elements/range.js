@@ -93,23 +93,28 @@ export class Range {
                     }
                 }
             }
-        } else if (this.fromid) {console.warn('fromid defined, identity convertor added.'); this.operation.push(x=>x)}
+        }
         //register throttled update function
-        if (typeof this.throttle === 'string') this.throttle = parseInt(this.throttle, 10);
+        if ((typeof this.throttle) === 'string') this.throttle = parseInt(this.throttle, 10);
         if (this.throttle > 0) {//throttle
             this.updatevalue = _.throttle(this.setCurrentValue.bind(this), this.throttle);
         } else {//directly call update
             this.updatevalue = this.setCurrentValue.bind(this);
         }
-
     }
 
     attached() {
         let maxlength = 4 + this.max.length + ((this.step && this.step.includes('.')) ? this.step.length : 1);
         this.refnumber.style = 'width:' + maxlength + 'ch';
         if (this.fromid) {
+            if (this.operation.length == 0) {
+                console.warn('fromid defined, identity convertor added.');
+                let identity = x => x;
+                this.operation.push(identity)
+            }
             //add event listener
             document.getElementById(this.fromid).addEventListener('fmidata', this.handleValueChange)
+
         }
     }
 
