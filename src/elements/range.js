@@ -31,7 +31,10 @@ export class Range {
             //apply value convert among all data
             if (this.fromid) {
                 let rawdata = e.detail.data[this.refindex];
-                this.value = rawdata;
+                this.value = this.operation[0](rawdata);
+                //  else this.value = rawdata;
+                //console.log('Range received rawdata '+rawdata+' converted value '+this.value);
+                //console.log('this operation',this.operation)
                 this.updatevalue(); //either it is throttled, or
             }
         }
@@ -61,10 +64,10 @@ export class Range {
         }
         if (this.ids) this.ids2send = this.ids.split(',');
         //configure convertors - used to convert units received from fmi
+        this.operation = [];
         if (this.convertors) {
             let convertvalues = this.convertors.split(';');
             let identity = x => x;
-            this.operation = [];
             for (let i = 0; i < convertvalues.length; i++) {
                 if (convertvalues[i].includes(',')) {
                     //convert values are in form numerator,denominator contains comma ','
@@ -73,7 +76,7 @@ export class Range {
                     else {
                         let numerator = parseFloat(convertitems[0]);
                         let denominator = parseFloat(convertitems[1]);
-                        let addend = (convertitems.length > 1) ? parseFloat(convertitems[2]) : 0;
+                        let addend = (convertitems.length > 2) ? parseFloat(convertitems[2]) : 0;
                         this.operation.push(x => ((x * numerator / denominator) + addend));
                     }
                 } else {
@@ -90,8 +93,7 @@ export class Range {
                     }
                 }
             }
-        }
-
+        } else if (this.fromid) {console.warn('fromid defined, identity convertor added.'); this.operation.push(x=>x)}
         //register throttled update function
         if (typeof this.throttle === 'string') this.throttle = parseInt(this.throttle, 10);
         if (this.throttle > 0) {//throttle
