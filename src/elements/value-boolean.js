@@ -9,4 +9,11 @@ export class ValueBoolean extends Value {
         super(...rest);
     }
 
+    updateValue(rawvalue) {
+        this.value = rawvalue;
+        if (this.dataevent) {
+            let c = new CustomEvent('fmivalue', {detail: {value: this.value}});
+            this.element.dispatchEvent(c);
+        }
+    }
 }
