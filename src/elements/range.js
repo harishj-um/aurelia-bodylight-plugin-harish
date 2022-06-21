@@ -24,6 +24,7 @@ export class Range {
     @bindable refindex; //index of variable to be listened
     @bindable id;
     @bindable throttle = 1000; //throttle update value from fromid, default every 1s
+    @bindable smooth = false;
 
     constructor() {
         this.handleValueChange = e => {
@@ -41,6 +42,7 @@ export class Range {
     }
 
     bind() {
+        if (typeof (this.smooth) === 'string') this.smooth = this.smooth === 'true';
         if (typeof (this.showicons) === 'string') this.showicons = this.showicons === 'true';
         if (typeof (this.globalanim) === 'string') this.globalanim = this.globalanim === 'true';
         if (this.listenkey && this.listenkey === 'true') {

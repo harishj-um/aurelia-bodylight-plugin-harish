@@ -49,22 +49,47 @@ export class RangeSmooth extends Range {
 
     attached(){
         super.attached();
+        //catch event from range or number - smooth it
         this.refinput.addEventListener('input',this.handleValueChange);
         this.refnumber.addEventListener('input',this.handleValueChange);
         this.value = parseFloat(this.myvalue);
     }
 
     detached(){
+        //super.de
         this.refinput.removeEventListener('input',this.handleValueChange);
         this.refnumber.removeEventListener('input',this.handleValueChange);
     }
 
     smoothValue(e){
+        //check if it is not smoothing another value
         if (!this.smoothing) {
             this.smoothing = true;
             this.targetvalue = parseFloat(e.target.value);
             this.currentvalue = this.value;
-            this.valuestep = (this.targetvalue - this.currentvalue) / this.number;
+            console.log('smoothing from '+this.value+' to target '+this.targetvalue);
+            this.valuestep = this.step;
+            let i = 0;
+            let mystep = Math.sign(this.targetvalue-this.value)*this.step;
+            let howmanysteps = Math.abs(this.targetvalue-this.currentvalue)/this.step;
+            //schedule smooth steps
+            let newvalue = this.value;
+            for (let i =0;i<howmanysteps;i++) {
+                newvalue = this.value+mystep*i;
+                let myvalue = newvalue;
+                console.log('creating event with new value in hidden input listened by others '+newvalue);
+                setTimeout(() => {
+                    //this.value += this.step;
+                    let event = new Event('input', {bubbles:true});
+                    this.refsmooth.value = myvalue;
+                    this.refsmooth.dispatchEvent(event);
+                    //console.log('sending value:', this.refsmooth.value);
+                }, this.time * i);
+            }
+            //schedule smoothing to be stopped;
+            this.smoothing = false;
+            this.value=this.targetvalue;
+            /*
             for (let i = 1; i < this.number; i++) {
                 setTimeout(() => {
                     this.value += this.valuestep;
@@ -82,10 +107,11 @@ export class RangeSmooth extends Range {
                 this.smoothing = false;
                 console.log('sending value:', this.value);
             }, this.time * this.number);
+            */
         } else {
             //only set target value
             this.targetvalue = parseFloat(e.target.value);
-            this.valuestep = (this.targetvalue - this.value) / this.number;
+            //this.valuestep = (this.targetvalue - this.value) / this.number;
         }
     }
 

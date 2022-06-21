@@ -10,6 +10,8 @@ export class ChartjsXy extends ChartjsTime {
   @bindable refindex;
   @bindable refvalues;
   @bindable type;
+  @bindable labelx;
+  @bindable labely;
   showlines = true;
 
   constructor() {
@@ -101,6 +103,7 @@ export class ChartjsXy extends ChartjsTime {
         display: true
       }
     };
+
   }
 
   customRadius(context) {
