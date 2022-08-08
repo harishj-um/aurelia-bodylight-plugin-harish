@@ -53,7 +53,8 @@ export function configure(config) {
     PLATFORM.moduleName('./elements/animate-adobe-ss'),
     PLATFORM.moduleName('./elements/range-smooth'),
     PLATFORM.moduleName('./elements/remote-value'),
-      PLATFORM.moduleName('./elements/value-boolean'),
+    PLATFORM.moduleName('./elements/value-boolean'),
     PLATFORM.moduleName('./elements/option-value'),
+    PLATFORM.moduleName('./elements/sachart'),
   ]);
 }

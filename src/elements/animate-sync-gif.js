@@ -26,6 +26,8 @@ export class AnimateSyncGif extends TriggerOnIncrease {
     };
   }
 
+  //handleStop(e) {}
+
   attached() {
     super.attached();
     //this.imgel - is referenced from view (HTML)

@@ -1,4 +1,6 @@
-import Dygraph from 'dygraphs';
+//import Dygraph from 'dygraphs';
+//import {Dygraph} from '../utils/dygraph';
+import {Dygraph} from '../utils/dygraph';
 import {bindable} from 'aurelia-framework';
 import {saveAs} from 'file-saver';
 
@@ -8,6 +10,7 @@ export class Dygraphchart {
   @bindable maxdata=300;
   @bindable refindex;
   @bindable refvalues=1;
+  initialdata = true;
 
   constructor() {
     //this.data = [[0, 0, 0]];
@@ -15,11 +18,14 @@ export class Dygraphchart {
     //this.data=[[1, 5], [2, 5], [3, 4.9], [4, 4.8], [5, 5.2]];
 
     //create lambda function which is added as listener later
+    console.log('dygraph chart constructor');
     this.handleValueChange = e => {
       let datapoint = [e.detail.time];
       //e.detail do not reallocate - using same buffer, thus slicing to append to data array
       let edata = e.detail.data.slice();
       for (let i = this.refindex; i < this.refindex + this.refvalues; i++) datapoint.push(edata[i]);
+      if (this.initialdata) { this.data = []; this.initialdata = false;}
+      //datapoint
       this.data.push(datapoint);
       //shift - remove first element if data is too big
       if (this.data.length > this.maxdata) this.data.shift();
@@ -36,33 +42,43 @@ export class Dygraphchart {
     this.data = [];
     let initdatapoint = Array(parseInt(this.refvalues, 10) + 1).fill(0);
     this.data.push(initdatapoint);
+    this.initialdata = true;
   }
 
   attached() {
     //listening to custom event fmidata
-    document.getElementById(this.fromid).addEventListener('fmidata', this.handleValueChange);
-    document.getElementById(this.fromid).addEventListener('fmireset', this.handleReset);
+    console.log('dygraph attached');
+    let fmielement = document.getElementById(this.fromid);
+    if (fmielement) {
+      fmielement.addEventListener('fmidata', this.handleValueChange);
+      fmielement.addEventListener('fmireset', this.handleReset);
+    }
     //labels are separated by , in attribute inputs
     //console.log('BdlDygraphchart attached inputs', this.inputs);
-    let labels = this.inputs.split(',');
+    this.labels = this.inputs.split(',');
     //console.log('BdlDygraphchart attached labels', labels);
     //create dygraph
     this.resetdata();
     //console.log('BdlDygraphchart attached initial data init data', initdatapoint, ' data:', this.data);
-    this.dygraph = new Dygraph(this.dygraphcanvas, this.data,
-      {
-        //Draw a small dot at each point
-        drawPoints: true,
-        //rolling average period text box to be show
-        //showRoller: true,
-        //customBars if series is low;middle;high where range between low and high is visualised
-        //customBars: true,
-        //range selector
-        //showRangeSelector: true,
-        labels: labels
-      });
+    this.initdygraph();
     /*data.push([x, y]);
     g.updateOptions( { 'file': data } );*/
+  }
+
+  initdygraph(){
+    //console.log('initdygraph:',Dygraph);
+    this.dygraph = new Dygraph(this.dygraphcanvas, this.data,
+        {
+          //Draw a small dot at each point
+          drawPoints: true,
+          //rolling average period text box to be show
+          //showRoller: true,
+          //customBars if series is low;middle;high where range between low and high is visualised
+          //customBars: true,
+          //range selector
+          //showRangeSelector: true,
+          labels: this.labels
+        });
   }
 
   detached() {
