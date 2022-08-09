@@ -21,7 +21,7 @@ export class Fmi {
   @bindable showtime = false;
   @bindable showtimemultiply = 1;
   @bindable eventlisten = 'input';//input==continuous/change==when user drops the value
-  @bindable mode="continuous"; //continuous or oneshot
+  @bindable mode="continuous"; //continuous or oneshot or onestep
   @bindable stepsperframe = 1;
   @observable fmuspeed = 1;
 
@@ -36,10 +36,11 @@ export class Fmi {
   resetBeforeChange = false;
   simulationtime = 0;
   isOneshot = false;
+  isOnestep = false;
 
   constructor() {
     //create lambda function which is added as listener later
-    this.changeinputs = [];
+    this.changeinputs = {}; //[]; change to associative array
     this.handleValueChange = e => {
       //e.target; //triggered the event
       let targetid;
@@ -47,17 +48,32 @@ export class Fmi {
       else if (e.target.id.length > 0) targetid = e.target.id;
       else targetid = e.target.parentElement.parentElement.id;
       let targetvalue = (e.detail && e.detail.value) ? e.detail.value : e.target.value;
-      this.changeinputs.push({id: targetid, value: targetvalue}); //detail will hold the value being changed
+      //bug sometimes value change is double fired, check whether changeinputs already contains the same value
+      if (this.changeinputs[targetid] && this.changeinputs[targetid].value === targetvalue) return;
+      this.changeinputs[targetid] = {id:targetid, value:targetvalue}; //detail will hold the value being changed
       //determine whether it is fixed parameter - further reset is needed?
       this.resetBeforeChange = this.resetBeforeChange || this.inputreferences[targetid].fixed;
-      //do step if mode is oneshot
-      if (this.isOneshot) setTimeout(this.step.bind(this),100); //do simulation step after 100 ms
+      //do step if mode is onestep
+      if (this.isOnestep) setTimeout(this.step.bind(this),100); //do simulation step after 100 ms
+      if (this.isOneshot) {
+        //TODO do start
+        setTimeout(this.shot.bind(this),100);
+      } //do simulation step after 100 ms
     };
     this.handleDetailChange = e => {
-      this.changeinputs.push({valuereference: e.detail.valuereference, value: e.detail.value, fromid: e.detail.id}); //detail will hold the value being changed
+      //this.changeinputs.push({valuereference: e.detail.valuereference, value: e.detail.value, fromid: e.detail.id}); //detail will hold the value being changed
+      //bug sometimes value change is double fired, check whether changeinputs already contains the same value
+      if (this.changeinputs[e.detail.id] && this.changeinputs[e.detail.id].value === e.detail.value) return;
+      this.changeinputs[e.detail.id] = {valuereference: e.detail.valuereference, value: e.detail.value, fromid: e.detail.id};
+      //this.changeinputs[targetid] = targetvalue; //detail will hold the value being changed TODO valuereference???
+
       console.log('fmi handle detail change', this.changeinputs);
-      //do step if mode is oneshot
-      if (this.isOneshot) setTimeout(this.step.bind(this),100); //do simulation step after 100 ms
+      //do step if mode is onestep
+      if (this.isOnestep) setTimeout(this.step.bind(this),100); //do simulation step after 100 ms
+      if (this.isOneshot) {
+        //TODO do start
+        setTimeout(this.shot.bind(this),100);
+      } //do simulation step after 100 ms
     };
     this.handleStart = e => {
       this.startevent(e);
@@ -69,12 +85,13 @@ export class Fmi {
     this.handleRegister = ()=> {
       this.deregisterInputs();
       this.registerInputs();
-      if (this.isOneshot) this.step(); //do simulation step immediately;
+      if (this.isOnestep) this.step(); //do simulation step immediately;
+      if (this.isOneshot) this.shot(); //do simulation shot immediately;
     };
     this.handleStep = ()=> {
-      this.step();
+      this.shot();
     }
-    this.inst = {};
+    this.inst = false;
   }
 
   registerInputs(){
@@ -112,13 +129,13 @@ export class Fmi {
         document.getElementById(target).addEventListener('fmiinput', this.handleDetailChange);
       }
     }
-    //if oneshot - do step
-    if (this.isOneshot) {
-      //console.log('oneshot scheduling startevent in promise() to do step()')
+    //TODO check if onestep - do step after
+    /*if (this.isOnestep) {
+      //console.log('onestep scheduling startevent in promise() to do step()')
       setTimeout(this.sendStartEvent.bind(this),1000);
-      console.log('oneshot scheduling promise() to do step()')
+      console.log('onestep scheduling promise() to do step()')
       setTimeout(this.step.bind(this),1500);
-    } //do simulation step after 100 ms
+    } */ //do simulation step after 100 ms
   }
 
   deregisterInputs() {
@@ -240,13 +257,20 @@ export class Fmi {
         if (!window.fmiinst) { window.fmiinst = [];}
         window.fmiinst[that.fminame] = that;
         //console.log('fmi callback from Promise that', that, that.inst);
-        //do one step if mode is oneshot
+        //do one step if mode is onestep
         //https://newbedev.com/pass-correct-this-context-to-settimeout-callback
+        //TODO check if this step/shot is needed
+        if (window.thisfmi.isOnestep) {
+          //console.log('onestep scheduling startevent in promise() to do step()')
+          setTimeout(window.thisfmi.sendStartEvent.bind(window.thisfmi),1000);
+          console.log('onestep scheduling promise() to do step()')
+          setTimeout(window.thisfmi.step.bind(window.thisfmi),1500);
+        } //do simulation step after 100 ms
         if (window.thisfmi.isOneshot) {
           //console.log('oneshot scheduling startevent in promise() to do step()')
           setTimeout(window.thisfmi.sendStartEvent.bind(window.thisfmi),1000);
-          console.log('oneshot scheduling promise() to do step()')
-          setTimeout(window.thisfmi.step.bind(window.thisfmi),1500);
+          console.log('oneshot scheduling promise() to do shot()')
+          setTimeout(window.thisfmi.shot.bind(window.thisfmi),1500);
         } //do simulation step after 100 ms
       });
     } else { //older EMSDK prior 3.x compiles directly to api, keep compatibility
@@ -254,23 +278,35 @@ export class Fmi {
       if (!window.fmiinst) { window.fmiinst = [];}
       window.fmiinst[that.fminame] = that;
       //console.log('fmi callback that, that.inst', that, that.inst);
-      //do one step if mode is oneshot
+      //do one step if mode is onestep
       //https://newbedev.com/pass-correct-this-context-to-settimeout-callback
+      if (window.thisfmi.isOnestep) {
+        console.log('onestep scheduling direct(nopromise) to do step()')
+        setTimeout(window.thisfmi.sendStartEvent.bind(window.thisfmi),1000)
+        setTimeout(window.thisfmi.step.bind(window.thisfmi),1500);
+      } //do simulation step after 100 ms
       if (window.thisfmi.isOneshot) {
         console.log('oneshot scheduling direct(nopromise) to do step()')
         setTimeout(window.thisfmi.sendStartEvent.bind(window.thisfmi),1000)
-        setTimeout(window.thisfmi.step.bind(window.thisfmi),1500);
+        setTimeout(window.thisfmi.shot.bind(window.thisfmi),1500);
       } //do simulation step after 100 ms
     }
   }
 
   bind() {
     this.isOneshot = this.mode === 'oneshot';
+    this.isOnestep = this.mode === 'onestep';
+    if (this.isOnestep) {
+      this.showcontrols = false;
+    }
     if (this.isOneshot) {
       this.showcontrols = false;
     }
     if (typeof this.stoptime === 'string') {
-      this.stoptime=parseInt(this.stoptime);
+      this.stoptime=parseFloat(this.stoptime);
+    }
+    if (typeof this.starttime === 'string') {
+      this.starttime=parseFloat(this.starttime);
     }
     if (typeof this.stepsperframee === 'string') {
       this.stepsperframe=parseInt(this.stepsperframe);
@@ -319,6 +355,7 @@ export class Fmi {
   }
 
   instantiate() {
+    console.log('fmi instantiate()');
     //first define FMI API function names;
     const sReset = 'fmi2Reset';
     const sInstantiate = 'fmi2Instantiate';
@@ -337,7 +374,7 @@ export class Fmi {
     //console callback ptr, per emsripten create int ptr with signature viiiiii
     if (window.fmiinst && window.fmiinst[this.fminame]) this.inst = window.fmiinst[this.fminame].inst;
     else {
-      console.warn('fmi instantiate() error initfmi() prabably not called')
+      console.warn('fmi instantiate() error initfmi() probably not called')
     }
     //else this.inst = null;//if (window.thisfmi) {this.inst = window.thisfmi.inst;}
 
@@ -517,9 +554,9 @@ export class Fmi {
         this.initialize();
         //make big step from 0 to current stepTime ???
         //const res =
-        //make big step only if it is not oneshot
-        if (!this.isOneshot) this.fmiDoStep(this.fmiinst, 0, this.stepTime, 1);
-        else this.stepTime = 0;
+        //make big step only if it is not onestep
+        if (!this.isOnestep) this.fmiDoStep(this.fmiinst, this.starttime, this.stepTime, 1);
+        else this.stepTime = this.starttime;
         //reset the signature
         this.resetBeforeChange = false;
       } else {
@@ -581,8 +618,45 @@ export class Fmi {
     }
   }
 
+  shot(){
+    //check whether initialized and instantiated
+    if (!this.inst) {
+      //not instantiated
+      if (window.fmiinst && window.fmiinst[this.fminame]) {
+        this.instantiate();
+      } else {
+        //no initfmi() called = wait for script to be loaded, do nothing
+        return
+      }
+    } else {
+      this.reset();
+      //this.setInputVariables();
+    }
+
+    // do steps from starttime to stoptime
+    do {
+      this.step();
+    } while(this.stoptime>this.stepTime)
+  }
+
   setInputVariables() {
-    if (this.changeinputs.length > 0) {
+    for (let key in this.changeinputs) {
+      let myinputs = this.changeinputs[key];
+      //console.log('changing inputs', myinputs);
+      //set real - reference is in - one input one reference
+      //sets individual values - if id is in input, then reference is taken from inputs definition
+      console.log('changing inputs,id,value', this.inputreferences, myinputs.id, myinputs.value);
+      for (let iref of this.inputreferences[myinputs.id].refs) {
+        let normalizedvalue = myinputs.value * iref.numerator / iref.denominator + iref.addconst;
+        if (myinputs.id) this.setSingleReal(iref.ref, normalizedvalue);
+        // if reference is in input, then it is set directly
+        else if (myinputs.valuereference) this.setSingleReal(myinputs.valuereference, normalizedvalue);
+      }
+
+    }
+    this.flushRealQueue();
+    this.changeinputs = {}
+    /*if (this.changeinputs.length > 0) {
       while (this.changeinputs.length > 0) {
         let myinputs = this.changeinputs.shift(); //remove first item
         //console.log('changing inputs', myinputs);
@@ -598,11 +672,12 @@ export class Fmi {
       }
       //flush all in one call to fmi
       this.flushRealQueue();
-    }
+    }*/
   }
 
   reset() {
-    this.stepTime = 0;
+    console.log('doing reset()');
+    this.stepTime = this.starttime;
     this.stepSize = (typeof(this.fstepsize) === 'string' ) ? parseFloat(this.fstepsize) : this.fstepsize;
     this.mystep = this.stepSize;
     this.setupExperiment();
@@ -610,6 +685,21 @@ export class Fmi {
     //set input variables for possible change of non-tunable - fixed parameter values
     this.setInputVariables();
     this.initialize();
+    //create custom event
+    let event = new CustomEvent('fmireset');
+    //dispatch event - it should be listened by some other component
+    document.getElementById(this.id).dispatchEvent(event);
+  }
+
+  softreset() {
+    this.stepTime = this.starttime;
+    this.stepSize = (typeof(this.fstepsize) === 'string' ) ? parseFloat(this.fstepsize) : this.fstepsize;
+    this.mystep = this.stepSize;
+    //this.setupExperiment();
+    //this.fmiReset(this.fmiinst);
+    //set input variables for possible change of non-tunable - fixed parameter values
+    this.setInputVariables();
+    //this.initialize();
     //create custom event
     let event = new CustomEvent('fmireset');
     //dispatch event - it should be listened by some other component

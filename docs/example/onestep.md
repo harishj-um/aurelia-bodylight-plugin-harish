@@ -1,13 +1,13 @@
-# Oneshot mode
+# Onestep mode
 
-Performs simulation from starttime to stoptime if the input parameters change `<bdl-fmi ... mode="oneshot" starttime="0" stoptime="2" fstepsize="0.01">`
+Fires one step of simulation if the input parameters change `<bdl-fmi ... mode="onestep">`
 
 <bdl-fmi id="id4" src="BurkhoffFMI.js"
 fminame="Cardiovascular_Model_Burkhoff_HemodynamicsBurkhoff_0shallow"
-tolerance="0.0001" guid="{b5629132-3ba6-4153-87c2-f3ff108e1920}"
+tolerance="0.000001" starttime="0" guid="{b5629132-3ba6-4153-87c2-f3ff108e1920}"
 valuereferences="33554435,637534265,637534241,637534290,16777312"
 valuelabels="Left Ventricle Volume,Pressure in Left Ventricle,Pressure in Aorta, Pressure in Left Atria, Heart Rate"
-inputs="id1,16777312,1,60" mode="oneshot" starttime="0" stoptime="2" fstepsize="0.01"></bdl-fmi>
+inputs="id1,16777312,1,60" mode="onestep"></bdl-fmi>
 
 <bdl-range id="id1" min="40" max="180" step="1" default="60" title="Srdeční tep:"></bdl-range>
 
