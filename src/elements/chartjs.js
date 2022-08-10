@@ -87,7 +87,9 @@ export class Chartjs {
    */
   resetdata() {
     //fix TypeError: o is undefined
-    for (let dataset of this.chart.data.dataset) if (dataset && dataset.data) dataset.data = [];
+    if (this.chart.data.dataset)
+      for (let dataset of this.chart.data.dataset)
+        if (dataset && dataset.data) dataset.data = [];
     if (this.sectionid) this.chart.config.options.section = [];
   }
 
