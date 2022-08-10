@@ -54,10 +54,10 @@ export class Fmi {
       //determine whether it is fixed parameter - further reset is needed?
       this.resetBeforeChange = this.resetBeforeChange || this.inputreferences[targetid].fixed;
       //do step if mode is onestep
-      if (this.isOnestep) setTimeout(this.step.bind(this),100); //do simulation step after 100 ms
+      if (this.isOnestep) setTimeout(this.step.bind(this),200); //do simulation step after 100 ms
       if (this.isOneshot) {
         //TODO do start
-        setTimeout(this.shot.bind(this),100);
+        setTimeout(this.shot.bind(this),200);
       } //do simulation step after 100 ms
     };
     this.handleDetailChange = e => {
@@ -69,10 +69,10 @@ export class Fmi {
 
       console.log('fmi handle detail change', this.changeinputs);
       //do step if mode is onestep
-      if (this.isOnestep) setTimeout(this.step.bind(this),100); //do simulation step after 100 ms
+      if (this.isOnestep) setTimeout(this.step.bind(this),200); //do simulation step after 100 ms
       if (this.isOneshot) {
         //TODO do start
-        setTimeout(this.shot.bind(this),100);
+        setTimeout(this.shot.bind(this),200);
       } //do simulation step after 100 ms
     };
     this.handleStart = e => {
