@@ -7,9 +7,11 @@ fminame="Cardiovascular_Model_Burkhoff_HemodynamicsBurkhoff_0shallow"
 tolerance="0.0000001" guid="{b5629132-3ba6-4153-87c2-f3ff108e1920}"
 valuereferences="33554435,637534265,637534241,637534290,16777312"
 valuelabels="Left Ventricle Volume,Pressure in Left Ventricle,Pressure in Aorta, Pressure in Left Atria, Heart Rate"
-inputs="id1,16777312,1,60" mode="oneshot" starttime="0" stoptime="10" fstepsize="0.05"></bdl-fmi>
+inputs="id1,16777312,1,60;idlve,16777310,2.053e+8,100,t;idlve,16777306,3.333e+7,100,t;idlve,16777302,5.066e+7,100,t;idlve,16777298,2.666e+7,100,t" mode="oneshot" starttime="0" stoptime="10" fstepsize="0.05"></bdl-fmi>
 
 <bdl-range id="id1" min="40" max="180" step="1" default="60" title="Srdeční tep:"></bdl-range>
+
+Cardiac inotropy:<bdl-range id="idlve" title="(%)" min="50" max="200" default="100" step="0.1"></bdl-range>
 
 
 <div class="w3-row">

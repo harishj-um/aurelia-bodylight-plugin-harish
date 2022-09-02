@@ -655,7 +655,7 @@ export class Fmi {
 
     }
     this.flushRealQueue();
-    this.changeinputs = {}
+    //this.changeinputs = {}
     /*if (this.changeinputs.length > 0) {
       while (this.changeinputs.length > 0) {
         let myinputs = this.changeinputs.shift(); //remove first item
