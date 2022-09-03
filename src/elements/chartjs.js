@@ -36,6 +36,8 @@ export class Chartjs {
   @bindable max; //max for y axis - if chart has this axis
   @bindable babylonjs; //whether to integrate with 3d babylonjs
   @bindable canvasobj; //canvas obj name -
+  @bindable colorsegmentindex=-2; //index to shift the color
+  @bindable colorindex=0; //index to shift the color
   indexsection=0;
   datalabels=false; //may be configured by subclasses
   refindices;
@@ -63,9 +65,18 @@ export class Chartjs {
       this.updatechart();
     };
     this.handleReset = e => {
-      //console.log('handlereset');
-      this.resetdata();
+      console.log('handlereset2()');
+      if (this.chart.data.datasets)
+        for (let dataset of this.chart.data.datasets)
+          if (dataset && dataset.data) dataset.data = [];
+      if (this.chart.data.labels.length>0) this.chart.data.labels = [];
+      if (this.sectionid) {
+        this.chart.config.options.section = [];
+        this.indexsection=0;
+      }
       this.updatechart();
+      //this.chart.config.options.section = [];
+
     };
     this.handleAddSection = e => {
       this.addSection(e.detail.label);
@@ -80,17 +91,6 @@ export class Chartjs {
         console.warn('fmi attached, but no element with id found:',this.fromid);
       }
     }
-  }
-
-  /**
-   * empties data in every dataset and empties section
-   */
-  resetdata() {
-    //fix TypeError: o is undefined
-    if (this.chart.data.dataset)
-      for (let dataset of this.chart.data.dataset)
-        if (dataset && dataset.data) dataset.data = [];
-    if (this.sectionid) this.chart.config.options.section = [];
   }
 
   /**
@@ -181,7 +181,7 @@ export class Chartjs {
         //this.mydata.push(0);
         //console.log('chartjs no data');
       }
-      this.colors.push(this.selectColor(i));
+      this.colors.push(this.selectColor(i+this.colorindex));
     }
 
     let datasets = [{
@@ -302,6 +302,12 @@ export class Chartjs {
     }
 
     this.tooltips = ['mousemove', 'touchstart', 'touchmove', 'click'];
+    if (typeof this.colorindex === 'string') {
+      this.colorindex = parseInt(this.colorindex, 10);
+    }
+    if (typeof this.colorsegmentindex === 'string') {
+      this.colorsegmentindex = parseInt(this.colorsegmentindex, 10);
+    }
   }
 
   /**
@@ -366,10 +372,17 @@ export class Chartjs {
             let i;
             ctx.save();
             //console.log('chartjs sections', chart.config.options.section);
+            if (meta.data.length == 0) return;
+            //first section
+
             for (i = 1; i < chart.config.options.section.length; i++) {
               //console.log('chartjs sectionplugin:i, section[i-1], section[1],start,stop)', i, chart.config.options.section[i - 1],chart.config.options.section[i]);
-              let start = meta.data[chart.config.options.section[i - 1].index]._model.x;
-              let stop  = meta.data[chart.config.options.section[i].index]._model.x;
+              const startindex = chart.config.options.section[i - 1].index;
+              const stopindex = chart.config.options.section[i].index;
+              if (startindex>=meta.data.length) continue;
+              if (stopindex>=meta.data.length) continue;
+              let start = meta.data[startindex]._model.x;
+              let stop  = meta.data[stopindex]._model.x;
               /*const hue = (i - 1) * 137.508; // use golden angle approximation
               ctx.fillStyle = `hsl(${hue},85%,91%)`;
                */
@@ -392,7 +405,7 @@ export class Chartjs {
             //console.log('last i',i);
             //last section
             i = chart.config.options.section.length;
-            if ((i > 0) && (chart.config.options.section[i - 1].index < (meta.data.length - 1))) {
+            if ((i > 1) && (chart.config.options.section[i - 1].index < (meta.data.length - 1)) && (chart.config.options.section[i - 1].index < meta.data.length)) {
               //draw last section
               let start = meta.data[chart.config.options.section[i - 1].index]._model.x;
               let stop  = meta.data[meta.data.length - 1]._model.x;
@@ -605,10 +618,14 @@ export class Chartjs {
   addSection(label = '') {
     this.indexsection++;
     if (!label) label = '';
-    console.log('chartjs.addsection()', this.chart.data.labels.length - 1);
+    console.log('chartjs.addsection()', this.chart.data.labels.length - 1, label);
+    let ind;
+    //if (this.chart.data.labels.length>0) ind = 0
+    //else
+    ind = Math.max(0,this.chart.data.labels.length-1);
     this.chart.config.options.section.push({
-      index: this.chart.data.labels.length - 1,
-      color: this.selectColor(this.indexsection, 85, 91),
+      index: ind,
+      color: this.selectColor((this.indexsection+this.colorsegmentindex), 85, 93),
       label: label
     });
   }

@@ -15,6 +15,7 @@ export class AnimateControl {
   @bindable allowcontinuous=false
   continuousanimation = false;
   animationstarted = false;
+  firstframe=true;
   frame = 0;
   aframe = 0;
   currentsegment=0;
@@ -29,6 +30,15 @@ export class AnimateControl {
       let value = e.detail.data[this.segmentconditions[this.currentsegment].refid];
       this.processValue(value);
     };
+    this.handleReset = e => {
+      this.continuousanimation = false;
+      this.animationstarted = false;
+      this.firstframe=true;
+      this.frame = 0;
+      this.aframe = 0;
+      this.currentsegment=0;
+      this.animationframe=0;
+    }
   }
 
   bind() {
@@ -83,6 +93,7 @@ export class AnimateControl {
   attached() {
     //console.log('bdlanimatecontrol attached fromid', this.fromid);
     if (this.fromid) {document.getElementById(this.fromid).addEventListener('fmidata', this.handleValueChange);}
+    if (this.fromid) {document.getElementById(this.fromid).addEventListener('fmireset', this.handleReset);}
   }
 
   detached() {
@@ -242,6 +253,11 @@ export class AnimateControl {
       //if continuous is enabled - start immediatelly another segment
       if (this.continuousanimation) this.segment();
     } else {
+      if (this.firstframe) {
+        this.firstframe=false;
+        let event2 = new CustomEvent('addsection', {detail: {time: this.frame, label: this.segmentlabelarray[this.currentsegment]}});
+        document.getElementById(this.id).dispatchEvent(event2);
+      }
       //do step
       this.frame++;
       this.previous_aframe = this.floor_aframe;

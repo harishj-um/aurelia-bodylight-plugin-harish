@@ -1,4 +1,5 @@
 import {bindable,observable} from 'aurelia-framework';
+import _ from 'lodash';
 
 export const thirdpartytimeout = 5000;
 
@@ -69,7 +70,7 @@ export class Fmi {
 
       console.log('fmi handle detail change', this.changeinputs);
       //do step if mode is onestep
-      if (this.isOnestep) setTimeout(this.step.bind(this),200); //do simulation step after 100 ms
+      if (this.isOnestep) setTimeout(this.stepHandler,200); //do simulation step after 100 ms
       if (this.isOneshot) {
         //TODO do start
         setTimeout(this.shot.bind(this),200);
@@ -81,16 +82,19 @@ export class Fmi {
     this.handleStop = e=> {
       this.stopevent(e);
     };
+    this.handleShot = this.shot.bind(this);
+    this.handleStep = this.step.bind(this);
+    this.debounceStep = _.debounce(this.handleStep,1000);
+    this.debounceShot = _.debounce(this.handleShot,1000); 
+
     //this handles event to register inputs - may be sent by subsequent component which change inputs/outputs communicating with fmi
     this.handleRegister = ()=> {
       this.deregisterInputs();
       this.registerInputs();
-      if (this.isOnestep) this.step(); //do simulation step immediately;
-      if (this.isOneshot) this.shot(); //do simulation shot immediately;
+
+      if (this.isOnestep) this.debounceStep(); //do simulation step immediately;
+      if (this.isOneshot) this.debounceShot(); //do simulation shot immediately;}
     };
-    this.handleStep = ()=> {
-      this.shot();
-    }
     this.inst = false;
   }
 
@@ -211,7 +215,7 @@ export class Fmi {
 
     script.onerror = function() {
       if (!script.readyState || /loaded|complete/.test(script.readyState) ) {
-        script.onerror = script.onload = script.onreadystatechange = null;
+        script.onerror = script.onload = null;
         script = undefined;
         // try to insert script by other app for previewing - scripts might be inserted into DOM
         if (window.editorapi && (typeof window.editorapi.insertScriptById === 'function')) {
@@ -223,9 +227,10 @@ export class Fmi {
       }
     };
 
-    script.onload = script.onreadystatechange = function( _, isAbort ) {
+    //remove onreadystatechange - only reliable in IE https://stackoverflow.com/questions/1929742/can-script-readystate-be-trusted-to-detect-the-end-of-dynamic-script-loading
+    script.onload = function( _, isAbort ) {
       if (isAbort || !script.readyState || /loaded|complete/.test(script.readyState) ) {
-        script.onerror = script.onload = script.onreadystatechange = null;
+        script.onerror = script.onload =  null;
         script = undefined;
         //do callback - scripts might be inserted into DOM by another app
         if (!isAbort && callback) setTimeout(callback, 0);
@@ -264,13 +269,15 @@ export class Fmi {
           //console.log('onestep scheduling startevent in promise() to do step()')
           setTimeout(window.thisfmi.sendStartEvent.bind(window.thisfmi),1000);
           console.log('onestep scheduling promise() to do step()')
-          setTimeout(window.thisfmi.step.bind(window.thisfmi),1500);
+          //setTimeout(window.thisfmi.step.bind(window.thisfmi),1500);
+          window.thisfmi.debounceStep();
         } //do simulation step after 100 ms
         if (window.thisfmi.isOneshot) {
           //console.log('oneshot scheduling startevent in promise() to do step()')
           setTimeout(window.thisfmi.sendStartEvent.bind(window.thisfmi),1000);
           console.log('oneshot scheduling promise() to do shot()')
-          setTimeout(window.thisfmi.shot.bind(window.thisfmi),1500);
+          //setTimeout(window.thisfmi.shot.bind(window.thisfmi),1500);
+          window.thisfmi.debounceShot();
         } //do simulation step after 100 ms
       });
     } else { //older EMSDK prior 3.x compiles directly to api, keep compatibility
@@ -283,12 +290,14 @@ export class Fmi {
       if (window.thisfmi.isOnestep) {
         console.log('onestep scheduling direct(nopromise) to do step()')
         setTimeout(window.thisfmi.sendStartEvent.bind(window.thisfmi),1000)
-        setTimeout(window.thisfmi.step.bind(window.thisfmi),1500);
+        //setTimeout(window.thisfmi.step.bind(window.thisfmi),1500);
+        _.throttle(window.thisfmi.step.bind(window.thisfmi),1500);
       } //do simulation step after 100 ms
       if (window.thisfmi.isOneshot) {
         console.log('oneshot scheduling direct(nopromise) to do step()')
         setTimeout(window.thisfmi.sendStartEvent.bind(window.thisfmi),1000)
-        setTimeout(window.thisfmi.shot.bind(window.thisfmi),1500);
+        //setTimeout(window.thisfmi.shot.bind(window.thisfmi),1500);
+        _.throttle(window.thisfmi.shot.bind(window.thisfmi),1500);
       } //do simulation step after 100 ms
     }
   }
@@ -528,7 +537,7 @@ export class Fmi {
     return Number(Math.round(value + 'e-' + decimals) + 'e+' + decimals);
   }
 
-  step() {
+  step(e) {
     //this = window.thisfmi;
     //primitive semaphore, only one instance can perform this call
     if (!this.doingstep) {
@@ -618,7 +627,7 @@ export class Fmi {
     }
   }
 
-  shot(){
+  shot(e){
     //check whether initialized and instantiated
     if (!this.inst) {
       //not instantiated
