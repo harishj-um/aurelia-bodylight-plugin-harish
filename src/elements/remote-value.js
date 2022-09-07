@@ -16,6 +16,7 @@ export class RemoteValue {
     showsettings = false;
     @bindable inputs;
     inputids = [];
+    posterror = false;
 
     constructor(httpclient) {
         this.client = httpclient;
@@ -127,6 +128,7 @@ export class RemoteValue {
                     let event = new CustomEvent('fmidata', {detail: {time: mytime, data: mydata}});
                     document.getElementById(this.id).dispatchEvent(event);
                 }
+                this.posterror = false;
             })
             .catch(err => {
                 console.log('error', err);
@@ -162,13 +164,18 @@ export class RemoteValue {
             //localStorage.setItem('bdl-fhir-api-key',this.remoteheadervalue);
         }
         let url = this.remoteurl + (id ? '/' + id : '');
+        if (!this.posterror)
         this.client.fetch(url, {method: 'post', headers: myheaders, body: this.postvalue})
             .then(response => response.json())// do response.json() for json result
             .then(data => {
                 //console.log('markdownaurelia fetched md:', data)
                 this.remotevalue = data;
                 this.remotevalueformatted = JSON.stringify(this.remotevalue, null, 4)
-            });
+            })
+            .catch(err => {
+            console.error('error posting data',err);
+            this.posterror = true;
+        });
         /*this.client.get(this.remoteurl)
             .then(response => response.json())// do response.json() for json result
             .then(data => {

@@ -1,6 +1,5 @@
 # Ascites simulator 1.15
 
-
 <bdl-fmi id="idfmi" mode="oneshot" src="Lymphatics_Hemodynamics_Experiments_HVPGShuntsForSimulator.js" fminame="Lymphatics_Hemodynamics_Experiments_HVPGShuntsForSimulator" tolerance="0.000001" starttime="4" fstepsize="1" stoptime="30" guid="{dc5bd2c5-c5a0-40f2-9619-19c8c00e7fc1}" valuereferences="905969714,905969732,905969816,905969713,905969762,905969846,100663313,905969764,905969848,905969765,905969773,905969791" valuelabels="ascites_NoShunts.HVPG,ascites_Shunts.HVPG,ascites_ShuntDefault.HVPG,ascites_NoShunts.PPV,ascites_ShuntDefault.PPV,ascites_Shunts.PPV,ascites_NoShunts.Q_liver,ascites_ShuntDefault.Q_liver,ascites_Shunts.Q_liver,ascites_Shunts.Q_shunt,ascites_Shunts.shunt.d,phase"
 inputs="id1,16777243,7.5006e-09,1,t;id2,16777270,1.6666666666667e-05,1,t;id3,16777276,1,1,t"
 inputlabels="ascites_Shunts.shunt.Comp,Inflow,TipsOn" eventlisten="change"></bdl-fmi>
