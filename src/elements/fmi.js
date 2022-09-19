@@ -24,6 +24,7 @@ export class Fmi {
   @bindable eventlisten = 'input';//input==continuous/change==when user drops the value
   @bindable mode="continuous"; //continuous or oneshot or onestep
   @bindable stepsperframe = 1;
+  @bindable startafter = 0;
   @observable fmuspeed = 1;
 
   cosimulation=1;
@@ -85,7 +86,7 @@ export class Fmi {
     this.handleShot = this.shot.bind(this);
     this.handleStep = this.step.bind(this);
     this.debounceStep = _.debounce(this.handleStep,1000);
-    this.debounceShot = _.debounce(this.handleShot,1000); 
+    this.debounceShot = _.debounce(this.handleShot,1000);
 
     //this handles event to register inputs - may be sent by subsequent component which change inputs/outputs communicating with fmi
     this.handleRegister = ()=> {
@@ -271,14 +272,18 @@ export class Fmi {
           console.log('onestep scheduling promise() to do step()')
           //setTimeout(window.thisfmi.step.bind(window.thisfmi),1500);
           window.thisfmi.debounceStep();
-        } //do simulation step after 100 ms
+        } else //do simulation step after 100 ms
         if (window.thisfmi.isOneshot) {
           //console.log('oneshot scheduling startevent in promise() to do step()')
           setTimeout(window.thisfmi.sendStartEvent.bind(window.thisfmi),1000);
           console.log('oneshot scheduling promise() to do shot()')
           //setTimeout(window.thisfmi.shot.bind(window.thisfmi),1500);
           window.thisfmi.debounceShot();
-        } //do simulation step after 100 ms
+        } else //do simulation step after 100 ms
+        if (this.startafter>0)
+        {
+          setTimeout(window.thisfmi.sendStartEvent.bind(window.thisfmi),1000*this.startafter);
+        }
       });
     } else { //older EMSDK prior 3.x compiles directly to api, keep compatibility
       that.inst = myinst;
@@ -292,13 +297,16 @@ export class Fmi {
         setTimeout(window.thisfmi.sendStartEvent.bind(window.thisfmi),1000)
         //setTimeout(window.thisfmi.step.bind(window.thisfmi),1500);
         _.throttle(window.thisfmi.step.bind(window.thisfmi),1500);
-      } //do simulation step after 100 ms
+      } else //do simulation step after 100 ms
       if (window.thisfmi.isOneshot) {
         console.log('oneshot scheduling direct(nopromise) to do step()')
         setTimeout(window.thisfmi.sendStartEvent.bind(window.thisfmi),1000)
         //setTimeout(window.thisfmi.shot.bind(window.thisfmi),1500);
         _.throttle(window.thisfmi.shot.bind(window.thisfmi),1500);
-      } //do simulation step after 100 ms
+      } else if (this.startafter>0)
+      {
+        setTimeout(window.thisfmi.sendStartEvent.bind(window.thisfmi),1000*this.startafter);
+      }
     }
   }
 
@@ -320,6 +328,10 @@ export class Fmi {
     if (typeof this.stepsperframee === 'string') {
       this.stepsperframe=parseInt(this.stepsperframe);
     }
+    if (typeof this.startafter === 'string') {
+      this.starttime=parseFloat(this.startafter);
+    }
+
   }
 
   detached() {
@@ -664,7 +676,10 @@ export class Fmi {
 
     }
     this.flushRealQueue();
-    //this.changeinputs = {}
+    if (!this.isOneshot && !this.isOnestep) {
+      //forget inputs in continuous mode
+      this.changeinputs = {};
+    }
     /*if (this.changeinputs.length > 0) {
       while (this.changeinputs.length > 0) {
         let myinputs = this.changeinputs.shift(); //remove first item

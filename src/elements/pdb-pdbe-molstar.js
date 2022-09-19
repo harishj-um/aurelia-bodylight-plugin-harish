@@ -1,7 +1,7 @@
 import {bindable} from 'aurelia-framework';
 
 /**
- * requires extra initialization of pdb components
+ * requires extra initialidzation of pdb components
  * <!-- Web component polyfill (only loads what it needs) -->
  * <script src="https://cdn.jsdelivr.net/npm/@webcomponents/webcomponentsjs/webcomponents-lite.js" charset="utf-8"></script>
  *
