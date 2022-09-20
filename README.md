@@ -1,5 +1,5 @@
 # Aurelia plugin with Bodylight web components 
-[![Build Status](https://travis-ci.com/creative-connections/aurelia-bodylight-plugin.svg?branch=master)](https://travis-ci.com/creative-connections/aurelia-bodylight-plugin)
+[![Build Status](https://travis-ci.com/creative-connections/aurelia-bodylight-plugin.svg?branch=master)](https://app.travis-ci.com/github/creative-connections/aurelia-bodylight-plugin/builds)
 [![stability-beta](https://img.shields.io/badge/stability-beta-33bbff.svg)](https://github.com/mkenney/software-guides/blob/master/STABILITY-BADGES.md#beta)
 [![Version](https://img.shields.io/npm/v/aurelia-bodylight-plugin.svg)](https://www.npmjs.com/package/aurelia-bodylight-plugin)
 [![Maintainability](https://api.codeclimate.com/v1/badges/3b493506de72a23d92b7/maintainability)](https://codeclimate.com/github/creative-connections/aurelia-bodylight-plugin/maintainability)
