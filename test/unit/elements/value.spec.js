@@ -15,7 +15,7 @@ describe('value element', () => {
 
     component = StageComponent
       .withResources(['elements/value','elements/fmi'])
-      .inView('<div><fmi id="id1"></fmi><value fromid="id1"></value></div>');
+      .inView('<div><div id="id1" valuereferences=""></div><value fromid="id1"></value></div>');
 
     component.create(bootstrap).then(() => {
       const view = component.element;

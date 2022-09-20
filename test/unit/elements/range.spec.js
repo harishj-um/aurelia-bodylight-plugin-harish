@@ -14,7 +14,7 @@ describe('range element', () => {
   it('creates 2 inputs, first range, second number', done => {
     component = StageComponent
       .withResources('elements/range')
-      .inView('<range></range>');
+      .inView('<range min="0" max="10" step="1" id="1"></range>');
 
 
     component.create(bootstrap).then(() => {

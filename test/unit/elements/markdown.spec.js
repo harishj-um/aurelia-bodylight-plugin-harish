@@ -9,9 +9,12 @@ function delay(time) {
   });
 }
 
+
+
 describe('markdown element',  () => {
   let component;
   beforeEach(() => {
+    jest.setTimeout(30000);
     //fake function to satisfy plotly
     //window.URL.createObjectURL = function() {return {}};
   });
