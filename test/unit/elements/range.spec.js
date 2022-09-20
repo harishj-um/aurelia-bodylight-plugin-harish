@@ -13,7 +13,7 @@ describe('range element', () => {
 
   it('creates 2 inputs, first range, second number', done => {
     component = StageComponent
-      .withResources('elements/range.html')
+      .withResources('elements/range')
       .inView('<range></range>');
 
 

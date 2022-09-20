@@ -14,7 +14,7 @@ describe('value element', () => {
   it('creates 1 span with value', done => {
 
     component = StageComponent
-      .withResources('elements/value')
+      .withResources(['elements/value','elements/fmi'])
       .inView('<div><fmi id="id1"></fmi><value fromid="id1"></value></div>');
 
     component.create(bootstrap).then(() => {
