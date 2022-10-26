@@ -56,5 +56,8 @@ export function configure(config) {
     PLATFORM.moduleName('./elements/value-boolean'),
     PLATFORM.moduleName('./elements/option-value'),
     PLATFORM.moduleName('./elements/sachart'),
+    PLATFORM.moduleName('./elements/panels.html'),
+    PLATFORM.moduleName('./elements/panel.html'),
+    PLATFORM.moduleName('./elements/panel2.html'),
   ]);
 }
