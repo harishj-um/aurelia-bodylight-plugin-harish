@@ -1,4 +1,3 @@
-import 'isomorphic-fetch';
 import '@danzen/createjs';
 import {StageComponent} from 'aurelia-testing';
 import {bootstrap} from 'aurelia-bootstrapper';
@@ -14,7 +13,7 @@ function delay(time) {
 describe('markdown element',  () => {
   let component;
   beforeEach(() => {
-    jest.setTimeout(30000);
+    jest.setTimeout(3000);
     //fake function to satisfy plotly
     //window.URL.createObjectURL = function() {return {}};
   });
@@ -31,7 +30,7 @@ describe('markdown element',  () => {
     component = StageComponent
         .withResources('elements/markdownaurelia')
         .inView('<markdownaurelia content="# title\n## title 2"></markdownaurelia>');
-    delay(3000)
+    delay(300)
         .then( () =>{
           component.create(bootstrap).then(() => {
             const view = component.element;
