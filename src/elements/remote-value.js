@@ -153,7 +153,7 @@ export class RemoteValue {
 
 
     post(id) {
-        //sends GET request to
+        //sends POST request tod
         let myheaders = new Headers();
         myheaders.append('Accept', 'application/json');
         myheaders.append('Content-Type', 'application/json')
@@ -183,6 +183,11 @@ export class RemoteValue {
                 this.remotevalue = data;
                 this.remotevalueformatted = JSON.stringify(this.remotevalue,null,4)
             });*/
+    }
+
+    forcepost() {
+        this.posterror = false;
+        this.post();
     }
 
     showhidesettings() {
