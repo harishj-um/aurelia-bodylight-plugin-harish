@@ -8,7 +8,7 @@
             Header value:&nbsp;<input  value.bind="remoteheadervalue" style="width:20%"/><br/>
             GET interval:&nbsp;<input  value.bind="interval" style="width:20%"/>
             <button class="w3-button" click.delegate="start()"><i class="fa fa-play" show.bind="!started"></i><i class="fa fa-stop" show.bind="started"></i></button><br/>
-            <input value.bind="postvalue" /><button class="w3-button" click.delegate="post()">POST</button>
+            <input value.bind="postvalue" /><button class="w3-button" click.delegate="forcepost()">POST</button>
         </div>
         <div class="w3-half">
             <span class="w3-tiny"><pre style="white-space:pre-wrap;line-height: 0.9">${remotevalueformatted}</pre></span>
