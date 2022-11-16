@@ -1,4 +1,6 @@
 # build plugin
+rm -rf dist/
+mkdir dist
 au build-plugin
 cp -TRv dist/ ../Bodylight.js-Components/node_modules/aurelia-bodylight-plugin/dist/
 # build components

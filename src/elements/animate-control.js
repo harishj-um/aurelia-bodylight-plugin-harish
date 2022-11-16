@@ -12,7 +12,8 @@ export class AnimateControl {
   @bindable segmentlabels;
   @bindable controlfmi=false;
   @bindable segmentcond;
-  @bindable allowcontinuous=false
+  @bindable allowcontinuous=false;
+  @bindable playafterstart=false;
   continuousanimation = false;
   animationstarted = false;
   firstframe=true;
@@ -87,6 +88,19 @@ export class AnimateControl {
 
     if (typeof this.allowcontinuous === 'string') {
       this.allowcontinuous = this.allowcontinuous === 'true';
+    }
+    if (typeof this.playafterstart === 'string') {
+      this.playafterstart = this.playafterstart === 'true';
+    }
+
+    if (this.playafterstart) { //if animation is loaded 
+      if (window.ani) {window.ani.animationstarted = true;window.ani.playafterstart=true;this.animationstarted=true;} else {
+        setTimeout(() =>{
+          if (window.ani) {window.ani.animationstarted = true;window.ani.playafterstart=true;this.animationstarted=true;} else {
+            console.warn('animate-control: cannot start animation automatically');
+          }
+        }, 300)
+      }
     }
   }
 

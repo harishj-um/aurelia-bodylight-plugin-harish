@@ -1,7 +1,7 @@
 import {bindable} from 'aurelia-templating';
 export class AnimateAdobeControl {
     @bindable id;
-    animationstarted = false;
+    animationstarted = true;
     //frame = 0;
     onetime = false;
 
@@ -11,7 +11,13 @@ export class AnimateAdobeControl {
             //window.ani.startAllAnimation();
             //try to set animationstarted to true -
             window.ani.animationstarted=true;
-            this.animationstarted = window.ani.animationstarted;
+            //this.animationstarted = window.ani.animationstarted;
+        } else {
+            setTimeout(() =>{
+                if (window.ani) {window.ani.animationstarted = true;} else {
+                  console.warn('animate-control: cannot start animation automatically');
+                }
+              }, 300)
         }
     }
 
