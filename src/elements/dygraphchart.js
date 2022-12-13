@@ -25,11 +25,24 @@ export class Dygraphchart {
       let datapoint = [e.detail.time];
       //e.detail do not reallocate - using same buffer, thus slicing to append to data array
       let edata = e.detail.data.slice();
+      let opindex = 0;
       if (this.refindices) {
-        for (let myindex of this.refindices) datapoint.push(edata[myindex]);
+        for (let myindex of this.refindices) {
+          if (this.operation) {
+            datapoint.push(this.operation[opindex](edata[myindex]));
+            opindex++;
+          } else 
+          datapoint.push(edata[myindex]);
+        }
       } else
       {
-        for (let i = this.refindex; i < this.refindex + this.refvalues; i++) datapoint.push(edata[i]);
+        for (let i = this.refindex; i < this.refindex + this.refvalues; i++) {
+          if (this.operation) {
+            datapoint.push(this.operation[opindex](edata[i]));
+            opindex++;
+          } else 
+          datapoint.push(edata[i]);
+        }
       }
       if (this.initialdata) { this.data = []; this.initialdata = false;}
       //datapoint
@@ -86,6 +99,37 @@ export class Dygraphchart {
     } else {//directly call chart update
       this.updatechart = this.updatechartfn.bind(this);
     }
+        //configure convertors - used to convert units received from fmi
+        if (this.convertors) {
+          let convertvalues = this.convertors.split(';');
+          let identity = x => x;
+          this.operation = [];
+          for (let i = 0; i < convertvalues.length; i++) {
+            if (convertvalues[i].includes(',')) {
+              //convert values are in form numerator,denominator contains comma ','
+              let convertitems = convertvalues[i].split(',');
+              if (convertitems[0] === '1' && convertitems[1] === '1') this.operation.push(identity);
+              else {
+                let numerator = parseFloat(convertitems[0]);
+                let denominator = parseFloat(convertitems[1]);
+                let addend = (convertitems.length > 2) ? parseFloat(convertitems[2]) : 0;
+                this.operation.push(x => ((x * numerator / denominator) + addend));
+              }
+            } else {
+              //convert values are in form of expression, do not contain comma
+              if (convertvalues === '1/x') this.operation.push(x=> 1 / x);
+    
+              else {
+                // for eval() security filter only allowed characters:
+                // algebraic, digits, e, dot, modulo, parenthesis and 'x' and 'e' is allowed
+                let expression = convertvalues[i].replace(/[^-\d/*+.()%xe]/g, '');
+                console.log('chartjs bind(), evaluating expression:' + convertvalues[i] + ' securely filtered to :' + expression);
+                // eslint-disable-next-line no-eval
+                this.operation.push(x => eval(expression));
+              }
+            }
+          }
+    
 
   }
 
