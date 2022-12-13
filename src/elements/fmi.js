@@ -331,6 +331,12 @@ export class Fmi {
     if (typeof this.startafter === 'string') {
       this.starttime=parseFloat(this.startafter);
     }
+    if (typeof this.fpslimit === 'string') {
+      this.fpslimit = parseFloat(this.fpslimit);
+    }
+    if (typeof this.fmuspeed === 'string') {
+      this.fmuspeed = parseInt(this.fmuspeed);
+    }
 
   }
 

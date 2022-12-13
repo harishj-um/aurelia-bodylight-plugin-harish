@@ -7,6 +7,7 @@ export class Value {
   @bindable fromid;
   @bindable refindex;
   @bindable convertor;
+  @bindable default;
   @bindable precision=4;
   @bindable throttle=500;
   @bindable dataevent=false;
@@ -38,11 +39,12 @@ export class Value {
   }
 
   bind() {
-    //register throttled update function
+    //register throttled update function    
     if (typeof this.throttle === 'string') this.throttle = parseInt(this.throttle, 10);
     if (typeof this.dataevent === 'string') this.dataevent = this.dataevent === 'true';
     if (typeof this.precision === 'string') this.precision = parseInt(this.precision, 10);
     this.myupdatevalue = _.throttle(this.updateValue, this.throttle);
+    if (this.default && typeof this.default === 'string') this.value = parseFloat(this.default);
     //configure convertors - used to convert units received from fmi
     if (this.convertor) {
       //used code from fmi component

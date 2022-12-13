@@ -8,6 +8,9 @@ export class Sachart extends Dygraphchart {
     @bindable maxdata=300;
     @bindable refindex;
     @bindable refvalues=1;
+    @bindable pH=7.4;
+    @bindable pCO2=40;
+    @bindable throttle=2000; //time to throttle chart update, if it is too much at once
 
     constructor(){
         super();

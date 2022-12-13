@@ -10,7 +10,9 @@ export class Dygraphchart {
   @bindable maxdata=300;
   @bindable refindex;
   @bindable refvalues=1;
+  @bindable throttle=200; //time to throttle chart update, if it is too much at once
   initialdata = true;
+  refindices = null;
 
   constructor() {
     //this.data = [[0, 0, 0]];
@@ -23,19 +25,30 @@ export class Dygraphchart {
       let datapoint = [e.detail.time];
       //e.detail do not reallocate - using same buffer, thus slicing to append to data array
       let edata = e.detail.data.slice();
-      for (let i = this.refindex; i < this.refindex + this.refvalues; i++) datapoint.push(edata[i]);
+      if (this.refindices) {
+        for (let myindex of this.refindices) datapoint.push(edata[myindex]);
+      } else
+      {
+        for (let i = this.refindex; i < this.refindex + this.refvalues; i++) datapoint.push(edata[i]);
+      }
       if (this.initialdata) { this.data = []; this.initialdata = false;}
       //datapoint
       this.data.push(datapoint);
       //shift - remove first element if data is too big
       if (this.data.length > this.maxdata) this.data.shift();
       //console.log('Dygraphchar data', this.data);
-      this.dygraph.updateOptions( { 'file': this.data } );
+      this.updatechart();
+      //this.dygraph.updateOptions( { 'file': this.data } );
     };
     this.handleReset = e => {
       this.resetdata();
-      this.dygraph.updateOptions( { 'file': this.data } );
+      this.updatechart();
+      //this.dygraph.updateOptions( { 'file': this.data } );
     };
+  }
+
+  updatechartfn() {
+    this.dygraph.updateOptions( { 'file': this.data } );
   }
 
   resetdata() {
@@ -48,6 +61,7 @@ export class Dygraphchart {
   attached() {
     //listening to custom event fmidata
     console.log('dygraph attached');
+    if (refindex && (refindex.indexOf(',')>0)) this.refindices = this.refindex.split(',');
     let fmielement = document.getElementById(this.fromid);
     if (fmielement) {
       fmielement.addEventListener('fmidata', this.handleValueChange);
@@ -55,7 +69,7 @@ export class Dygraphchart {
     }
     //labels are separated by , in attribute inputs
     //console.log('BdlDygraphchart attached inputs', this.inputs);
-    this.labels = this.inputs.split(',');
+    this.labels = this.inputs? this.inputs.split(','):[];
     //console.log('BdlDygraphchart attached labels', labels);
     //create dygraph
     this.resetdata();
@@ -63,6 +77,16 @@ export class Dygraphchart {
     this.initdygraph();
     /*data.push([x, y]);
     g.updateOptions( { 'file': data } );*/
+
+    //register throttled update function
+    if (typeof this.throttle === 'string') this.throttle = parseInt(this.throttle, 10);
+
+    if (this.throttle>0) {//throttle
+      this.updatechart = _.throttle(this.updatechartfn.bind(this), this.throttle);
+    } else {//directly call chart update
+      this.updatechart = this.updatechartfn.bind(this);
+    }
+
   }
 
   initdygraph(){

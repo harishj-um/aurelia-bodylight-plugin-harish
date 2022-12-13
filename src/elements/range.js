@@ -115,7 +115,9 @@ export class Range {
                 this.operation.push(identity)
             }
             //add event listener
-            document.getElementById(this.fromid).addEventListener('fmidata', this.handleValueChange)
+            const fromidel = document.getElementById(this.fromid)
+            if (fromidel) fromidel.addEventListener('fmidata', this.handleValueChange)
+            else console.warn('range fromid element not found with id:',this.fromid);
 
         }
     }

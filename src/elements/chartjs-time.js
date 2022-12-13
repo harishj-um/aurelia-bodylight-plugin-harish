@@ -100,6 +100,9 @@ export class ChartjsTime extends Chartjs {
 
     }
 
+    attached () {super.attached();}
+    detached() {super.detached();}
+
     resetdata() {
         //super.resetdata();
         for (let j = 0; j < this.refvalues; j++) this.chart.data.datasets[j].data = [];
