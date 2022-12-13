@@ -61,7 +61,7 @@ export class Dygraphchart {
   attached() {
     //listening to custom event fmidata
     console.log('dygraph attached');
-    if (refindex && (refindex.indexOf(',')>0)) this.refindices = this.refindex.split(',');
+    if (this.refindex && (this.refindex.indexOf(',')>0)) this.refindices = this.refindex.split(',');
     let fmielement = document.getElementById(this.fromid);
     if (fmielement) {
       fmielement.addEventListener('fmidata', this.handleValueChange);
