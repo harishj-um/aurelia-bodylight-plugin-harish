@@ -13,6 +13,7 @@ export class Dygraphchart {
   @bindable throttle=200; //time to throttle chart update, if it is too much at once
   initialdata = true;
   refindices = null;
+  xy = false;
 
   constructor() {
     //this.data = [[0, 0, 0]];
@@ -22,7 +23,8 @@ export class Dygraphchart {
     //create lambda function which is added as listener later
     console.log('dygraph chart constructor');
     this.handleValueChange = e => {
-      let datapoint = [e.detail.time];
+      let datapoint = [];
+      if (!this.xy) datapoint.push(e.detail.time);
       //e.detail do not reallocate - using same buffer, thus slicing to append to data array
       let edata = e.detail.data.slice();
       let opindex = 0;

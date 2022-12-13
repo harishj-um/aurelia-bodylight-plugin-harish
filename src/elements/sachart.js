@@ -15,11 +15,12 @@ export class Sachart extends Dygraphchart {
     constructor(){
         super();
         console.log('sachart constructor');
+        this.xy = true; //set xy chart - datapoint will not contain time point
     }
 
     initdygraph(){
         console.log('sachart - initdygraph');
-        this.data = [[7.4,40]];
+        this.data = [[7.4,40],[7.3,41],[7.2,40.5]];
         this.xaxis = "pH";
         this.yaxis = "pCO2mmHg";
         this.logscale = true;
