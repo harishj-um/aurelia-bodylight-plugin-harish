@@ -11,6 +11,7 @@ export class Dygraphchart {
   @bindable refindex;
   @bindable refvalues=1;
   @bindable throttle=200; //time to throttle chart update, if it is too much at once
+  @bindable convertors;
   initialdata = true;
   refindices = null;
   xy = false;
