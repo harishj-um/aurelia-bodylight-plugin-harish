@@ -14,6 +14,7 @@ export class Dygraphchart {
   initialdata = true;
   refindices = null;
   xy = false;
+  operation = null;
 
   constructor() {
     //this.data = [[0, 0, 0]];
