@@ -41,8 +41,10 @@ tkan5:<bdl-range id="id7" min="0" max="100" step="1" default="20" ids="id3,id4" 
 
 ### range 3 smooth
 
+This range will change the value smoothly by steps - it will change the step on each `fmidata` event fired by fmi component, thus every simulation step. `fromid` attribute must be defined in order to attach to the right fmi to listen `fmidata`.
 ```xml
-<bdl-range-smooth id="id10" min="0" max="100" step="0.1" default="12"></bdl-range-smooth>
+Smooth range
+<bdl-range-smooth2 id="ids1" min="40" max="180" step="1" default="60" title="Heart rate:" fromid="id4"></bdl-range-smooth2>
 ```
 
-<bdl-range-smooth id="id10" min="0" max="100" step="0.1" default="12"></bdl-range-smooth>
+<bdl-range-smooth2 id="ids1" min="40" max="180" step="1" default="60" title="Heart rate:" fromid="id4"></bdl-range-smooth2>
