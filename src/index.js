@@ -51,7 +51,7 @@ export function configure(config) {
     PLATFORM.moduleName('./elements/chartjs-stacked'),
     PLATFORM.moduleName('./elements/value-store'),
     PLATFORM.moduleName('./elements/animate-adobe-ss'),
-    PLATFORM.moduleName('./elements/range-smooth'),
+    PLATFORM.moduleName('./elements/range-smooth2'),
     PLATFORM.moduleName('./elements/remote-value'),
     PLATFORM.moduleName('./elements/value-boolean'),
     PLATFORM.moduleName('./elements/option-value'),

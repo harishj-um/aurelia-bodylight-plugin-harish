@@ -5,9 +5,11 @@
          tolerance="0.000001" starttime="0" guid="{b5629132-3ba6-4153-87c2-f3ff108e1920}"
          valuereferences="33554435,637534265,637534241,637534290,16777312,33554435,33554433,33554436"
          valuelabels="Left Ventricle Volume,Pressure in Left Ventricle,Pressure in Aorta, Pressure in Left Atria, Heart Rate,lvv,cas.volume,la.volume"
-         inputs="id1,16777312,1,60"></bdl-fmi>
-
+         inputs="id1,16777312,1,60;ids1,16777312,1,60"></bdl-fmi>
+Range:
 <bdl-range id="id1" min="40" max="180" step="1" default="60" title="Srdeční tep:"></bdl-range>
+Smooth range:
+<bdl-range-smooth2 id="ids1" min="40" max="180" step="1" default="60" title="Srdeční tep:" fromid="id4"></bdl-range-smooth2>
 
 <div class="w3-row">
 

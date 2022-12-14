@@ -2,7 +2,7 @@ import {Range} from './range';
 import {bindable} from 'aurelia-framework';
 
 /**
- * when user clicks or change the input rapidly - it will generate 'number' of events between current and target values tto be sent
+ * when user clicks or change the input rapidly - it will generate 'number' of events between current and target values to be sent
  * with 'time' in ms between each event
  */
 export class RangeSmooth extends Range {

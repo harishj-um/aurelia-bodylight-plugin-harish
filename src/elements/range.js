@@ -25,24 +25,32 @@ export class Range {
     @bindable id;
     @bindable throttle = 1000; //throttle update value from fromid, default every 1s
     @bindable smooth = false;
+    @bindable smoothstep = 1;
 
     constructor() {
         this.handleValueChange = e => {
             //sets data to dataset
             //apply value convert among all data
             if (this.fromid) {
-                let rawdata = e.detail.data[this.refindex];
-                this.value = this.operation[0](rawdata);
-                //  else this.value = rawdata;
-                //console.log('Range received rawdata '+rawdata+' converted value '+this.value);
-                //console.log('this operation',this.operation)
-                this.updatevalue(); //either it is throttled, or
+                if (this.refindex) {
+                    let rawdata = e.detail.data[this.refindex];
+                    this.value = this.operation[0](rawdata);
+                    //  else this.value = rawdata;
+                    //console.log('Range received rawdata '+rawdata+' converted value '+this.value);
+                    //console.log('this operation',this.operation)
+                    this.updatevalue(); //call function - it may be throttled 
+                } else {
+                    if (this.smooth) {
+                        //do smooth step 
+                    }
+                }
             }
         }
     }
 
     bind() {
         if (typeof (this.smooth) === 'string') this.smooth = this.smooth === 'true';
+        if (typeof (this.step) === 'string') this.step = parseFloat(this.step);
         if (typeof (this.showicons) === 'string') this.showicons = this.showicons === 'true';
         if (typeof (this.globalanim) === 'string') this.globalanim = this.globalanim === 'true';
         if (this.listenkey && this.listenkey === 'true') {
@@ -106,7 +114,7 @@ export class Range {
     }
 
     attached() {
-        let maxlength = 4 + this.max.length + ((this.step && this.step.includes('.')) ? this.step.length : 1);
+        let maxlength = 4 + this.max.length + ((this.step && this.step.toString().includes('.')) ? this.step.toString().length : 1);
         this.refnumber.style = 'width:' + maxlength + 'ch';
         if (this.fromid) {
             if (this.operation.length == 0) {

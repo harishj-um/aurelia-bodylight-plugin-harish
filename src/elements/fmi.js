@@ -56,11 +56,10 @@ export class Fmi {
       //determine whether it is fixed parameter - further reset is needed?
       this.resetBeforeChange = this.resetBeforeChange || this.inputreferences[targetid].fixed;
       //do step if mode is onestep
-      if (this.isOnestep) setTimeout(this.step.bind(this),200); //do simulation step after 100 ms
-      if (this.isOneshot) {
-        //TODO do start
-        setTimeout(this.shot.bind(this),200);
-      } //do simulation step after 100 ms
+      //TODO may be do throttle here - if more events will come do step shot only once
+      if (this.isOnestep) setTimeout(this.step.bind(this),200); //do simulation step after 200 ms
+      if (this.isOneshot) setTimeout(this.shot.bind(this),200); //so shot after 200ms
+      
     };
     this.handleDetailChange = e => {
       //this.changeinputs.push({valuereference: e.detail.valuereference, value: e.detail.value, fromid: e.detail.id}); //detail will hold the value being changed
