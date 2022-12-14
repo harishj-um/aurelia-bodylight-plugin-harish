@@ -5,7 +5,7 @@ import {Dygraphchart} from "./dygraphchart";
 export class Sachart extends Dygraphchart {
     @bindable inputs;
     @bindable fromid;
-    @bindable maxdata=300;
+    @bindable maxdata=120;
     @bindable refindex;
     @bindable refvalues=1;
     @bindable pH=7.4;
@@ -21,13 +21,13 @@ export class Sachart extends Dygraphchart {
 
     initdygraph(){
         console.log('sachart - initdygraph');
-        this.data = [[7.4,40],[7.3,41],[7.2,40.5]];
+        this.data = [[7.4,40]];
         this.xaxis = "pH";
         this.yaxis = "pCO2mmHg";
         this.logscale = true;
         this.animatedZoom = true;
         this.xrange = [7.0,7.8];
-        this.yrange = [15,100];//[[7.4,40,0.03],[7.4,40,0.4]];
+        this.yrange = [15,115];//[[7.4,40,0.03],[7.4,40,0.4]];
         this.gradient = [[7.4,40,0.03],[7.4,40,0.4]];
         this.acidbaseannotation = [[7.4,40,"Normal area"],
             [7.2,64,"Acute Hypercapnia"],
@@ -51,6 +51,7 @@ export class Sachart extends Dygraphchart {
         let acidbaseannotation = this.acidbaseannotation;
         this.dygraph = new Dygraph(this.dygraphcanvas, this.data, {
                 labels:[this.xaxis, this.yaxis],
+                drawPoints:true,
                 xlabel:this.xaxis,
                 ylabel:this.yaxis,
                 logscale:this.logscale,

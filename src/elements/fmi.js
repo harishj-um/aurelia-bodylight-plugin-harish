@@ -25,7 +25,7 @@ export class Fmi {
   @bindable mode="continuous"; //continuous or oneshot or onestep
   @bindable stepsperframe = 1;
   @bindable startafter = 0;
-  @observable fmuspeed = 1;
+  @bindable fmuspeed = 1;
 
   cosimulation=1;
   stepSize=0.01;//0.0078125;
@@ -336,6 +336,7 @@ export class Fmi {
     }
     if (typeof this.fmuspeed === 'string') {
       this.fmuspeed = parseInt(this.fmuspeed);
+      this.stepSize = this.fmuspeed * ((typeof(this.fstepsize) === 'string' ) ? parseFloat(this.fstepsize) : this.fstepsize);
     }
 
   }
@@ -396,7 +397,7 @@ export class Fmi {
     const sDostep = 'fmi2DoStep';
     const sCreateCallback = 'createFmi2CallbackFunctions';
     this.stepTime = 0;
-    this.stepSize = (typeof(this.fstepsize) === 'string' ) ? parseFloat(this.fstepsize) : this.fstepsize;
+    this.stepSize = this.fmuspeed * ((typeof(this.fstepsize) === 'string' ) ? parseFloat(this.fstepsize) : this.fstepsize);
     this.mystep = this.stepSize;
     //console callback ptr, per emsripten create int ptr with signature viiiiii
     if (window.fmiinst && window.fmiinst[this.fminame]) this.inst = window.fmiinst[this.fminame].inst;
@@ -708,7 +709,7 @@ export class Fmi {
   reset() {
     console.log('doing reset()');
     this.stepTime = this.starttime;
-    this.stepSize = (typeof(this.fstepsize) === 'string' ) ? parseFloat(this.fstepsize) : this.fstepsize;
+    this.stepSize = this.fmuspeed * ((typeof(this.fstepsize) === 'string' ) ? parseFloat(this.fstepsize) : this.fstepsize);
     this.mystep = this.stepSize;
     this.setupExperiment();
     this.fmiReset(this.fmiinst);
@@ -723,7 +724,7 @@ export class Fmi {
 
   softreset() {
     this.stepTime = this.starttime;
-    this.stepSize = (typeof(this.fstepsize) === 'string' ) ? parseFloat(this.fstepsize) : this.fstepsize;
+    this.stepSize = this.fmuspeed * ((typeof(this.fstepsize) === 'string' ) ? parseFloat(this.fstepsize) : this.fstepsize);
     this.mystep = this.stepSize;
     //this.setupExperiment();
     //this.fmiReset(this.fmiinst);
