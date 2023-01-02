@@ -62,9 +62,13 @@ setDesiredDefault() {
 doValueStep(){
     let myvalue = parseFloat(this.value);
     let mydesiredvalue = parseFloat(this.desiredvalue);
+    if (mydesiredvalue>this.max) { mydesiredvalue = this.max; this.desiredvalue = this.max.toString(); } //set desiredvalue to max to not to overflow 
+    if (mydesiredvalue<this.min) { mydesiredvalue = this.min; this.desiredvalue = this.min.toString(); } //set desiredvalue to min to not to overflow 
+
     if (myvalue < mydesiredvalue) myvalue+=this.step; //note step needs to be >0
     else myvalue -=this.step;
     this.value = myvalue.toString();
 }
 
 }
+   
