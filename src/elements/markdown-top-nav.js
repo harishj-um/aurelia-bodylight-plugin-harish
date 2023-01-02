@@ -100,11 +100,11 @@ export class MarkdownTopNav {
     this.nav = ! this.nav;
   }
 
-    showhidetoc() {
-      this.toc = ! this.toc;
-    }
+  showhidetoc() {
+    this.toc = ! this.toc;
+  }
 
-    changesrc(...args) {
+  changesrc(...args) {
       console.log('markdown-top-nav changesrc args:', args);
       //console.log('markdown-bottom-nav links:', this.links);
       //parse global window.markdownnav.links to get prev and next title
@@ -115,5 +115,5 @@ export class MarkdownTopNav {
           ? window.markdownnav.links[currentlinkindex].title
           : '';
       }
-    }
+  }
 }

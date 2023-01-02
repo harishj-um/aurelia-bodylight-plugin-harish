@@ -13,7 +13,7 @@ export class MarkdownBook2 extends MarkdownBook {
 
     constructor() {
       super();
-      this.params = 'shownav,1;showmenu,2;base,3';
+      this.params = 'shownav,1;showtoc,2;showmenu,3;base,4';
       this.shownav = true;
       this.showtoc = true;
     }
@@ -41,6 +41,13 @@ export class MarkdownBook2 extends MarkdownBook {
     }
 
     changesrc(...args) {
-      super.changesrc(...args);
+      //super.changesrc(...args);
+      if (args[0]) this.shownav = (args[0] !== 'false');
+      if (args['shownav'])this.shownav = (args['shownav'] !== 'false');
+      if (args[1]) this.showtoc = (args[1] !== 'false');
+      if (args['showtoc'])this.showtoc = (args['showtoc'] !== 'false');
+      if (args[2]) this.showmenu = (args[2] !== 'false');
+      if (args['showmenu'])this.showmenu = (args['showmenu'] !== 'false');
+      //console.log('bdlmarkdownbook changesrc shownav', this.shownav);
     }
 }
