@@ -65,7 +65,9 @@ export class RemoteValue {
         this.start();
         if (this.inputids.length > 0) {
             for (let myid of this.inputids) {
-                document.getElementById(myid).addEventListener('input', this.handleValueChange)
+                const myidel = document.getElementById(myid);
+                if (myidel) myidel.addEventListener('input', this.handleValueChange);
+                else console.warn('cannot add listener to input for vaue change',myid);
             }
         }
     }
@@ -74,7 +76,8 @@ export class RemoteValue {
         this.stop();
         if (this.inputids.length > 0) {
             for (let myid of this.inputids) {
-                document.getElementById(myid).removeEventListener('input', this.handleValueChange)
+                const myidel = document.getElementById(myid);
+                if (myidel) myidel.removeEventListener('input', this.handleValueChange);
             }
         }
     }

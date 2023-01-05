@@ -159,10 +159,12 @@ export class Range {
                 //if (this.ids2send.length !== this.values2send.length) {console.log('warning ids and values contain different number of items.', this.ids2send, this.values2send); return;}
                 for (let i = 0; i < this.ids2send.length; i++) {
                     let inputel = document.getElementById(this.ids2send[i]);
+                    if (inputel) {
                     inputel.value = this.operation[i](newValue);
                     console.log('range valuechange id,converted value:', this.ids2send[i], inputel.value);
                     let event = new Event(this.fireevent);
                     inputel.dispatchEvent(event);
+                    } else { console.warn('inputel not found for id', this,ids2send[i])}
                 }
                 window.rangebinding = false;
             }
