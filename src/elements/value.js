@@ -11,6 +11,7 @@ export class Value {
   @bindable precision=4;
   @bindable throttle=500;
   @bindable dataevent=false;
+  @bindable adobeid;
 
   //constructor(){}
 
@@ -25,9 +26,11 @@ export class Value {
       // _.throttle(()=> this.updateValue(e.detail.data[this.refindex]), this.throttle)();
       //call throttled function with args
       this.myupdatevalue(e.detail.data[this.refindex])
-
-
     };
+    this.handleRawValueChange = e => {
+      console.log('catched event from adobe',e)
+      //this.updateValue(e.target.value)
+    }
     this.handleFMIAttached = e => {
       const fromel = document.getElementById(this.fromid);
       if (fromel) {
@@ -90,11 +93,22 @@ export class Value {
       console.warn('chartjs, null fromid element, waiting to be attached');
       document.addEventListener('fmiattached',this.handleFMIAttached);
     }
+    if (this.adobeid) {
+      
+      const adobeel = document.getElementById(this.adobeid);
+      if (adobeel){
+        console.log('listening to adobe events');
+        adobeel.addEventListener('change', this.handleRawValueChange);
+      } else {
+        console.warn('no adobe element found to listen changes');
+      }
+    }
 
   }
 
   detached() {
     if (document.getElementById(this.fromid)) document.getElementById(this.fromid).removeEventListener('fmidata', this.handleValueChange);
+    if (this.adobeid && document.getElementById(this.adobeid)) document.getElementById(this.adobeid).removeEventListener('change', this.handleRawValueChange);
   }
 
   updateValue(rawvalue) {

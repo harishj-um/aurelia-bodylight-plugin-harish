@@ -43,18 +43,22 @@ export class AnimateAdobe {
       this.animateData = e => {
 
       }
+      this.handleFMIStart = e => { this.enableAnimation();}
+      this.handleFMIStop = e => {this.disableAnimation();}
+      this.handlaAnimateStart = e => {this.startAllAnimation();}
+      this.handleAnimateStop = e => {this.stopAllAnimation();}
     }
 
     registerAnimateEvents(fromel)        {
-      fromel.addEventListener('animatestart', this.startAllAnimation);
-      fromel.addEventListener('animatestop', this.stopAllAnimation);
+      fromel.addEventListener('animatestart', this.handlaAnimateStart);
+      fromel.addEventListener('animatestop', this.handleAnimateStop);
       fromel.addEventListener('animatedata',this.animateData);
     }
 
     registerFMUEvents(fromel)         {
       fromel.addEventListener('fmidata', this.handleValueChange);
-      fromel.addEventListener('fmistart', this.enableAnimation);
-      fromel.addEventListener('fmistop', this.disableAnimation);
+      fromel.addEventListener('fmistart', this.handleFMIStart);
+      fromel.addEventListener('fmistop', this.handleFMIStop);
     }
     /**
      * adds listeners to the component 'fromid' and listens to following
@@ -328,6 +332,7 @@ export class AnimateAdobe {
         window.ani.animobjs = window.ani.objs.filter(name => name.includes('_anim'));
         window.ani.textobjs = window.ani.objs.filter(name => name.includes('_text'));
         window.ani.playobjs = window.ani.objs.filter(name => name.includes('_play'));
+        window.ani.rangeobjs = window.ani.objs.filter(name => name.includes('_range'));
         //stop animation if it is not yet started by other events, adobe automatically starts animation
         if (!window.ani.animationstarted) {
           //stop all animation
@@ -418,13 +423,19 @@ export class AnimateAdobe {
         window.ani.animationstarted = false;
         if (window.ani.stage) {
           window.createjs.Ticker.removeEventListener('tick', window.ani.stage);
+          this.deregisterInputs();
         }
       }
     }
 
     enableAnimation() {
       console.log('animateadobe enableAnimation');
-      if (window.ani.stage) {window.createjs.Ticker.addEventListener('tick', window.ani.stage);}
+      if (window.ani.stage) {
+        //listen to ticks will enable animation
+        window.createjs.Ticker.addEventListener('tick', window.ani.stage);
+        //register inputs range
+        this.registerInputs();
+      }
       window.ani.animationstarted = true;
     }
 
@@ -501,5 +512,48 @@ export class AnimateAdobe {
         //let convertedvalue = binding.convertf2a(value);
         binding.handleValue(this, value);
       }
+    }
+
+    //will register inputs from global variable animateranges
+    // type is array of struct
+    // {name:string, handleValueChange:function(e)}
+    //adobeobj should have accessible {name,value}
+    registerInputs(){
+      let ranges = window.animateranges;
+      if (!ranges) return;
+      for (let range of ranges) {
+        const animateobj = this.getAnimateObj(range.name);
+        //let rname = animateobj.name;      
+        if (animateobj) {  
+        animateobj.addEventListener('change', e=> { 
+          //range.animateobj.value 
+          e.detail = { id: animateobj.name, value: animateobj.value }          
+          //handlevaluechange
+          range.handleValueChange(e);        
+        });
+      } else console.warn('animate obj for inputs not found for name/id:',range.name);
+      }
+    }
+
+    deregisterInputs(){
+      let ranges = window.animateranges;
+      if (!ranges) return;
+      for (let range of ranges) {
+        const animateobj = this.getAnimateObj(range.name);
+        if (animateobj) animateobj.removeAllEventListeners();
+      }
+    }
+
+    getAnimateObj(objname) {
+      if (window.ani.exportRoot) {
+        const resolvePath = (object, path, defaultValue) => path
+        .split('.')
+        .reduce((o, p) => o ? o[p] : defaultValue, object);
+        let myobj = resolvePath(window.ani.exportRoot, objname, undefined);
+        //some animation are in unnamed children root, backward compatibility with already done anim
+        if (!myobj) myobj = resolvePath(window.ani.exportRoot.children[0], objname, undefined);
+        return myobj;
+      }
+      else return null;
     }
 }

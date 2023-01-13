@@ -13,6 +13,7 @@ export class ChartjsTime extends Chartjs {
     @bindable type;
     @bindable min;
     @bindable max;
+    @bindable minichart;
     refindices;
 
     constructor() {
@@ -97,7 +98,7 @@ export class ChartjsTime extends Chartjs {
         };
         if (this.verticalline) this.type = 'LineWithLine';
         else this.type = 'line';
-
+        
     }
 
     attached () {super.attached();}

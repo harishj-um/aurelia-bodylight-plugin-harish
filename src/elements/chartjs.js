@@ -38,6 +38,7 @@ export class Chartjs {
   @bindable canvasobj; //canvas obj name -
   @bindable colorsegmentindex=-2; //index to shift the color
   @bindable colorindex=0; //index to shift the color
+  @bindable minichart;
   indexsection=0;
   datalabels=false; //may be configured by subclasses
   refindices;
@@ -157,6 +158,7 @@ export class Chartjs {
     if (typeof this.generatelabels === 'string') {
       this.generatelabels = this.generatelabels === 'true';
     }
+    if (typeof this.minichart === 'string') this.minichart = (this.minichart === 'true');
     //sets color of each dataset as different as possible
     //and set initial data in chart
     //set labels - separated by comma
@@ -236,7 +238,7 @@ export class Chartjs {
       live: true,
       responsive: this.responsive, //true - rescale, false - will keep canvas width and height
       legend: {
-        //display: false,
+        display: !(this.minichart),
         position: 'top'
       },
       animation: animopts,
@@ -308,6 +310,9 @@ export class Chartjs {
     if (typeof this.colorsegmentindex === 'string') {
       this.colorsegmentindex = parseInt(this.colorsegmentindex, 10);
     }
+    /*if (this.minichart) {
+      this.options.plugins.legend.display = false
+    }*/
   }
 
   /**

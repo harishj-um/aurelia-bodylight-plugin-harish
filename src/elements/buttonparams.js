@@ -13,6 +13,7 @@ export class Buttonparams {
     @bindable resetvalues;
     @bindable ticks2reset = 1;
     @bindable fromid;
+    @bindable refindex;
     @bindable fireevent='input'; //name of the event to be fired
     //@bindable findex; //optional index of variables which will be set to values array fmu-index
     //@bindable convertors; //optional convertor?? value-convertor
@@ -21,6 +22,7 @@ export class Buttonparams {
     ids2send=[];
     resetvalues2send=[];
     currenttick = 0;
+    //previousvalue = null;
 
     constructor() {
       this.handleTick = e => {
@@ -45,6 +47,25 @@ export class Buttonparams {
           }
         }
       };
+
+      this.handleValueChange = e => {
+        //sets data to dataset
+        //apply value convert among all data
+        if (this.fromid) {
+            if (this.refindex) {
+                let rawdata = e.detail.data[this.refindex];
+                if (this.value !== rawdata) this.operation[0](rawdata);
+                //  else this.value = rawdata;
+                //console.log('Range received rawdata '+rawdata+' converted value '+this.value);
+                //console.log('this operation',this.operation)
+                this.updatevalue(); //call function - it may be throttled 
+            } else {
+                if (this.smooth) {
+                    //do smooth step 
+                }
+            }
+        }
+    };
     }
 
     bind() {
@@ -62,6 +83,9 @@ export class Buttonparams {
       if (typeof this.ticks2reset === 'string') {
         this.ticks2reset = parseInt(this.ticks2reset, 10);
         if (isNaN(this.ticks2reset)) this.ticks2reset = 1;
+      }
+      if (this.fromid) {
+
       }
     }
 

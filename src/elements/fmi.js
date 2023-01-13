@@ -122,9 +122,24 @@ export class Fmi {
         //register change event - the alteration is commited
         let dependentEl = document.getElementById(myinputs[0]);
         //now register 'change' event or eventlisten
-        if (dependentEl) dependentEl.addEventListener(this.eventlisten, this.handleValueChange);
-        else console.warn('cannot register changes for non-existing element id:', myinputs[0]);
-        console.log('registering input, ref, num,den,add,fixed', myinputs[0], myinputs[1], numerator, denominator, addconst, fixedsignature);
+        if (dependentEl) {
+          dependentEl.addEventListener(this.eventlisten, this.handleValueChange);
+          console.log('registering input, ref, num,den,add,fixed', myinputs[0], myinputs[1], numerator, denominator, addconst, fixedsignature);
+        }
+        else {
+          //const dependentAnimEl = window.ani.getAnimateObj(myinputs[0]);
+          //will push unregistered inputs into possible animation inputs handled during start/stop  
+          if (!window.animateranges) window.animateranges = [];
+          window.animateranges.push({
+            name:myinputs[0],
+            handleValueChange: this.handleValueChange
+          });
+          console.log('non-existing element id, will try to register to animation:', myinputs[0]);
+        }
+        
+        
+        
+        
       }
     }
     if (this.otherinputs) {
@@ -395,6 +410,13 @@ export class Fmi {
     const sGetboolean = 'fmi2GetBoolean';
     const sDostep = 'fmi2DoStep';
     const sCreateCallback = 'createFmi2CallbackFunctions';
+    //add fmustate support
+    const sGetFMUState = 'fmi2GetFMUState';
+    const sSetFMUState = 'fmi2SetFMUState';
+    const sFreeFMUState = 'fmi2FreeFMUState';
+    const sSerializedFMUStateSize = 'fmi2SerializedFMUStateSize';
+    const sSerializeFMUState = 'fmi2SerializeFMUState';
+    const sDeSerializeFMUStateSize = 'fmi2DeSerializeFMUState';
     this.stepTime = 0;
     this.stepSize = this.fmuspeed * ((typeof(this.fstepsize) === 'string' ) ? parseFloat(this.fstepsize) : this.fstepsize);
     this.mystep = this.stepSize;
@@ -430,6 +452,14 @@ export class Fmi {
     this.fmiGetVersion = this.inst.cwrap(prefix + separator + 'fmi2GetVersion', 'string');
     this.fmiGetTypesPlatform = this.inst.cwrap(prefix + separator + 'fmi2GetTypesPlatform', 'string');
     this.fmi2FreeInstance = this.inst.cwrap(prefix + separator + 'fmi2FreeInstance', 'number', ['number']);
+    //add fmustate
+    this.fmiGetFMUState = this.inst.cwrap(prefix + separator + sGetFMUState, 'number', ['number']);
+    this.fmiSetFMUState = this.inst.cwrap(prefix + separator + sSetFMUState, 'number', ['number']);
+    this.fmiFreeFMUState = this.inst.cwrap(prefix + separator + sFreeFMUState, 'number', ['number']);
+    this.fmiSerializedFMUStateSize = this.inst.cwrap(prefix + separator + sSerializedFMUStateSize, 'number', ['number']);
+    this.fmiSerializeFMUState = this.inst.cwrap(prefix + separator + sSerializeFMUState, 'number', ['number']);
+    this.fmiDeSerializeFMUStateSize = this.inst.cwrap(prefix + separator + sDeSerializeFMUStateSize, 'number', ['number']);
+
     this.instantiated = false;
     //calculate pow, power of stepsize
     this.pow = this.stepSize < 1 ? -Math.ceil(-Math.log10(this.stepSize)) : Math.ceil(Math.log10(this.stepSize)); //use Math.trunc ??
@@ -559,7 +589,7 @@ export class Fmi {
     //this = window.thisfmi;
     //primitive semaphore, only one instance can perform this call
     if (!this.doingstep) {
-      console.log('fmu step()');
+      //console.log('fmu step()');
       this.doingstep = true;
 
       try {
@@ -912,5 +942,10 @@ export class Fmi {
   }
   fmuspeedChanged(newValue) {
     this.stepSize = this.fmuspeed * ((typeof(this.fstepsize) === 'string' ) ? parseFloat(this.fstepsize) : this.fstepsize);
+  }
+
+  getState(){
+    let size = this.fmiSerializedFMUStateSize()
+    let status = this.fmiSerializeFMUState(this.fmiinst,fmistate,serializedstate,size);
   }
 }
