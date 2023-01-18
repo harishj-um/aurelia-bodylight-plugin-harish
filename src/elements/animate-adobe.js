@@ -326,6 +326,7 @@ export class AnimateAdobe {
       //window.ani.handleResize();
       fnStartAnimation();
       setTimeout(()=>{
+        /*
         //get all objects from animation
         window.ani.objs = Object.keys(window.ani.exportRoot.children[0]);
         //filter objects by purpose - so it can be bind to model value
@@ -333,6 +334,20 @@ export class AnimateAdobe {
         window.ani.textobjs = window.ani.objs.filter(name => name.includes('_text'));
         window.ani.playobjs = window.ani.objs.filter(name => name.includes('_play'));
         window.ani.rangeobjs = window.ani.objs.filter(name => name.includes('_range'));
+        //set default value to range objs
+        for (let robj of window.ani.rangeobjs) {}
+        */
+        if (window.ani && window.ani.exportRoot) {
+          window.ani.animobjs = window.ani.discoverChildren(window.ani.exportRoot, '', '_anim');
+          //console.log('discoverAdobeAnimate() animobjs:', this.animobjs);
+          window.ani.textobjs = window.ani.discoverChildren(window.ani.exportRoot, '', '_text');
+          window.ani.playobjs = window.ani.discoverChildren(window.ani.exportRoot, '', '_play');
+          window.ani.rangeobjs = window.ani.discoverChildren(window.ani.exportRoot, '', '_range');
+          //set default value to range
+          for (let robj of window.ani.rangeobjs) {robj.setValue(50);}
+        } else {
+          console.log('error, Animate object is not yet accessible. Try to refresh after while');
+        }
         //stop animation if it is not yet started by other events, adobe automatically starts animation
         if (!window.ani.animationstarted) {
           //stop all animation
@@ -349,6 +364,55 @@ export class AnimateAdobe {
 
       }, 1000);
     }
+    /**
+   * Discovers animable objects in Adobe Animation
+   * Should be called when a dialog needs animobjs for select form etc.
+   */
+  discoverAdobeAnimate() {
+    if (window.ani && window.ani.exportRoot) {
+      this.animobjs = this.discoverChildren(window.ani.exportRoot, '', '_anim');
+      //console.log('discoverAdobeAnimate() animobjs:', this.animobjs);
+      this.textobjs = this.discoverChildren(window.ani.exportRoot, '', '_text');
+      this.playobjs = this.discoverChildren(window.ani.exportRoot, '', '_play');
+      this.rangeobjs = this.discoverChildren(window.ani.exportRoot, '', '_range');
+    } else {
+      console.log('error, Animate object is not yet accessible. Try to refresh after while');
+    }
+  }
+
+  // returns array of strings in form @preffix.name in case name contains @suffix
+  // root is root element array like, it's property name is checked for prefix
+  //in form prefix - root name e.g. ['ventricles.ventriclesTotal.VentricleLeft_anim','ventricles.ventriclesTotal.VentricleRight_anim']
+  discoverChildren(root, prefix, suffix) {
+    let discovered = [];
+    //console.log('discovering', prefix);
+    if (root.children) {
+    //depth first
+      for (let child of root.children) {
+        //object including suffix is what we need to discover
+        if (child.name && child.name.includes(suffix)) {
+          discovered.push(child);
+        }
+        //index needed when 'name' is undefined - so access via index in array
+        let index = 0;
+        if (!child.name) index = root.children.indexOf(child); //name is not defined then discover index
+        if (child.children) {
+          discovered = discovered.concat(
+            //recursive calling to discover names in all children
+            this.discoverChildren(
+              child,
+              child.name ? prefix + child.name + '.' : prefix + 'children.' + index + '.',
+              //add name into the discovered childre, e.g. full.myname
+              //otherwise add children.$index - e.g. full.children.1
+              suffix
+            )
+          );
+        }
+      }
+    }
+    return discovered;
+  }
+
 
     /**
      * starts animation of particular object
@@ -432,7 +496,7 @@ export class AnimateAdobe {
       console.log('animateadobe enableAnimation');
       if (window.ani.stage) {
         //listen to ticks will enable animation
-        window.createjs.Ticker.addEventListener('tick', window.ani.stage);
+        window.createjs.Ticker.addEventListener('tick', window.ani.stage);        
         //register inputs range
         this.registerInputs();
       }

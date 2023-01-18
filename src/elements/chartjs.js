@@ -232,6 +232,12 @@ export class Chartjs {
         }
       }];
     }
+    if (this.minichart) {
+      if (axisopts.xAxes) axisopts.xAxes[0].display = false;
+      else axisopts.xAxes = [{display:false }];
+      if (axisopts.yAxes) axisopts.yAxes[0].display = false;
+      else axisopts.yAxes = [{display:false }];
+    }
 
     //initialize options - used later by chartjs instance
     this.options = {
