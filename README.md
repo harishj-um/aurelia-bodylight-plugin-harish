@@ -3,6 +3,7 @@
 [![Version](https://img.shields.io/npm/v/aurelia-bodylight-plugin.svg)](https://www.npmjs.com/package/aurelia-bodylight-plugin)
 ![maintenance-status](https://img.shields.io/badge/maintenance-deprecated-red.svg)
 [![Maintainability](https://api.codeclimate.com/v1/badges/3b493506de72a23d92b7/maintainability)](https://codeclimate.com/github/creative-connections/aurelia-bodylight-plugin/maintainability)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/f65c739d0c584ead9bec6d5d3f2031ce)](https://www.codacy.com/gh/creative-connections/aurelia-bodylight-plugin/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=creative-connections/aurelia-bodylight-plugin&amp;utm_campaign=Badge_Grade)
 
 ## This repository is DEPRECATED. Since 2.1.33 it was merged to https://github.com/creative-connections/Bodylight.js-Components
 
