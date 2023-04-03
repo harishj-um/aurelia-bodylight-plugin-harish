@@ -93,39 +93,59 @@ export class ChartjsFixed extends Chartjs {
         };
     }
 
-    bind(){
+    bind() {
         super.bind();
         this.type = 'line';
         this.options.legend.display = false;
+      
+        const templateContent = this.templateContent.cloneNode(true);
+        const canvas = templateContent.querySelector('canvas');
+        const input = templateContent.querySelector('#index-input');
+      
+        // Add event listener to input element
+        input.addEventListener('input', () => {
+          this.colorindex = parseInt(input.value, 10);
+          this.currentcolor = this.selectColor(this.colorindex, 65);
+          this.previouscolor = this.selectColor(this.colorindex, 65, 75);
+          this.previouscolor2 = this.selectColor(this.colorindex, 65, 95);
+          this.currentcolorb = this.selectColor(this.colorindex + 1, 65);
+          this.previouscolorb = this.selectColor(this.colorindex + 1, 65, 75);
+          this.previouscolorb2 = this.selectColor(this.colorindex + 1, 65, 95);
+          this.render(canvas);
+        });
+      
         let dataset = [];
         dataset.push({
-            data: [],
-            label:"",
-            backgroundColor: this.selectColor(0),
-            borderColor: this.selectColor(0),
-            borderWidth: 1,
-            pointRadius: 1,
-            fill: false
-        })
-
+          data: [],
+          label: "",
+          backgroundColor: this.selectColor(0),
+          borderColor: this.selectColor(0),
+          borderWidth: 1,
+          pointRadius: 1,
+          fill: false
+        });
+      
         this.data = {
-            labels: Array.from(Array(this.refvalues), (_,x) => x+1), //returns [1,2,3,..,refvalues]
-            datasets: dataset
+          labels: Array.from(Array(this.refvalues), (_, x) => x + 1),
+          datasets: dataset
         };
-        if (typeof this.colorindex === 'string') this.colorindex = parseInt(this.colorindex,10);
-        //initialize colors for each dataset
-        this.currentcolor =  this.selectColor(this.colorindex,65);
-        this.previouscolor = this.selectColor(this.colorindex,65,75);
-        this.previouscolor2 = this.selectColor(this.colorindex,65,95);
-        this.currentcolorb =  this.selectColor(this.colorindex+1,65);
-        this.previouscolorb = this.selectColor(this.colorindex+1,65,75);
-        this.previouscolorb2 = this.selectColor(this.colorindex+1,65,95);
-
+      
+        if (typeof this.colorindex === 'string') this.colorindex = parseInt(this.colorindex, 10);
+        this.currentcolor = this.selectColor(this.colorindex, 65);
+        this.previouscolor = this.selectColor(this.colorindex, 65, 75);
+        this.previouscolor2 = this.selectColor(this.colorindex, 65, 95);
+        this.currentcolorb = this.selectColor(this.colorindex + 1, 65);
+        this.previouscolorb = this.selectColor(this.colorindex + 1, 65, 75);
+        this.previouscolorb2 = this.selectColor(this.colorindex + 1, 65, 95);
+      
         this.refpointindex = parseInt(this.refpointindex, 10);
         if (this.refpointindex) {
-            this.options.refpointplugin = {index:this.refpointindex-this.refindex};
+          this.options.refpointplugin = { index: this.refpointindex - this.refindex };
         }
-    }
+      
+        this.shadowRoot.appendChild(templateContent);
+      }
+      
 
     attached() {
         if (this.refpointindex) {
@@ -179,6 +199,6 @@ export class ChartjsFixed extends Chartjs {
         }
         super.attached();
         if (this.refpointindex) console.log('chartjs fixed debug: chart:',this.chart);
-    }
+    };
 
 }
